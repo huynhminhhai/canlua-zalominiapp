@@ -11,9 +11,9 @@ const MeetingItemSkeleton: React.FC<MeetingItemSkeletonProps> = ({ count }) => {
     return (
         <Box>
             {Array.from({ length: count }).map((_, index) => (
-                <Box p={4} key={index}>
+                <Box px={3} py={2} key={index}>
                     <Box flex alignItems='center' className='gap-3'>
-                        <div className='w-[108px] h-[152px] rounded-xl relative overflow-hidden'>
+                        <div className='w-[98px] h-[138px] rounded-xl relative overflow-hidden'>
                             <Skeleton count={1} width={108} height={152} />
                         </div>
                         <div className='flex-1'>

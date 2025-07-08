@@ -16,10 +16,16 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   onConfirm,
   onCancel,
 }) => {
+
+  const handleCancel = (e) => {
+    e.stopPropagation();
+    onCancel();
+  };
+
   return (
     <Modal
       visible={visible}
-      onClose={onCancel}
+      onClose={handleCancel}
       title={title}
     >
       <div style={{ padding: "20px" }}>
@@ -33,14 +39,20 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
         >
           <Button
             size="medium"
-            onClick={onCancel}
+            onClick={(e) => {
+              e.stopPropagation();
+              onCancel();
+            }}
             style={{ flex: 1, backgroundColor: "#ececec", color: "#000" }}
           >
             Hủy
           </Button>
           <Button
             size="medium"
-            onClick={onConfirm}
+            onClick={(e) => {
+              e.stopPropagation();
+              onConfirm();
+            }}
             style={{ flex: 1, backgroundColor: "#007bff", color: "#fff" }}
           >
             Đồng ý

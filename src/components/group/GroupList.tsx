@@ -6,15 +6,17 @@ import { useInfiniteScroll } from "utils/useInfiniteScroll";
 import { MeetingItemSkeleton } from "components/skeleton";
 import { EmptyData } from "components/data";
 import GroupItem from "./GroupItem";
-import { FilterBar, FilterBar2 } from "components/table";
+import { FilterBar } from "components/table";
 import { formatDate, parseDate } from "components/form/DatePicker";
 import images from "assets/images";
 import { Icon } from "@iconify/react";
-import { renderDayOfWeek } from "utils/date";
+import GroupCreateForm from "./GroupCreateForm";
 
 const GroupList: React.FC<any> = () => {
 
     const navigate = useNavigate();
+
+    const [showCreateForm, setShowCreateForm] = useState(false);
 
     const [filters, setFilters] = useState({
         search: "",
@@ -124,7 +126,7 @@ const GroupList: React.FC<any> = () => {
         <Box>
             <FilterBar
                 showAddButton
-                onAddButtonClick={() => navigate("/group-add")}
+                onAddButtonClick={() => setShowCreateForm(true)}
             >
                 <div className="col-span-12">
                     <Input
@@ -153,6 +155,10 @@ const GroupList: React.FC<any> = () => {
                 </div>
             </FilterBar>
             {renderContent()}
+            <GroupCreateForm
+                visible={showCreateForm}
+                onClose={() => setShowCreateForm(false)}
+            />
         </Box>
     )
 }

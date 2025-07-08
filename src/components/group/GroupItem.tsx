@@ -3,7 +3,7 @@ import images from "assets/images"
 import React from "react"
 import { formatDate, renderDayOfWeek } from "utils/date"
 import { Box, useNavigate } from "zmp-ui"
-import { GroupDropdown } from "./GroupDropdown"
+import GroupDropdown from "./GroupDropdown"
 
 type GroupItemProps = {
     data?: any
@@ -25,11 +25,9 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
                     </Box>
                     <Box py={2} pr={2} className="flex-1">
                         <div className="flex items-center justify-between gap-[12px] mb-2">
-                            <h3 className="text-[16px] leading-[22px] font-semibold line-clamp-2">Xe 10 tấn 62n1-12345</h3>
+                            <h3 className="text-[16px] leading-[22px] font-medium line-clamp-2">Xe 10 tấn 62n1-12345</h3>
 
-                            <GroupDropdown
-
-                            />
+                            <GroupDropdown data={data} />
                         </div>
                         <div className="flex flex-col">
                             <Box>
@@ -41,7 +39,7 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
                                     <li>
                                         34 lần cân
                                     </li>
-                                    <li className="flex items-center gap-[6px] mt-[4px] text-[13px] text-gray-500">
+                                    <li className="flex items-center gap-[4px] mt-[4px] text-[13px] text-gray-500">
                                         <Icon icon='solar:phone-outline' fontSize={14} />
                                         <span className="font-medium">0848551551</span>
                                     </li>
