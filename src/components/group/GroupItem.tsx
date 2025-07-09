@@ -13,9 +13,9 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
     const navigate = useNavigate()
 
     return (
-        <Box className="meeting-item" onClick={() => navigate(`/group-detail?id=1`)}>
+        <Box className="meeting-item" onClick={() => navigate(`/farmer-list?id=1`)}>
             <Box>
-                <div className="flex items-start gap-3 border-[1px] rounded-xl">
+                <div className="flex items-start gap-3 border-[1px] rounded-xl bg-white shadow-sm">
                     <Box px={4} py={4} width={98} height={138} className="bg-blue-100 text-primary-color rounded-xl relative overflow-hidden scale-[1.02]">
                         <img className="w-[100%] h-[100%] absolute top-0 left-0 opacity-5 scale-[2.5]" src={images.shape4} alt="shape" />
                         <div className="flex-center flex-col h-[100%] relative z-[2]">
@@ -25,7 +25,7 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
                     </Box>
                     <Box py={2} pr={2} className="flex-1">
                         <div className="flex items-center justify-between gap-[12px] mb-2">
-                            <h3 className="text-[16px] leading-[22px] font-medium line-clamp-2">Xe 10 tấn 62n1-12345</h3>
+                            <h3 className="text-primary-color text-[16px] leading-[22px] font-semibold line-clamp-2">Xe 10 tấn 62n1-12345</h3>
 
                             <GroupDropdown data={data} />
                         </div>
@@ -37,7 +37,7 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
                                         kg
                                     </li>
                                     <li>
-                                        34 lần cân
+                                        34 lần cân (bao)
                                     </li>
                                     <li className="flex items-center gap-[4px] mt-[4px] text-[13px] text-gray-500">
                                         <Icon icon='solar:phone-outline' fontSize={14} />

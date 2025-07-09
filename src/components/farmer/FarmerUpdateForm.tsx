@@ -1,31 +1,34 @@
 import React, { useState } from "react";
 import { Box, Sheet } from "zmp-ui";
-import { FormDataGroup, schemaGroup } from "./type";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { FormInputAreaField, FormInputField } from "components/form";
+import { FormInputAreaField, FormInputField, FormInputNumbericField } from "components/form";
 import { PrimaryButton } from "components/button";
+import { FormDataFarmer, schemaFarmer } from "./type";
 
-type GroupCreateFormProps = {
+type FarmerUpdateFormProps = {
     visible: boolean;
     onClose: () => void;
+    data: any;
 };
 
-const defaultValues: FormDataGroup = {
-    tenNhom: "",
+const defaultValues: FormDataFarmer = {
+    tenNongDan: "",
+    donGia: "",
     soDienThoai: "",
+    ghiChu: "",
 }
 
-const GroupCreateForm: React.FC<GroupCreateFormProps> = ({ visible, onClose }) => {
+const FarmerUpdateForm: React.FC<FarmerUpdateFormProps> = ({ visible, onClose }) => {
 
-    // const [formData, setFormData] = useState<FormDataGroup>(defaultValues)
+    // const [formData, setFormData] = useState<FormDataFarmer>(defaultValues)
 
-    const { handleSubmit, control, reset, watch, setValue, formState: { errors } } = useForm<FormDataGroup>({
-        resolver: yupResolver(schemaGroup),
+    const { handleSubmit, control, reset, watch, setValue, formState: { errors } } = useForm<FormDataFarmer>({
+        resolver: yupResolver(schemaFarmer),
         defaultValues
     });
 
-    const onSubmit: SubmitHandler<FormDataGroup> = (data) => {
+    const onSubmit: SubmitHandler<FormDataFarmer> = (data) => {
         // setFormData(data)
 
         if (data) {
@@ -50,22 +53,32 @@ const GroupCreateForm: React.FC<GroupCreateFormProps> = ({ visible, onClose }) =
         <Sheet
             visible={visible}
             onClose={onCloseForm}
-            title="Thêm nhóm"
+            title="Chỉnh sửa nông dân"
             className="rounded-t-2xl"
         >
             <Box mt={2} px={4} pb={6} mb={10}>
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
                         <FormInputField
-                            name="tenNhom"
-                            label="Tên nhóm/phương tiện"
-                            placeholder="Nhập tên nhóm"
+                            name="tenNongDan"
+                            label="Tên nông dân"
+                            placeholder="Nhập tên nông dân"
                             control={control}
-                            error={errors.tenNhom?.message}
+                            error={errors.tenNongDan?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
+                        <FormInputNumbericField
+                            name="donGia"
+                            label="Đơn giá"
+                            maxLength={10}
+                            placeholder="Nhập đơn giá"
+                            control={control}
+                            error={errors.donGia?.message}
+                        />
+                    </div>
+                    {/* <div className="col-span-12">
                         <FormInputField
                             name="soDienThoai"
                             label="Số điện thoại"
@@ -73,7 +86,7 @@ const GroupCreateForm: React.FC<GroupCreateFormProps> = ({ visible, onClose }) =
                             control={control}
                             error={errors.soDienThoai?.message}
                         />
-                    </div>
+                    </div> */}
                     {/* <div className="col-span-12">
                         <FormInputAreaField
                             name="ghiChu"
@@ -94,4 +107,4 @@ const GroupCreateForm: React.FC<GroupCreateFormProps> = ({ visible, onClose }) =
     );
 };
 
-export default GroupCreateForm;
+export default FarmerUpdateForm;

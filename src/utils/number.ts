@@ -26,3 +26,9 @@ export function formatPhoneNumber(phone: string): string {
     // Trường hợp không rõ ràng, trả về nguyên bản số đã được lọc
     return digits;
 }
+
+export const formatCurrency = (value: string) => {
+    const numericValue = value.replace(/[^0-9]/g, '');
+    if (!numericValue) return '';
+    return new Intl.NumberFormat('vi-VN').format(Number(numericValue));
+};

@@ -11,8 +11,8 @@ const HomePage: React.FunctionComponent = () => {
   const navigate = useNavigate()
 
   return (
-    <Page className="relative flex-1 flex flex-col bg-white pb-[66px] home">
-      <HeaderSub title="Danh sách nhóm" />
+    <Page className="relative flex-1 flex flex-col pb-[66px] home">
+      <HeaderSub title="Danh sách nhóm" showBackIcon={false} />
       <GroupList />
     </Page>
   );

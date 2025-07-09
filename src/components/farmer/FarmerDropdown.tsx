@@ -1,15 +1,16 @@
 import { Icon } from "@iconify/react";
 import React, { useEffect, useRef, useState } from "react";
-import GroupUpdateForm from "./GroupUpdateForm";
 import { ConfirmModal } from "components/modal";
+import FarmerUpdateForm from "./FarmerUpdateForm";
+import { openShareSheet } from "zmp-sdk/apis";
 
-type GroupDropdownProps = {
+type FarmerDropdownProps = {
     data: any;
     onEdit?: () => void;
     onDelete?: () => void;
 };
 
-const GroupDropdown: React.FC<GroupDropdownProps> = ({
+const FarmerDropdown: React.FC<FarmerDropdownProps> = ({
     onEdit,
     onDelete,
     data
@@ -63,24 +64,39 @@ const GroupDropdown: React.FC<GroupDropdownProps> = ({
 
         openConfirmModal(() => {
             console.log('delete')
-        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa nhóm này?')
+        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa nông dân này?')
     };
 
     return (
         <div className="relative" ref={dropdownRef}>
-            <button
-                className="border py-[2px] px-[12px] rounded-[16px] bg-gray-50"
+            <div
+                className="w-[60px] h-[77px] flex justify-center items-center"
                 onClick={(e) => {
                     e.stopPropagation();
                     setOpen((prev) => !prev);
                 }}
             >
-                <Icon icon="solar:menu-dots-bold" fontSize={24} color="#808080" />
-            </button>
+                <Icon icon='fluent-mdl2:gripper-dots-vertical' fontSize={32} color="#062654" />
+            </div>
 
             {open && (
-                <div className="absolute right-0 mt-1 w-40 bg-gray-50 border rounded-lg shadow-md z-10">
+                <div className="absolute left-[4px] mt-1 w-52 bg-gray-50 border rounded-lg shadow-md z-10">
                     <ul className="py-1 text-[15px] leading-[22px] font-semibold text-gray-700">
+                        <li
+                            className="px-4 py-3 flex items-center gap-[8px]"
+                            onClick={async () => {
+                                await openShareSheet({
+                                    type: "image",
+                                    data: {
+                                        imageUrls: ["https://congnghemavach.com.vn/wp-content/uploads/2017/08/giay-in-hoa-don.jpg"]
+                                    },
+                                });
+                            }}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32"><path fill="#353844" d="M14 3a1 1 0 1 1 0 2H7.5A2.5 2.5 0 0 0 5 7.5v17A2.5 2.5 0 0 0 7.5 27h17a2.5 2.5 0 0 0 2.5-2.5V19a1 1 0 1 1 2 0v5.5a4.5 4.5 0 0 1-4.5 4.5h-17A4.5 4.5 0 0 1 3 24.5v-17A4.5 4.5 0 0 1 7.5 3zm5.58-.907a1 1 0 0 1 1.067.146l10 8.5a1 1 0 0 1 0 1.523l-10 8.5A1 1 0 0 1 18.999 20v-3.96c-3.193.258-5.636 1.722-7.34 3.213a15.6 15.6 0 0 0-2.115 2.26c-.234.307-.407.56-.52.733c-.085.13-.136.215-.152.243l-.006.006l.001.001A1 1 0 0 1 7 22.036c0-.222-.003-.444.003-.666c.011-.406.042-.982.12-1.67c.155-1.37.5-3.218 1.265-5.08s1.967-3.776 3.855-5.225C13.948 8.086 16.161 7.2 19 7.032V3a1 1 0 0 1 .58-.907M20.998 8a1 1 0 0 1-1 1c-2.925 0-5.018.814-6.539 1.98c-1.533 1.177-2.551 2.763-3.224 4.4a16.5 16.5 0 0 0-.957 3.38c.318-.33.672-.672 1.062-1.013C12.462 15.891 15.687 14 19.999 14a1 1 0 0 1 1 1v2.838l7.456-6.338L21 5.161z" /></svg>
+                            Gửi hóa đơn
+                        </li>
+                        <hr />
                         <li className="px-4 py-3 flex items-center gap-[8px]" onClick={(e) => handleEdit(e)}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 32 32"><path fill="#353844" d="M28.565 3.434a4.89 4.89 0 0 0-6.915 0L4.357 20.73a3.7 3.7 0 0 0-1.002 1.84l-1.333 6.22a1 1 0 0 0 1.188 1.188l6.22-1.333a3.7 3.7 0 0 0 1.84-1.002l17.295-17.295a4.89 4.89 0 0 0 0-6.914m-5.5 1.414a2.89 2.89 0 0 1 4.085 4.086l-.9.9l-4.086-4.085zm-2.316 2.315l4.086 4.086L9.857 26.23a1.7 1.7 0 0 1-.846.46L4.3 27.7l1.01-4.71a1.7 1.7 0 0 1 .46-.846z" /></svg>
                             Chỉnh sửa
@@ -94,7 +110,7 @@ const GroupDropdown: React.FC<GroupDropdownProps> = ({
                 </div>
             )}
 
-            <GroupUpdateForm
+            <FarmerUpdateForm
                 visible={showUpdateForm}
                 onClose={() => setShowUpdateForm(false)}
                 data={data}
@@ -111,4 +127,4 @@ const GroupDropdown: React.FC<GroupDropdownProps> = ({
     );
 };
 
-export default GroupDropdown;
+export default FarmerDropdown;

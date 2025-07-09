@@ -1,4 +1,5 @@
 export { default as FormInputField } from "./InputField";
+export { default as FormInputNumbericField } from "./InputNumbericField";
 export { default as FormSelectField } from "./SelectField";
 export { default as FormSelectMultipleField } from "./SelectMultipleField";
 export { default as FormInputAreaField } from "./InputAreaField";

@@ -6,9 +6,10 @@ type HeaderSubProps = {
     title: string;
     onBackClick?: () => void;
     onCreate?: () => void;
+    showBackIcon?: boolean
 }
 
-export const HeaderSub: React.FC<HeaderSubProps> = ({title, onBackClick, onCreate}) => {
+export const HeaderSub: React.FC<HeaderSubProps> = ({title, onBackClick, onCreate, showBackIcon = true}) => {
     
     return (
         <Header 
@@ -16,9 +17,9 @@ export const HeaderSub: React.FC<HeaderSubProps> = ({title, onBackClick, onCreat
             {...(onBackClick ? { onBackClick } : {})}
             title={
                 (
-                    <Box flex alignItems="center" className="gap-2">
+                    <div className="flex items-center mt-[6px] gap-2">
                         <Box flex alignItems="center">
-                            <h4 className="text-[20px] leading-[20px] font-medium">{title}</h4>
+                            <h4 className="text-[18px] leading-[24px] font-medium">{title}</h4>
                         </Box>
                         {
                             onCreate &&
@@ -26,10 +27,10 @@ export const HeaderSub: React.FC<HeaderSubProps> = ({title, onBackClick, onCreat
                                 <Icon icon="solar:add-circle-bold" fontSize={32} />
                             </Box>
                         }
-                    </Box>
+                    </div>
                 ) as unknown as string
             }
-            showBackIcon={false}
+            showBackIcon={showBackIcon}
         />
     )
 }

@@ -49,6 +49,7 @@
   --third-color: #ebebeb;
   --gray-color: #666666;
   --black-color: #222631;
+  --bg-color: #fafafa;
 }
 
 body {
@@ -64,14 +65,14 @@ body {
 }
 
 .zaui-page {
-  background-color: white;
+  background-color: var(--bg-color);
   min-height: calc(100vh - 56px);
   // margin-top: 104px;
-  margin-top: 52px;
+  margin-top: 60px;
 }
 
 .zaui-page.home {
-  background-color: white;
+  background-color: var(--bg-color);
   // margin-top: 0;
   width: 100%;
   overflow-x: hidden;
@@ -404,7 +405,7 @@ tbody tr td:not(:first-child) {
 **/
 
 .zaui-input {
-  height: 38px;
+  height: 44px;
   font-size: 14px;
   line-height: 1;
   font-weight: 500;
