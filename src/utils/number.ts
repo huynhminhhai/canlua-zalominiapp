@@ -27,8 +27,31 @@ export function formatPhoneNumber(phone: string): string {
     return digits;
 }
 
-export const formatCurrency = (value: string) => {
-    const numericValue = value.replace(/[^0-9]/g, '');
+export const formatCurrency = (value: string | number) => {
+    const strValue = String(value); // ép về string an toàn
+    const numericValue = strValue.replace(/[^0-9]/g, '');
     if (!numericValue) return '';
     return new Intl.NumberFormat('vi-VN').format(Number(numericValue));
+};
+
+export const roundWeight = (
+    weight: number,
+    type: 'up' | 'down' | 'nearest' = 'nearest',
+    decimal: number = 1
+): number => {
+    if (typeof weight !== 'number' || isNaN(weight)) return 0;
+    if (typeof decimal !== 'number' || isNaN(decimal) || decimal < 0) decimal = 0;
+
+    const factor = Math.pow(10, decimal);
+
+    if (factor === 0) return 0;
+
+    if (type === 'up') return Math.ceil(weight * factor) / factor;
+    if (type === 'down') return Math.floor(weight * factor) / factor;
+    return Math.round(weight * factor) / factor;
+};
+
+export const parseNumber = (value: any, fallback = 0) => {
+    const n = parseFloat(String(value).replace(',', '.'));
+    return isNaN(n) ? fallback : n;
 };

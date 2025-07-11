@@ -4,7 +4,6 @@ import { Control, Controller, ControllerRenderProps } from "react-hook-form";
 import ErrorMessage from "./ErrorMessage";
 import Label from "./Label";
 import { formatCurrency } from "utils/number";
-import { Icon } from "@iconify/react";
 
 type InputNumericFieldProps = {
     label?: string;
@@ -16,6 +15,40 @@ type InputNumericFieldProps = {
     disabled?: boolean;
     maxLength?: number;
 };
+
+// const InputNumericField: React.FC<InputNumericFieldProps> = ({
+//     label,
+//     name,
+//     error,
+//     field,
+//     required = false,
+//     placeholder,
+//     disabled = false,
+//     maxLength
+// }) => {
+//     return (
+//         <Box pb={4} className="relative">
+//             <Label name={name} text={label || ''} required={required} />
+//             <Input
+//                 id={name}
+//                 type="text"
+//                 inputMode="numeric"
+//                 className="mt-1 block w-full"
+//                 style={{ borderColor: error ? 'red' : '#b9bdc1' }}
+//                 placeholder={placeholder}
+//                 disabled={disabled}
+//                 value={formatCurrency(field.value || '')}
+//                 onChange={(e) => {
+//                     const raw = e.target.value.replace(/[^0-9]/g, '');
+//                     field.onChange(raw); // lưu số gốc
+//                 }}
+//                 maxLength={maxLength}
+//             />
+//             {error && <ErrorMessage message={error} />}
+//         </Box>
+//     );
+// };
+
 
 const InputNumericField: React.FC<InputNumericFieldProps> = ({
     label,
@@ -38,18 +71,19 @@ const InputNumericField: React.FC<InputNumericFieldProps> = ({
                 style={{ borderColor: error ? 'red' : '#b9bdc1' }}
                 placeholder={placeholder}
                 disabled={disabled}
-                value={formatCurrency(field.value || '')}
+                value={formatCurrency(field.value ?? '')}
                 onChange={(e) => {
                     const raw = e.target.value.replace(/[^0-9]/g, '');
-                    field.onChange(raw); // lưu số gốc
+                    const parsed = raw === '' ? 0 : Number(raw);
+                    field.onChange(parsed);
                 }}
-                suffix={<Box className="border-l" px={4}>đ</Box>}
                 maxLength={maxLength}
             />
             {error && <ErrorMessage message={error} />}
         </Box>
     );
 };
+
 
 type FormInputNumericFieldProps = {
     name: string;

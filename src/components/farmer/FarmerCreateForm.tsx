@@ -70,7 +70,7 @@ const FarmerCreateForm: React.FC<FarmerCreateFormProps> = ({ visible, onClose })
                     <div className="col-span-12">
                         <FormInputNumbericField
                             name="donGia"
-                            label="Đơn giá"
+                            label="Đơn giá (đ)"
                             maxLength={10}
                             placeholder="Nhập đơn giá"
                             control={control}

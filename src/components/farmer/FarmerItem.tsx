@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react"
 import React from "react"
-import { Box } from "zmp-ui"
+import { Box, useNavigate } from "zmp-ui"
 import FarmerDropdown from "./FarmerDropdown"
 
 type InfoItemProps = {
@@ -32,6 +32,9 @@ const InfoItem: React.FC<InfoItemProps> = ({
 }
 
 const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
+
+    const navigate = useNavigate()
+
     return (
         <Box mx={1} mb={4} className="bg-white shadow-sm rounded-lg overflow-hidden border">
             <Box flex alignItems="center" className="bg-blue-100">
@@ -42,7 +45,10 @@ const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
                         <div className="text-[14px] font-medium leading-[1] text-gray-color">10:30 09/07/2025</div>
                     </div>
                 </div>
-                <div className="h-[77px] flex items-center justify-center text-[16px] font-semibold px-5 leading-[1] text-primary-color">
+                <div
+                    className="h-[77px] flex items-center justify-center text-[16px] font-semibold px-5 leading-[1] text-primary-color"
+                    onClick={() => navigate(`/farmer-detail?id=1`) }
+                >
                     Mở
                 </div>
             </Box>

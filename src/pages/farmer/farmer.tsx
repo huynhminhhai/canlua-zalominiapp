@@ -1,5 +1,4 @@
 import { FarmerList } from "components/farmer";
-import { GroupList } from "components/group";
 import { HeaderSub } from "components/header-sub";
 import React from "react";
 import { Page } from "zmp-ui";

@@ -14,7 +14,7 @@ import { IsComingSoonModal, LoginModal, RegisterApModal } from "./modal";
 import { useRefreshToken } from "apiRequest/auth";
 import Navigation from "./navigation";
 import { pdfjs } from 'react-pdf';
-import { FarmerListPage } from "pages/farmer";
+import { FarmerDetailPage, FarmerListPage } from "pages/farmer";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -151,6 +151,7 @@ const MyApp = () => {
 
                         {/* FARMER */}
                         <Route path="/farmer-list" element={<FarmerListPage></FarmerListPage>}></Route>
+                        <Route path="/farmer-detail" element={<FarmerDetailPage></FarmerDetailPage>}></Route>
                       </Routes>
                       <Navigation />
                     </AuthWrapper>
