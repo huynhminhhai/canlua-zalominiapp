@@ -155,7 +155,7 @@ const FarmerResultForm: React.FC = () => {
                             error={errors.donGia?.message}
                         />
                     </div>
-                    <div className="col-span-12 mb-2">
+                    <div className="col-span-12 mb-3">
                         <Input
                             label="Trừ bao bì (kg)"
                             value={getValues('truBaoBi') === 0 ? "0" : `${roundWeight(soLanCan / (Number(getValues('truBaoBi'))), 'nearest', 1)}`}
@@ -210,16 +210,25 @@ const FarmerResultForm: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-12 gap-x-0 shadow-sm">
-                    <InfoBox label="Tổng khối lượng" value={tongKhoiLuong} />
-                    <InfoBox label="Số lần cân (bao)" value={soLanCan} />
-                    <InfoBox label="Khối lượng còn lại" value={khoiLuongConLai} />
-                    <InfoBox label="Tổng tiền" value={tongTien} formatNumber />
+                <div className="grid grid-cols-12 gap-x-0 shadow-sm border-[1px]">
+                    <InfoBox label="Tổng khối lượng" value={tongKhoiLuong} colorClass="text-blue-600" />
+                    <InfoBox label="Số lần cân (bao)" value={soLanCan} colorClass="text-blue-600" />
+                    <InfoBox label="Khối lượng còn lại" value={khoiLuongConLai} note='(Trừ tạp chất và bao bì)' noteFs={12} />
+                    <InfoBox
+                        label="Tổng tiền"
+                        value={tongTien}
+                        formatNumber
+                        note='(Đơn giá x KL còn lại)'
+                        noteFs={12}
+                    />
                     <InfoBox
                         label="Tổng tiền còn lại"
+                        labelFs={18}
                         value={tongTienConLai}
                         formatNumber
                         colorClass="text-blue-700"
+                        fs={22}
+                        fw='bold'
                         span={12}
                         note="(Đã trừ tiền cọc và tiền đã trả)"
                     />
