@@ -25,8 +25,8 @@ const FarmerResultForm: React.FC = () => {
 
     const [visibleTruBiModal, setVisibleTruBiModal] = useState(false);
 
-    const [tongKhoiLuong, setTongKhoiLuong] = useState(668.2);
-    const [soLanCan, setSoLanCan] = useState(75);
+    const [tongKhoiLuong, setTongKhoiLuong] = useState(5367.9);
+    const [soLanCan, setSoLanCan] = useState(83);
 
     const {
         control,
@@ -158,7 +158,7 @@ const FarmerResultForm: React.FC = () => {
                     <div className="col-span-12 mb-2">
                         <Input
                             label="Trừ bao bì (kg)"
-                            value={getValues('truBaoBi') === 0 ? "0" : `${roundWeight(75 / (Number(getValues('truBaoBi'))), 'nearest', 1)}`}
+                            value={getValues('truBaoBi') === 0 ? "0" : `${roundWeight(soLanCan / (Number(getValues('truBaoBi'))), 'nearest', 1)}`}
                             suffix={
                                 <Box pr={4} onClick={() => setVisibleTruBiModal(true)}>
                                     <Icon icon="solar:settings-linear" fontSize={20} color='#222222' />
@@ -211,14 +211,15 @@ const FarmerResultForm: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-12 gap-x-0 shadow-sm">
-                    <InfoBox label="Tổng khối lượng" value={tongKhoiLuong} color="blue" />
-                    <InfoBox label="Số lần cân (bao)" value={soLanCan} color="blue" />
+                    <InfoBox label="Tổng khối lượng" value={tongKhoiLuong} />
+                    <InfoBox label="Số lần cân (bao)" value={soLanCan} />
                     <InfoBox label="Khối lượng còn lại" value={khoiLuongConLai} />
-                    <InfoBox label="Tổng tiền" value={tongTien} />
+                    <InfoBox label="Tổng tiền" value={tongTien} formatNumber />
                     <InfoBox
                         label="Tổng tiền còn lại"
                         value={tongTienConLai}
-                        color="blue"
+                        formatNumber
+                        colorClass="text-blue-700"
                         span={12}
                         note="(Đã trừ tiền cọc và tiền đã trả)"
                     />
