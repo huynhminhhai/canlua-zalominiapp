@@ -2,16 +2,14 @@ import { Icon } from "@iconify/react";
 import React, { useEffect, useRef, useState } from "react";
 import GroupUpdateForm from "./GroupUpdateForm";
 import { ConfirmModal } from "components/modal";
+import { useDeleteNhomThuMua } from "apiRequest/nhomThuMua";
+import { GroupItemType } from "./type";
 
 type GroupDropdownProps = {
-    data: any;
-    onEdit?: () => void;
-    onDelete?: () => void;
+    data: GroupItemType;
 };
 
 const GroupDropdown: React.FC<GroupDropdownProps> = ({
-    onEdit,
-    onDelete,
     data
 }) => {
     const [open, setOpen] = useState(false);
@@ -20,6 +18,8 @@ const GroupDropdown: React.FC<GroupDropdownProps> = ({
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
     const [modalContent, setModalContent] = useState({ title: '', message: '' });
+
+    const { mutate: deleteNhomThuMua } = useDeleteNhomThuMua();
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -56,18 +56,20 @@ const GroupDropdown: React.FC<GroupDropdownProps> = ({
     const handleEdit = (e) => {
         e.stopPropagation();
         setShowUpdateForm(true);
+        setOpen(false);
     };
 
     const handleDelete = (e) => {
         e.stopPropagation();
+        setOpen(false);
 
         openConfirmModal(() => {
-            console.log('delete')
-        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa nhóm này?')
+            deleteNhomThuMua(data.id);
+        }, 'Xác nhận xóa', `Bạn có chắc chắn muốn xóa nhóm thu mua ${data.tenNhom}?`)
     };
 
     return (
-        <div className="relative" ref={dropdownRef}>
+        <div className="relative" ref={dropdownRef} onClick={(e) => e.stopPropagation()}>
             <button
                 className="border py-[2px] px-[12px] rounded-[16px] bg-gray-50"
                 onClick={(e) => {

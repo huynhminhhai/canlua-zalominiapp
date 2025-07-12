@@ -1,39 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Box, Sheet } from "zmp-ui";
-import { FormDataGroup, schemaGroup } from "./type";
+import { FormDataGroup, GroupItemType, schemaGroup } from "./type";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { FormInputAreaField, FormInputField } from "components/form";
+import { FormInputField } from "components/form";
 import { PrimaryButton } from "components/button";
+import { useUpdateNhomThuMua } from "apiRequest/nhomThuMua";
 
 type GroupUpdateFormProps = {
     visible: boolean;
     onClose: () => void;
-    data: any;
+    data: GroupItemType;
 };
 
-const defaultValues: FormDataGroup = {
-    tenNhom: "",
-    soDienThoai: "",
-}
+const GroupUpdateForm: React.FC<GroupUpdateFormProps> = ({ visible, onClose, data }) => {
 
-const GroupUpdateForm: React.FC<GroupUpdateFormProps> = ({ visible, onClose }) => {
-
-    // const [formData, setFormData] = useState<FormDataGroup>(defaultValues)
-
+    const defaultValues: FormDataGroup = {
+        id: data.id,
+        tenNhom: data.tenNhom,
+        moTa: data.moTa,
+    }
+    
     const { handleSubmit, control, reset, watch, setValue, formState: { errors } } = useForm<FormDataGroup>({
         resolver: yupResolver(schemaGroup),
         defaultValues
     });
 
-    const onSubmit: SubmitHandler<FormDataGroup> = (data) => {
-        // setFormData(data)
+    const { mutateAsync: updateNhomThuMua, isPending } = useUpdateNhomThuMua();
+
+    useEffect(() => {
+        if (visible && data) {
+            reset({
+                id: data.id,
+                tenNhom: data.tenNhom,
+                moTa: data.moTa,
+            });
+        }
+    }, [visible, data, reset]);
+
+    const onSubmit: SubmitHandler<FormDataGroup> = async (data) => {
 
         if (data) {
             try {
-                console.log(data)
+                const dataSubmit = {...data, id: defaultValues.id};
+                
+                await updateNhomThuMua(dataSubmit);
 
-                reset(defaultValues);
                 onClose();
             } catch (error) {
                 console.error("Error:", error);
@@ -68,26 +80,17 @@ const GroupUpdateForm: React.FC<GroupUpdateFormProps> = ({ visible, onClose }) =
                     </div>
                     <div className="col-span-12">
                         <FormInputField
-                            name="soDienThoai"
+                            name="moTa"
                             label="Số điện thoại"
                             placeholder="Nhập tên số điện thoại"
                             control={control}
-                            error={errors.soDienThoai?.message}
+                            error={errors.moTa?.message}
                         />
                     </div>
-                    {/* <div className="col-span-12">
-                        <FormInputAreaField
-                            name="ghiChu"
-                            label="Ghi chú"
-                            placeholder="Nhập ghi chú"
-                            control={control}
-                            error={errors.ghiChu?.message}
-                        />
-                    </div> */}
                 </div>
                 <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
                     <Box py={2} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                        <PrimaryButton size="medium" fullWidth disabled={false} label={false ? "Đang xử lý..." : "Lưu lại"} handleClick={handleSubmit(onSubmit)} />
+                        <PrimaryButton size="large" fullWidth disabled={isPending} label={isPending ? "Đang xử lý..." : "Lưu lại"} handleClick={handleSubmit(onSubmit)} />
                     </Box>
                 </div>
             </Box>

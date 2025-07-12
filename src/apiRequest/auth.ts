@@ -7,7 +7,7 @@ import { useCustomSnackbar } from 'utils/useCustomSnackbar';
 
 const authApiRequest = {
     login: async (username: string, password: string) => {
-        const response = await http.post('/xacthuc/dangnhap', { tenDangNhap: username, matKhau: password });
+        const response = await http.post('/TokenAuth/Authenticate', { userNameOrEmailAddress: username, password: password });
 
         return response;
     },
@@ -28,7 +28,6 @@ const authApiRequest = {
 }
 
 export const useLogin = () => {
-    const queryClient = useQueryClient();
     const navigate = useNavigate();
     const { setToken, setAccount } = useStoreApp();
     const { showSuccess, showError } = useCustomSnackbar();
@@ -41,9 +40,8 @@ export const useLogin = () => {
 
             showSuccess('Đăng nhập thành công');
 
-            // setToken({ accessToken: res?.data?.accessToken, refreshToken: res?.data?.refreshToken, hanSuDungToken: res?.data?.hanSuDung });
-
-            navigate('/');
+            setToken({ accessToken: res?.result?.accessToken });
+            setAccount(res?.result);
         },
         onError: (error: any) => {
             console.error('Lỗi:', error);

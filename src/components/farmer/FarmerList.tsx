@@ -45,23 +45,23 @@ const FarmerList: React.FC<any> = () => {
             return <Box><ManagementItemSkeleton count={5} /></Box>
         }
 
-        // if (!data?.data?.length) {
-        //     return (
-        //         <Box px={4}>
-        //             <EmptyData
-        //                 title="Hiện chưa có nông dân nào!"
-        //                 desc="Nhấn vào nút Thêm để bắt đầu!"
-        //             />
-        //         </Box>
-        //     );
-        // }
+        if (!data?.data?.length) {
+            return (
+                <Box px={4}>
+                    <EmptyData
+                        title="Hiện chưa có nông dân nào!"
+                        desc="Nhấn vào nút Thêm để bắt đầu!"
+                    />
+                </Box>
+            );
+        }
 
-        return (
-            <Box pt={4}>
-                <FarmerItem />
-                <FarmerItem />
-            </Box>
-        )
+        // return (
+        //     <Box pt={4}>
+        //         <FarmerItem />
+        //         <FarmerItem />
+        //     </Box>
+        // )
 
         return (
             <Box px={3}>

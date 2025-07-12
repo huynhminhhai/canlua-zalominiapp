@@ -78,6 +78,12 @@ const AccountPage: React.FC = () => {
                                 <List className="bg-white rounded-lg">
                                     <ManagementTitle title="Đăng nhập" />
                                     <Item
+                                        onClick={() => navigate('/login')}
+                                        title="Bằng tài khoản"
+                                        prefix={<img src={images.zalo} width={30} />}
+                                        suffix={<Icon fontSize={20} icon="formkit:right" />}
+                                    />
+                                    <Item
                                         onClick={() => loginWithZalo()}
                                         title="Liên kết số điện thoại"
                                         prefix={<img src={images.zalo} width={30} />}

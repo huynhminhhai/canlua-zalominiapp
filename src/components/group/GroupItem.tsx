@@ -4,9 +4,10 @@ import React from "react"
 import { formatDate, renderDayOfWeek } from "utils/date"
 import { Box, useNavigate } from "zmp-ui"
 import GroupDropdown from "./GroupDropdown"
+import { GroupItemType } from "./type"
 
 type GroupItemProps = {
-    data?: any
+    data: GroupItemType
 }
 
 const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
@@ -19,13 +20,13 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
                     <Box px={4} py={4} width={98} height={152} className="bg-blue-100 text-primary-color rounded-xl relative overflow-hidden scale-[1.02]">
                         <img className="w-[100%] h-[100%] absolute top-0 left-0 opacity-5 scale-[2.5]" src={images.shape4} alt="shape" />
                         <div className="flex-center flex-col h-[100%] relative z-[2]">
-                            <div className="text-[16px] leading-[1] font-semibold text-center mb-2 whitespace-nowrap">{renderDayOfWeek('07/07/2025')}</div>
-                            <div className="text-[14px] leading-[1] font-semibold text-center">07/07/2025</div>
+                            <div className="text-[16px] leading-[1] font-semibold text-center mb-2 whitespace-nowrap">{renderDayOfWeek(formatDate(data.ngayTao))}</div>
+                            <div className="text-[14px] leading-[1] font-semibold text-center">{formatDate(data.ngayTao)}</div>
                         </div>
                     </Box>
                     <Box py={2} pr={2} className="flex-1">
                         <div className="flex items-center justify-between gap-[12px] mb-2">
-                            <h3 className="text-primary-color text-[16px] leading-[24px] font-semibold line-clamp-2">Xe 10 tấn 62n1-12345</h3>
+                            <h3 className="text-primary-color text-[16px] leading-[24px] font-semibold line-clamp-2">{data.tenNhom}</h3>
 
                             <GroupDropdown data={data} />
                         </div>
@@ -34,19 +35,21 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
                                 <ul className="flex flex-col gap-[4px] text-[16px] leading-[22px] font-medium">
                                     <li>
                                         <span className="text-[18px] font-semibold mr-1">
-                                            1.757
+                                            {data.tongTrongLuong}
                                         </span>
                                         kg
                                     </li>
                                     <li>
                                         <span className="text-[18px] font-semibold mr-1">
-                                            34
+                                            {data.soLanCan}
                                         </span>
                                         lần cân (bao)
                                     </li>
                                     <li className="flex items-center gap-[4px] mt-[4px] text-[14px] text-gray-500">
                                         <Icon icon='solar:phone-outline' fontSize={14} />
-                                        <span className="font-medium">0848551551</span>
+                                        <span className="font-medium">
+                                            {data.moTa || 'Chưa có SĐT'}
+                                        </span>
                                     </li>
                                 </ul>
                             </Box>

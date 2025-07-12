@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react"
 import { Box, DatePicker, Input, useNavigate } from "zmp-ui"
 import { debounce } from "lodash";
-import { useGetMeetingList } from "apiRequest/meeting";
-import { useInfiniteScroll } from "utils/useInfiniteScroll";
 import { MeetingItemSkeleton } from "components/skeleton";
 import { EmptyData } from "components/data";
 import GroupItem from "./GroupItem";
 import { FilterBar } from "components/table";
 import { formatDate, parseDate } from "components/form/DatePicker";
 import GroupCreateForm from "./GroupCreateForm";
+import { useGetNhomThuMuaList } from "apiRequest/nhomThuMua";
 
 const GroupList: React.FC<any> = () => {
 
@@ -25,6 +24,8 @@ const GroupList: React.FC<any> = () => {
         tuNgay: '',
         denNgay: '',
     });
+
+    const { data, isLoading } = useGetNhomThuMuaList(param);
 
     const updateFilter = (key: keyof typeof filters, value: string) => {
         setFilters((prev) => ({ ...prev, [key]: value }));
@@ -44,51 +45,30 @@ const GroupList: React.FC<any> = () => {
 
     useDebouncedParam(filters.search, 'search');
 
-    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useGetMeetingList(param);
-
-    const listData = data?.pages.reduce((acc, page) => [...acc, ...page], []) || [];
-
-    const loaderRef = useInfiniteScroll({
-        hasMore: hasNextPage,
-        loading: isFetchingNextPage,
-        onLoadMore: fetchNextPage,
-    });
-
     const renderContent = () => {
+
         if (isLoading) {
             return <Box><MeetingItemSkeleton count={5} /></Box>
         }
 
+        if (!data?.result?.length) {
+            return (
+                <Box px={4}>
+                    <EmptyData
+                        title="Hiện chưa có nhóm thu mua nào!"
+                        desc="Nhấn vào nút Thêm để bắt đầu!"
+                    />
+                </Box>
+            );
+        }
+
         return (
-            <Box px={3} pt={2}>
-                <GroupItem />
-                <GroupItem />
+            <Box px={3} pt={3}>
+                {data.result.map((item: any, index) => (
+                    <GroupItem key={index} data={item} />
+                ))}
             </Box>
         )
-
-        return <Box>
-            <Box>
-                {(listData.length === 0 && !isFetchingNextPage && !isLoading) ? (
-                    <Box px={3}>
-                        <EmptyData title="Hiện chưa có nhóm nào!" textBtn="Thêm nhóm" handleClick={() => navigate("/group-add")} />
-                    </Box>
-                ) : (
-                    <>
-                        <Box px={3}>
-                            {listData.map((item: any, index) => (
-                                <GroupItem key={index} data={item} />
-                            ))}
-                        </Box>
-                    </>
-                )}
-
-            </Box>
-            <div ref={loaderRef} className="px-4 pb-4">
-                {isFetchingNextPage && <MeetingItemSkeleton count={1} />}
-                {listData.length > 0 && !hasNextPage && <p className="text-center pt-4">Đã hiển thị tất cả</p>}
-            </div>
-
-        </Box>
     };
 
 

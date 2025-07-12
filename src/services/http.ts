@@ -18,6 +18,7 @@ const request = async <T>(
         ? (accessToken ? { Authorization: `Bearer ${accessToken}` } : {})
         : {
             'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': 'true',
             ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
         };
 

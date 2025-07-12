@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Sheet } from "zmp-ui";
 import { FormDataGroup, schemaGroup } from "./type";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { FormInputAreaField, FormInputField } from "components/form";
+import { FormInputField } from "components/form";
 import { PrimaryButton } from "components/button";
+import { useCreateNhomThuMua } from "apiRequest/nhomThuMua";
 
 type GroupCreateFormProps = {
     visible: boolean;
@@ -13,24 +14,23 @@ type GroupCreateFormProps = {
 
 const defaultValues: FormDataGroup = {
     tenNhom: "",
-    soDienThoai: "",
+    moTa: "",
 }
 
 const GroupCreateForm: React.FC<GroupCreateFormProps> = ({ visible, onClose }) => {
-
-    // const [formData, setFormData] = useState<FormDataGroup>(defaultValues)
 
     const { handleSubmit, control, reset, watch, setValue, formState: { errors } } = useForm<FormDataGroup>({
         resolver: yupResolver(schemaGroup),
         defaultValues
     });
 
-    const onSubmit: SubmitHandler<FormDataGroup> = (data) => {
-        // setFormData(data)
+    const { mutateAsync: createNhomThuMua, isPending } = useCreateNhomThuMua();
+
+    const onSubmit: SubmitHandler<FormDataGroup> = async (data) => {
 
         if (data) {
             try {
-                console.log(data)
+                await createNhomThuMua(data);
 
                 reset(defaultValues);
                 onClose();
@@ -67,26 +67,17 @@ const GroupCreateForm: React.FC<GroupCreateFormProps> = ({ visible, onClose }) =
                     </div>
                     <div className="col-span-12">
                         <FormInputField
-                            name="soDienThoai"
+                            name="moTa"
                             label="Số điện thoại"
                             placeholder="Nhập tên số điện thoại"
                             control={control}
-                            error={errors.soDienThoai?.message}
+                            error={errors.moTa?.message}
                         />
                     </div>
-                    {/* <div className="col-span-12">
-                        <FormInputAreaField
-                            name="ghiChu"
-                            label="Ghi chú"
-                            placeholder="Nhập ghi chú"
-                            control={control}
-                            error={errors.ghiChu?.message}
-                        />
-                    </div> */}
                 </div>
                 <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
                     <Box py={2} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                        <PrimaryButton size="large" fullWidth disabled={false} label={false ? "Đang xử lý..." : "Lưu lại"} handleClick={handleSubmit(onSubmit)} />
+                        <PrimaryButton size="large" fullWidth disabled={isPending} label={isPending ? "Đang xử lý..." : "Lưu lại"} handleClick={handleSubmit(onSubmit)} />
                     </Box>
                 </div>
             </Box>
