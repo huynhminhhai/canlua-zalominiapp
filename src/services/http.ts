@@ -1,5 +1,5 @@
 import envConfig from "envConfig";
-import { getDataFromStorage, removeDataFromStorage } from "./zalo";
+import { getDataFromStorage } from "./zalo";
 
 const request = async <T>(
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
@@ -11,9 +11,8 @@ const request = async <T>(
     // const fullUrl = `/api${url}`;
     const fullUrl = `${envConfig.API_ENDPOINT}${url}`;
 
-    const storedData = await getDataFromStorage(["accessToken", "refreshToken"]);
+    const storedData = await getDataFromStorage(["accessToken"]);
     const accessToken = storedData?.accessToken || null;
-    const refreshToken = storedData?.refreshToken || null;
 
     const headers: HeadersInit = isFormData
         ? (accessToken ? { Authorization: `Bearer ${accessToken}` } : {})

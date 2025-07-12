@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import React, { FC, useEffect, useMemo, useState } from "react";
+import React, { FC, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { BottomNavigation } from "zmp-ui";
 import { MenuItem } from "constants/types";
@@ -9,7 +9,7 @@ const Navigation: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { account, accessToken, isTrigger, setIsTrigger } = useStoreApp();
+  const { account, isTrigger, setIsTrigger } = useStoreApp();
 
   const tabs: Record<string, MenuItem & { requiresLogin?: boolean; requiredRole?: string }> = {
     "/": {
@@ -34,18 +34,14 @@ const Navigation: FC = () => {
 
   if (!hasBottomNav) return null;
 
-  const isAdmin = account?.vaiTros.some((r) => r.tenVaiTro === "Administrators");
-  const isRegisteredWithAnotherRole =
-    account?.vaiTros.some((r) => r.tenVaiTro === "Registered Users") &&
-    (account?.vaiTros.length ?? 0) > 1;
-
   const visibleTabs = Object.keys(tabs).filter((path) => {
-    if (path === "/") return true;
-    if (path === "/account") return true;
-    if (path === "/settings") return true;
-    if (!account) return false;
-    if (isAdmin) return true;
-    return isRegisteredWithAnotherRole;
+    // Luôn hiển thị các tab cố định
+    if (path === "/" || path === "/account" || path === "/settings") {
+      return true;
+    }
+  
+    // Các tab khác chỉ hiện nếu đã có tài khoản (đã đăng nhập)
+    return !!account;
   });
 
   return (

@@ -2,8 +2,6 @@ import React from "react"
 import { Box } from "zmp-ui"
 import ServiceItem from "./ServiceItem"
 import images from "assets/images"
-import { useStoreApp } from "store/store"
-import { PermissionActions, permissionsList } from "utils/permission"
 
 export type ServicesType = {
     label: string;
@@ -122,18 +120,11 @@ const SERVICES: ServicesType[] = [
 
 const ServiceList: React.FC<any> = () => {
 
-    const { hasPermission } = useStoreApp()
-
-    const filteredServices = SERVICES.filter((item) => {
-        if (!item.requiredPermission) return true;
-        return hasPermission(item.requiredPermission.maChucNang, item.requiredPermission.quyen);
-    });
-
     return (
         <Box>
             <div className="grid grid-cols-4 gap-x-2 gap-y-4">
                 {
-                    filteredServices.map((item, index) => (
+                    SERVICES.map((item, index) => (
                         <ServiceItem key={index} data={item} />
                     ))
                 }
