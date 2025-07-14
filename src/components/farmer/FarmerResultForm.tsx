@@ -9,6 +9,7 @@ import { debounce, isEqual } from 'lodash'
 import { formatCurrency, parseNumber, roundWeight } from 'utils/number'
 import HeaderDetail from 'components/header-detail'
 import InfoBox from './InfoBox'
+import { WeightTable } from '.'
 
 const defaultValues: FormDataFarmerResult = {
     tenNongDan: "",
@@ -211,8 +212,8 @@ const FarmerResultForm: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-12 gap-x-0 shadow-sm border-[1px]">
-                    <InfoBox label="Tổng khối lượng" value={tongKhoiLuong} colorClass="text-blue-600" />
-                    <InfoBox label="Số lần cân (bao)" value={soLanCan} colorClass="text-blue-600" />
+                    <InfoBox label="Tổng khối lượng" value={tongKhoiLuong} colorClass="text-blue-700" />
+                    <InfoBox label="Số lần cân (bao)" value={soLanCan} colorClass="text-blue-700" />
                     <InfoBox label="Khối lượng còn lại" value={khoiLuongConLai} note='(Trừ tạp chất và bao bì)' noteFs={12} />
                     <InfoBox
                         label="Tổng tiền"
@@ -233,6 +234,10 @@ const FarmerResultForm: React.FC = () => {
                         note="(Đã trừ tiền cọc và tiền đã trả)"
                     />
                 </div>
+            </Box>
+
+            <Box>
+                <WeightTable />
             </Box>
 
             <Modal
