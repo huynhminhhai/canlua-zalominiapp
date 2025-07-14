@@ -168,11 +168,46 @@ const RiceWeightInput: React.FC = () => {
   };
 
   const handleInputFocus = (page: number, table: number, row: number, col: number) => {
-    setCurrentPage(page);
-    setCurrentTable(table);
-    setCurrentRow(row);
-    setCurrentCol(col);
-  }
+    const nextEmptyPosition = findNextEmptyCell();
+    
+    // Tính toán index tuyến tính để so sánh dễ dàng
+    const getLinearIndex = (pos: any) => {
+      return (pos.page - 1) * (numberOfTables * 5 * 5) + 
+             (pos.table - 1) * (5 * 5) + 
+             pos.col * 5 + 
+             pos.row;
+    };
+    
+    const currentClickIndex = getLinearIndex({ page, table, row, col });
+    const nextEmptyIndex = getLinearIndex(nextEmptyPosition);
+    
+    // Nếu click vào ô phía sau ô input mới nhất
+    if (currentClickIndex > nextEmptyIndex) {
+      // Focus vào ô input mới nhất
+      setCurrentPage(nextEmptyPosition.page);
+      setCurrentTable(nextEmptyPosition.table);
+      setCurrentRow(nextEmptyPosition.row);
+      setCurrentCol(nextEmptyPosition.col);
+      
+      setTimeout(() => {
+        const nextInput = inputRefs.current[nextEmptyPosition.table - 1]?.[nextEmptyPosition.row]?.[nextEmptyPosition.col];
+        if (nextInput) {
+          nextInput.focus();
+          nextInput.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center', 
+            inline: 'center' 
+          });
+        }
+      }, 0);
+    } else {
+      // Focus bình thường
+      setCurrentPage(page);
+      setCurrentTable(table);
+      setCurrentRow(row);
+      setCurrentCol(col);
+    }
+  };
 
   const moveToNextCell = () => {
     let nextCol = currentCol;
@@ -386,7 +421,7 @@ const RiceWeightInput: React.FC = () => {
         <div className='flex items-center justify-center mb-3'>
           <button
             onClick={handleFocusTrick}
-            className="px-6 py-3 bg-white text-[16px] text-primary-color border-primary-color border rounded-3xl font-semibold mx-auto mb-3 flex items-center gap-2"
+            className="px-6 py-3 bg-white text-[16px] text-primary-color border-primary-color border rounded-lg font-semibold mx-auto mb-3 flex items-center gap-2 shadow-md"
           >
             <span>
               {isEditable ? 'Chuyển sang chế độ xem' : 'Bắt đầu nhập số cân'}
@@ -402,7 +437,7 @@ const RiceWeightInput: React.FC = () => {
             <button
               key={pageNum}
               onClick={() => goToPage(pageNum)}
-              className={`px-3 py-1 rounded text-sm font-medium transition-colors ${pageNum === currentPage
+              className={`shawow-md px-3 py-1 rounded text-sm font-medium transition-colors ${pageNum === currentPage
                 ? 'bg-[#74b4da] text-white'
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
@@ -414,8 +449,8 @@ const RiceWeightInput: React.FC = () => {
 
         <div className="space-y-6 mb-6">
           {[1, 2, 3].map((tableNum) => (
-            <div key={tableNum} className={`bg-white border rounded-lg overflow-hidden transition-all duration-300 shadow-sm`}>
-              <div className={`px-4 py-3 text-xl text-center font-semibold text-white bg-[#74b4da]`}>
+            <div key={tableNum} className={`bg-white border rounded-lg overflow-hidden transition-all duration-300 shadow-md`}>
+              <div className={`px-4 py-3 text-lg text-center font-semibold text-white bg-[#74b4da]`}>
                 Bảng {tableNum} - Trang {currentPage}
               </div>
 
@@ -492,7 +527,7 @@ const RiceWeightInput: React.FC = () => {
                     </div>
                   ))}
                 </div>
-                <div className='pt-4 pb-2 text-4xl font-bold text-blue-700 text-center'>
+                <div className='pt-4 pb-2 text-4xl font-bold text-blue-900 text-center'>
                   {[0, 1, 2, 3, 4].reduce((acc, i) => acc + getColumnSum(tableNum, i), 0).toFixed(1)}
                 </div>
               </div>
@@ -502,7 +537,7 @@ const RiceWeightInput: React.FC = () => {
 
         {/* Summary Statistics */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div className="bg-blue-100 rounded-lg p-4">
+          <div className="bg-blue-100 rounded-lg p-4 shadow-md">
             <div className="text-center">
               <div className="text-xl font-bold text-blue-600 mb-2">
                 Tổng trang {currentPage}: {getPageTotalSum().toFixed(1)}
@@ -513,7 +548,7 @@ const RiceWeightInput: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-green-100 rounded-lg p-4">
+          <div className="bg-green-100 rounded-lg p-4 shadow-md">
             <div className="text-center">
               <div className="text-xl font-bold text-green-700 mb-2">
                 Tổng tất cả: {getAllPagesTotal().toFixed(1)}

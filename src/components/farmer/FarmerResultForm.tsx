@@ -135,7 +135,7 @@ const FarmerResultForm: React.FC = () => {
         <Box>
             <HeaderDetail title='Chú 2' weight={tongKhoiLuong.toString()} count={soLanCan.toString()} />
             <Box px={3} pt={6} pb={3}>
-                <div className="grid grid-cols-12 gap-x-3">
+                <div className="grid grid-cols-12 gap-x-3 shadow-md bg-white px-3 pb-2 pt-4 rounded-lg mb-4">
                     <div className="col-span-12">
                         <FormInputField
                             name="tenNongDan"
@@ -211,7 +211,7 @@ const FarmerResultForm: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-12 gap-x-0 border-[1px] bg-white">
+                <div className="grid grid-cols-12 gap-x-0 border-[1px] bg-white rounded-lg overflow-hidden shadow-md">
                     <InfoBox label="Tổng khối lượng" value={tongKhoiLuong} colorClass="text-blue-700" />
                     <InfoBox label="Số lần cân (bao)" value={soLanCan} colorClass="text-blue-700" />
                     <InfoBox label="Khối lượng còn lại" value={khoiLuongConLai} note='(Trừ tạp chất và bao bì)' noteFs={12} colorClass='text-blue-700' />
