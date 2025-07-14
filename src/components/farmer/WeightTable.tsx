@@ -20,13 +20,14 @@ const RiceWeightInput: React.FC = () => {
   const [currentRow, setCurrentRow] = useState(0);
   const [currentCol, setCurrentCol] = useState(0);
   const limitInput = 1;
+  const numberOfTables = 3;
 
-  // Khởi tạo dữ liệu cho nhiều trang, mỗi trang có 3 bảng, mỗi bảng 5x5 ô
+  // Khởi tạo dữ liệu cho nhiều trang, mỗi trang có 3 hoặc 4 bảng, mỗi bảng 5x5 ô
   const [pagesData, setPagesData] = useState<CellData[][][][]>(() => {
     const initData: CellData[][][][] = [];
     // Khởi tạo trang đầu tiên
     const firstPage: CellData[][][] = [];
-    for (let table = 0; table < 3; table++) {
+    for (let table = 0; table < numberOfTables; table++) {
       const tableRows: CellData[][] = [];
       for (let row = 0; row < 5; row++) {
         const tableCols: CellData[] = [];
@@ -48,19 +49,23 @@ const RiceWeightInput: React.FC = () => {
 
   // Khởi tạo refs cho trang hiện tại
   useEffect(() => {
-    inputRefs.current = Array(3).fill(null).map(() =>
+    inputRefs.current = Array(numberOfTables).fill(null).map(() =>
       Array(5).fill(null).map(() => Array(5).fill(null))
     );
   }, [currentPage]);
 
   // Focus vào ô input hiện tại
-  useEffect(() => {
-    const currentInput = inputRefs.current[currentTable - 1]?.[currentRow]?.[currentCol];
-    if (currentInput) {
-      console.log(currentRow, currentCol, currentTable, currentPage);
-      currentInput.focus();
-    }
-  }, [currentTable, currentRow, currentCol]);
+  // useEffect(() => {
+  //   const timeout = setTimeout(() => {
+  //     const currentInput = inputRefs.current[currentTable - 1]?.[currentRow]?.[currentCol];
+  //     console.log(currentInput);
+  //     if (currentInput) {
+  //       currentInput.focus();
+  //     }
+  //   }, 5000);
+
+  //   return () => clearTimeout(timeout);
+  // }, [currentPage, currentTable, currentRow, currentCol, pagesData]);
 
   // Tạo trang mới nếu chưa tồn tại
   const ensurePageExists = (pageIndex: number) => {
@@ -124,17 +129,17 @@ const RiceWeightInput: React.FC = () => {
 
   const handleInputChange = (value: string, table: number, row: number, col: number) => {
     if (!/^\d*$/.test(value)) return; // Chỉ cho phép số
-    if (value.length > limitInput) return; // Giới hạn 3 ký tự
+    if (value.length > limitInput) return;
 
     const newPagesData = [...pagesData];
     const currentPageData = newPagesData[currentPage - 1];
 
     if (currentPageData) {
-      const currentCell = currentPageData[table - 1][row][col];
+      // const currentCell = currentPageData[table - 1][row][col];
 
       currentPageData[table - 1][row][col].value = value;
 
-      // Đánh dấu ô đã hoàn thành nếu đã nhập đủ 3 ký tự
+      // Đánh dấu ô đã hoàn thành nếu đã nhập đủ ký tự
       if (value.length === limitInput) {
         currentPageData[table - 1][row][col].isComplete = true;
         setPagesData(newPagesData);
@@ -181,7 +186,7 @@ const RiceWeightInput: React.FC = () => {
         nextTable = currentTable + 1;
 
         // Chuyển đến bảng tiếp theo trong cùng trang
-        if (nextTable > 3) {
+        if (nextTable > numberOfTables) {
           nextTable = 1;
           nextPage = currentPage + 1;
 
@@ -191,10 +196,10 @@ const RiceWeightInput: React.FC = () => {
       }
     }
 
-    setCurrentCol(nextCol);
-    setCurrentRow(nextRow);
-    setCurrentTable(nextTable);
     setCurrentPage(nextPage);
+    setCurrentTable(nextTable);
+    setCurrentRow(nextRow);
+    setCurrentCol(nextCol);
   };
 
   const getColumnSum = (table: number, col: number) => {
@@ -240,6 +245,7 @@ const RiceWeightInput: React.FC = () => {
   const goToPage = (pageNum: number) => {
     if (pageNum > 0) {
       ensurePageExists(pageNum - 1);
+
       setCurrentPage(pageNum);
       setCurrentTable(1);
       setCurrentRow(0);
@@ -296,24 +302,34 @@ const RiceWeightInput: React.FC = () => {
                           <input
                             inputMode='numeric'
                             pattern="[0-9]*"
+                            // ref={(el) => {
+                            //   if (inputRefs.current[tableNum - 1]) {
+                            //     inputRefs.current[tableNum - 1][rowIndex][colIndex] = el;
+                            //   }
+                            // }}
                             ref={(el) => {
                               if (inputRefs.current[tableNum - 1]) {
                                 inputRefs.current[tableNum - 1][rowIndex][colIndex] = el;
+                                
+                                // Focus ngay khi element được gán và đây là vị trí hiện tại
+                                if (el && tableNum === currentTable && rowIndex === currentRow && colIndex === currentCol) {
+                                  setTimeout(() => el.focus(), 0);
+                                }
                               }
                             }}
                             onClick={() => handleInputFocus(currentPage, tableNum, rowIndex, colIndex)}
                             onFocus={(e) => e.target.select()}
                             type="text"
                             value={cell.value}
-                            onChange={(e) => handleInputChange(e.target.value, tableNum, rowIndex, colIndex)}
-                            maxLength={3}
+                            onInput={(e) => handleInputChange((e.target as HTMLInputElement).value, tableNum, rowIndex, colIndex)}
+                            maxLength={limitInput}
                             className={`w-full h-12 text-center border rounded text-lg font-semibold ${tableNum === currentTable && rowIndex === currentRow && colIndex === currentCol
                               ? 'border[#74b4da] bg-blue-50 ring-2 ring-blue-200'
                               : cell.isComplete
                                 ? 'border-green-500 bg-green-50'
                                 : 'border-gray-300'
                               }`}
-                          // disabled={tableNum !== currentTable}
+                          disabled={tableNum !== currentTable}
                           />
                         </div>
                       ))}
