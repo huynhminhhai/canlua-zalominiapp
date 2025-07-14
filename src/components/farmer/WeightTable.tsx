@@ -260,10 +260,76 @@ const RiceWeightInput: React.FC = () => {
 
   const currentPageData = getCurrentPageData();
 
+  // Tìm ô input mới nhất có giá trị và trả về vị trí ô kế tiếp
+  const findNextEmptyCell = () => {
+    let lastFilledPosition = { page: 1, table: 1, row: 0, col: 0 };
+    let foundAnyFilled = false;
+
+    // Duyệt qua tất cả các trang
+    for (let pageIndex = 0; pageIndex < pagesData.length; pageIndex++) {
+      const pageData = pagesData[pageIndex];
+
+      // Duyệt qua các bảng theo thứ tự
+      for (let tableIndex = 0; tableIndex < pageData.length; tableIndex++) {
+        const tableData = pageData[tableIndex];
+
+        // Duyệt qua các cột trước
+        for (let col = 0; col < 5; col++) {
+          // Duyệt qua các hàng trong cột
+          for (let row = 0; row < 5; row++) {
+            const cell = tableData[row][col];
+            if (cell.value !== '' && cell.value !== null && cell.value !== undefined) {
+              lastFilledPosition = {
+                page: pageIndex + 1,
+                table: tableIndex + 1,
+                row: row,
+                col: col
+              };
+              foundAnyFilled = true;
+            }
+          }
+        }
+      }
+    }
+
+    // Nếu không có ô nào được điền, trả về vị trí đầu tiên
+    if (!foundAnyFilled) {
+      return { page: 1, table: 1, row: 0, col: 0 };
+    }
+
+    // Tìm ô kế tiếp của ô cuối cùng được điền
+    let nextPosition = { ...lastFilledPosition };
+
+    // Di chuyển đến ô kế tiếp (theo chiều dọc)
+    nextPosition.row += 1;
+
+    if (nextPosition.row >= 5) {
+      nextPosition.row = 0;
+      nextPosition.col += 1;
+
+      if (nextPosition.col >= 5) {
+        nextPosition.col = 0;
+        nextPosition.table += 1;
+
+        if (nextPosition.table > numberOfTables) {
+          nextPosition.table = 1;
+          nextPosition.page += 1;
+
+          // Đảm bảo trang mới tồn tại
+          ensurePageExists(nextPosition.page - 1);
+        }
+      }
+    }
+
+    return nextPosition;
+  };
+
   const handleFocusTrick = () => {
 
     if (hiddenInputRef.current) {
-      hiddenInputRef.current.focus();
+      if (!isEditable) {
+        hiddenInputRef.current.focus();
+      }
 
       // Chờ một chút rồi chuyển focus
       setTimeout(() => {
@@ -272,30 +338,58 @@ const RiceWeightInput: React.FC = () => {
     }
   };
 
+  // const handleToggleEditable = () => {
+  //   setIsEditable(!isEditable);
+
+  //   setTimeout(() => {
+  //     const currentInput = inputRefs.current[currentTable - 1]?.[currentRow]?.[currentCol];
+  //     currentInput?.focus();
+  //   }, 0);
+  // };
+
   const handleToggleEditable = () => {
     setIsEditable(!isEditable);
+  
+    if (!isEditable) {
+      // Khi chuyển sang chế độ editable, tìm ô kế tiếp để focus
+      const nextPosition = findNextEmptyCell();
+      
+      // Cập nhật current position
+      setCurrentPage(nextPosition.page);
+      setCurrentTable(nextPosition.table);
+      setCurrentRow(nextPosition.row);
+      setCurrentCol(nextPosition.col);
+  
+      setTimeout(() => {
+        const nextInput = inputRefs.current[nextPosition.table - 1]?.[nextPosition.row]?.[nextPosition.col];
+        if (nextInput) {
+          nextInput.focus();
 
-    setTimeout(() => {
-      const currentInput = inputRefs.current[currentTable - 1]?.[currentRow]?.[currentCol];
-      currentInput?.focus();
-    }, 0);
+          nextInput.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center', 
+            inline: 'center' 
+          });
+        }
+      }, 100);
+    }
   };
 
   return (
     <div className="max-w-4xl mx-auto bg-gray-50 min-h-screen">
-      <div className="bg-white rounded-lg shadow-lg p-3">
+      <div className="rounded-lg shadow-lg p-3">
         <input
           ref={hiddenInputRef}
           className="absolute opacity-0 w-0 h-0"
           type="text"
         />
-        <div className='flex items-center justify-center'>
+        <div className='flex items-center justify-center mb-3'>
           <button
             onClick={handleFocusTrick}
             className="px-6 py-3 bg-white text-[16px] text-primary-color border-primary-color border rounded-3xl font-semibold mx-auto mb-3 flex items-center gap-2"
           >
             <span>
-              {isEditable ? 'Chế độ xem' : 'Bắt đầu nhập'}
+              {isEditable ? 'Chuyển sang chế độ xem' : 'Bắt đầu nhập số cân'}
             </span>
             <Icon icon={isEditable ? 'mdi:lock-outline' : 'mdi:lock-open-outline'} fontSize={18} />
           </button>
@@ -328,7 +422,7 @@ const RiceWeightInput: React.FC = () => {
               <div className="px-1 py-2">
                 <div className="grid grid-cols-5 gap-1 mb-1">
                   {['C1', 'C2', 'C3', 'C4', 'C5'].map((col) => (
-                    <div key={col} className="text-center text-md font-semibold text-primary-color py-1">
+                    <div key={col} className="text-center text-lg font-semibold text-primary-color py-1">
                       {col}
                     </div>
                   ))}
@@ -365,7 +459,7 @@ const RiceWeightInput: React.FC = () => {
                             value={cell.value}
                             onInput={(e) => handleInputChange((e.target as HTMLInputElement).value, tableNum, rowIndex, colIndex)}
                             maxLength={limitInput}
-                            className={`w-full h-12 text-center border rounded text-lg font-semibold ${isEditable && tableNum === currentTable && rowIndex === currentRow && colIndex === currentCol
+                            className={`w-full h-12 text-center border rounded text-lg font-semibold text-primary-color disabled:opacity-100 disabled:bg-gray-100 ${isEditable && tableNum === currentTable && rowIndex === currentRow && colIndex === currentCol
                               ? 'border-[#74b4da] bg-blue-50 ring-2 ring-blue-200'
                               : cell.isComplete
                                 ? 'border-green-500 bg-green-50'

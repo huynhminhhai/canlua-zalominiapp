@@ -161,8 +161,8 @@ const FarmerResultForm: React.FC = () => {
                             label="Trừ bao bì (kg)"
                             value={getValues('truBaoBi') === 0 ? "0" : `${roundWeight(soLanCan / (Number(getValues('truBaoBi'))), 'nearest', 1)}`}
                             suffix={
-                                <Box pr={4} onClick={() => setVisibleTruBiModal(true)}>
-                                    <Icon icon="solar:settings-linear" fontSize={20} color='#222222' />
+                                <Box className='bg-[#74b4da] rounded-lg' p={3} onClick={() => setVisibleTruBiModal(true)}>
+                                    <Icon icon="solar:settings-linear" fontSize={20} color='#ffffff' />
                                 </Box>
                             }
                             disabled
@@ -211,16 +211,17 @@ const FarmerResultForm: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-12 gap-x-0 border-[1px]">
+                <div className="grid grid-cols-12 gap-x-0 border-[1px] bg-white">
                     <InfoBox label="Tổng khối lượng" value={tongKhoiLuong} colorClass="text-blue-700" />
                     <InfoBox label="Số lần cân (bao)" value={soLanCan} colorClass="text-blue-700" />
-                    <InfoBox label="Khối lượng còn lại" value={khoiLuongConLai} note='(Trừ tạp chất và bao bì)' noteFs={12} />
+                    <InfoBox label="Khối lượng còn lại" value={khoiLuongConLai} note='(Trừ tạp chất và bao bì)' noteFs={12} colorClass='text-blue-700' />
                     <InfoBox
                         label="Tổng tiền"
                         value={tongTien}
                         formatNumber
                         note='(Đơn giá x KL còn lại)'
                         noteFs={12}
+                        colorClass='text-blue-700'
                     />
                     <InfoBox
                         label="Tổng tiền còn lại"

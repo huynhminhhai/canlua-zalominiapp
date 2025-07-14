@@ -34,12 +34,12 @@ const InfoBox = ({
     return (
         <div className={`col-span-${span} h-full`}>
             <div className='flex flex-col items-center gap-1 px-2 py-4 border-[1px] h-full'>
-                <div className={`text-[${labelFs}px] text-gray-color leading-[22px] font-medium`}>{label}</div>
+                <div className={`text-[${labelFs}px] text-gray-600 leading-[22px] font-medium`}>{label}</div>
                 <div className={`text-[${fs}px] ${colorClass} leading-[24px] font-${fw}`}>
                     {displayValue}
                 </div>
                 {note && (
-                    <div className={`text-[${noteFs}px] text-gray-color leading-[22px] font-medium italic text-center`}>{note}</div>
+                    <div className={`text-[${noteFs}px] text-gray-600 leading-[22px] font-medium italic text-center`}>{note}</div>
                 )}
             </div>
         </div>
