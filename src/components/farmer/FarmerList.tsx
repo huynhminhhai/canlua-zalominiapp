@@ -56,12 +56,12 @@ const FarmerList: React.FC<any> = () => {
             );
         }
 
-        // return (
-        //     <Box pt={4}>
-        //         <FarmerItem />
-        //         <FarmerItem />
-        //     </Box>
-        // )
+        return (
+            <Box pt={4}>
+                <FarmerItem />
+                <FarmerItem />
+            </Box>
+        )
 
         return (
             <Box px={3}>

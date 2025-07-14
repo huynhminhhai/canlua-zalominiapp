@@ -134,7 +134,7 @@ const FarmerResultForm: React.FC = () => {
     return (
         <Box>
             <HeaderDetail title='Chú 2' weight={tongKhoiLuong.toString()} count={soLanCan.toString()} />
-            <Box px={3} pt={6} pb={8}>
+            <Box px={3} pt={6} pb={3}>
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
                         <FormInputField
@@ -228,7 +228,7 @@ const FarmerResultForm: React.FC = () => {
                         value={tongTienConLai}
                         formatNumber
                         colorClass="text-blue-700"
-                        fs={22}
+                        fs={24}
                         fw='bold'
                         span={12}
                         note="(Đã trừ tiền cọc và tiền đã trả)"
