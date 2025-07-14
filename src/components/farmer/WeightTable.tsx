@@ -1,3 +1,4 @@
+import { Icon } from '@iconify/react';
 import React, { useState, useRef, useEffect } from 'react';
 
 interface WeightData {
@@ -15,11 +16,13 @@ interface CellData {
 }
 
 const RiceWeightInput: React.FC = () => {
+
+  const [isEditable, setIsEditable] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentTable, setCurrentTable] = useState(1);
   const [currentRow, setCurrentRow] = useState(0);
   const [currentCol, setCurrentCol] = useState(0);
-  const limitInput = 1;
+  const limitInput = 2;
   const numberOfTables = 3;
 
   // Khởi tạo dữ liệu cho nhiều trang, mỗi trang có 3 hoặc 4 bảng, mỗi bảng 5x5 ô
@@ -46,6 +49,7 @@ const RiceWeightInput: React.FC = () => {
   });
 
   const inputRefs = useRef<(HTMLInputElement | null)[][][]>([]);
+  const hiddenInputRef = useRef<HTMLInputElement>(null);
 
   // Khởi tạo refs cho trang hiện tại
   useEffect(() => {
@@ -157,6 +161,7 @@ const RiceWeightInput: React.FC = () => {
 
         moveToNextCell();
       } else {
+        currentPageData[table - 1][row][col].isComplete = false;
         setPagesData(newPagesData);
       }
     }
@@ -255,9 +260,46 @@ const RiceWeightInput: React.FC = () => {
 
   const currentPageData = getCurrentPageData();
 
+  const handleFocusTrick = () => {
+
+    if (hiddenInputRef.current) {
+      hiddenInputRef.current.focus();
+
+      // Chờ một chút rồi chuyển focus
+      setTimeout(() => {
+        handleToggleEditable();
+      }, 50);
+    }
+  };
+
+  const handleToggleEditable = () => {
+    setIsEditable(!isEditable);
+
+    setTimeout(() => {
+      const currentInput = inputRefs.current[currentTable - 1]?.[currentRow]?.[currentCol];
+      currentInput?.focus();
+    }, 0);
+  };
+
   return (
     <div className="max-w-4xl mx-auto bg-gray-50 min-h-screen">
       <div className="bg-white rounded-lg shadow-lg p-3">
+        <input
+          ref={hiddenInputRef}
+          className="absolute opacity-0 w-0 h-0"
+          type="text"
+        />
+        <div className='flex items-center justify-center'>
+          <button
+            onClick={handleFocusTrick}
+            className="px-6 py-3 bg-white text-[16px] text-primary-color border-primary-color border rounded-3xl font-semibold mx-auto mb-3 flex items-center gap-2"
+          >
+            <span>
+              {isEditable ? 'Chế độ xem' : 'Bắt đầu nhập'}
+            </span>
+            <Icon icon={isEditable ? 'mdi:lock-outline' : 'mdi:lock-open-outline'} fontSize={18} />
+          </button>
+        </div>
 
         {/* Page Navigation */}
         <div className="flex items-center gap-2 mb-6">
@@ -278,10 +320,8 @@ const RiceWeightInput: React.FC = () => {
 
         <div className="space-y-6 mb-6">
           {[1, 2, 3].map((tableNum) => (
-            <div key={tableNum} className={`bg-white border rounded-lg overflow-hidden transition-all duration-300 ${tableNum <= currentTable ? 'opacity-100' : 'opacity-100'
-              }`}>
-              <div className={`px-4 py-3 text-xl text-center font-semibold text-white ${tableNum === currentTable ? 'bg-[#74b4da]' : 'bg-gray-400'
-                }`}>
+            <div key={tableNum} className={`bg-white border rounded-lg overflow-hidden transition-all duration-300 shadow-sm`}>
+              <div className={`px-4 py-3 text-xl text-center font-semibold text-white bg-[#74b4da]`}>
                 Bảng {tableNum} - Trang {currentPage}
               </div>
 
@@ -310,10 +350,12 @@ const RiceWeightInput: React.FC = () => {
                             ref={(el) => {
                               if (inputRefs.current[tableNum - 1]) {
                                 inputRefs.current[tableNum - 1][rowIndex][colIndex] = el;
-                                
+
                                 // Focus ngay khi element được gán và đây là vị trí hiện tại
-                                if (el && tableNum === currentTable && rowIndex === currentRow && colIndex === currentCol) {
-                                  setTimeout(() => el.focus(), 0);
+                                if (el && isEditable && tableNum === currentTable && rowIndex === currentRow && colIndex === currentCol) {
+                                  setTimeout(() => {
+                                    el.focus();
+                                  }, 0);
                                 }
                               }
                             }}
@@ -323,13 +365,13 @@ const RiceWeightInput: React.FC = () => {
                             value={cell.value}
                             onInput={(e) => handleInputChange((e.target as HTMLInputElement).value, tableNum, rowIndex, colIndex)}
                             maxLength={limitInput}
-                            className={`w-full h-12 text-center border rounded text-lg font-semibold ${tableNum === currentTable && rowIndex === currentRow && colIndex === currentCol
-                              ? 'border[#74b4da] bg-blue-50 ring-2 ring-blue-200'
+                            className={`w-full h-12 text-center border rounded text-lg font-semibold ${isEditable && tableNum === currentTable && rowIndex === currentRow && colIndex === currentCol
+                              ? 'border-[#74b4da] bg-blue-50 ring-2 ring-blue-200'
                               : cell.isComplete
                                 ? 'border-green-500 bg-green-50'
                                 : 'border-gray-300'
                               }`}
-                          disabled={tableNum !== currentTable}
+                            disabled={!isEditable}
                           />
                         </div>
                       ))}
@@ -351,13 +393,12 @@ const RiceWeightInput: React.FC = () => {
 
                 <div className="grid grid-cols-5 gap-1 mt-2 pt-2 border-t">
                   {[0, 1, 2, 3, 4].map((colIndex) => (
-                    <div key={colIndex} className={`text-white text-center py-2 rounded text-lg font-semibold ${tableNum === currentTable ? 'bg-[#74b4da]' : 'bg-gray-400'
-                      }`}>
+                    <div key={colIndex} className={`text-white text-center py-2 rounded text-lg font-semibold bg-[#74b4da]`}>
                       {getColumnSum(tableNum, colIndex).toFixed(1)}
                     </div>
                   ))}
                 </div>
-                <div className='pt-3 text-4xl font-bold text-blue-700 text-center'>
+                <div className='pt-4 pb-2 text-4xl font-bold text-blue-700 text-center'>
                   {[0, 1, 2, 3, 4].reduce((acc, i) => acc + getColumnSum(tableNum, i), 0).toFixed(1)}
                 </div>
               </div>

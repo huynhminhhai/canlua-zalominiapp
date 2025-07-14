@@ -211,7 +211,7 @@ const FarmerResultForm: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-12 gap-x-0 shadow-sm border-[1px]">
+                <div className="grid grid-cols-12 gap-x-0 border-[1px]">
                     <InfoBox label="Tổng khối lượng" value={tongKhoiLuong} colorClass="text-blue-700" />
                     <InfoBox label="Số lần cân (bao)" value={soLanCan} colorClass="text-blue-700" />
                     <InfoBox label="Khối lượng còn lại" value={khoiLuongConLai} note='(Trừ tạp chất và bao bì)' noteFs={12} />
