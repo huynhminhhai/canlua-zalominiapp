@@ -1,13 +1,16 @@
 import { FarmerList } from "components/farmer";
 import { HeaderSub } from "components/header-sub";
 import React from "react";
-import { Page } from "zmp-ui";
+import { Page, useSearchParams } from "zmp-ui";
 
 const FarmerPage: React.FunctionComponent = () => {
 
+  const [searchParams] = useSearchParams();
+  const tenNhom = searchParams.get("tenNhom");
+
   return (
     <Page className="relative flex-1 flex flex-col">
-      <HeaderSub title="Xe 10 tấn 62n1-12345" />
+      <HeaderSub title={tenNhom || "Danh sách người cân"} />
       <FarmerList />
     </Page>
   );

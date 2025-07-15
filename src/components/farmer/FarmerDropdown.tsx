@@ -3,16 +3,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { ConfirmModal } from "components/modal";
 import FarmerUpdateForm from "./FarmerUpdateForm";
 import { openShareSheet } from "zmp-sdk/apis";
+import { PhienCan } from "./type";
+import { useDeletePhienCan } from "apiRequest/phienCan";
 
 type FarmerDropdownProps = {
-    data: any;
-    onEdit?: () => void;
-    onDelete?: () => void;
+    data: PhienCan;
 };
 
 const FarmerDropdown: React.FC<FarmerDropdownProps> = ({
-    onEdit,
-    onDelete,
     data
 }) => {
     const [open, setOpen] = useState(false);
@@ -21,6 +19,8 @@ const FarmerDropdown: React.FC<FarmerDropdownProps> = ({
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
     const [modalContent, setModalContent] = useState({ title: '', message: '' });
+
+    const { mutate: deletePhienCan } = useDeletePhienCan();
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -57,14 +57,16 @@ const FarmerDropdown: React.FC<FarmerDropdownProps> = ({
     const handleEdit = (e) => {
         e.stopPropagation();
         setShowUpdateForm(true);
+        setOpen(false);
     };
 
     const handleDelete = (e) => {
         e.stopPropagation();
+        setOpen(false);
 
         openConfirmModal(() => {
-            console.log('delete')
-        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa nông dân này?')
+            deletePhienCan(data.id);
+        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa hộ nông dân này?')
     };
 
     return (

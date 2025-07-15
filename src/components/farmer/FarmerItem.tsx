@@ -83,8 +83,8 @@ const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
             </Box>
             <Box>
                 <InfoItem title="Khối lượng" value={`${data?.tongTrongLuong} kg`} note={`${data?.soLanCan} lần cân`} />
-                <InfoItem title="Thành tiền" value={`${formatCurrencyVN(thanhTien)} đ`} />
                 <InfoItem title="Đơn giá" value={`${formatCurrencyVN(data?.donGia)} đ/kg`} />
+                <InfoItem title="Thành tiền" value={`${formatCurrencyVN(thanhTien)} đ`} />
                 <InfoItem title="Tiền cọc" value={`${formatCurrencyVN(data?.tienCoc)} đ`} colorClass="text-orange-500" />
                 <InfoItem title="Đã trả" value={`${formatCurrencyVN(data?.tienDaTra)} đ`} colorClass="text-green-600" />
                 <InfoItem title="Còn lại" value={`${formatCurrencyVN(conLai)} đ`} colorClass="text-red-600" />

@@ -2,19 +2,19 @@ import * as yup from 'yup';
 
 export type FormDataFarmer = {
     id?: number;
-    tenNongDan: string;
+    tenHoDan: string;
     donGia?: string;
     soDienThoai?: string;
     ghiChu?: string;
 }
 
 export const schemaFarmer = yup.object().shape({
-    tenNongDan: yup.string().required('Không được để trống'),
+    tenHoDan: yup.string().required('Không được để trống'),
 });
 
 export type FormDataFarmerResult = {
     id?: number;
-    tenNongDan: string;
+    tenHoDan: string;
     donGia?: string | number;
     soDienThoai?: string;
     ghiChu?: string;
@@ -25,7 +25,7 @@ export type FormDataFarmerResult = {
 }
 
 export const schemaFarmerResult = yup.object().shape({
-    tenNongDan: yup.string().required('Không được để trống'),
+    tenHoDan: yup.string().required('Không được để trống'),
 });
 
 export type PhienCan = {

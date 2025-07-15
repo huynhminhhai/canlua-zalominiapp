@@ -5,34 +5,38 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { FormInputAreaField, FormInputField, FormInputNumbericField } from "components/form";
 import { PrimaryButton } from "components/button";
 import { FormDataFarmer, schemaFarmer } from "./type";
+import { useCreatePhienCan } from "apiRequest/phienCan";
 
 type FarmerCreateFormProps = {
     visible: boolean;
     onClose: () => void;
+    nhomThuMuaId: number;
 };
 
 const defaultValues: FormDataFarmer = {
-    tenNongDan: "",
+    tenHoDan: "",
     donGia: "",
     soDienThoai: "",
     ghiChu: "",
 }
 
-const FarmerCreateForm: React.FC<FarmerCreateFormProps> = ({ visible, onClose }) => {
-
-    // const [formData, setFormData] = useState<FormDataFarmer>(defaultValues)
+const FarmerCreateForm: React.FC<FarmerCreateFormProps> = ({ visible, onClose, nhomThuMuaId }) => {
 
     const { handleSubmit, control, reset, watch, setValue, formState: { errors } } = useForm<FormDataFarmer>({
         resolver: yupResolver(schemaFarmer),
         defaultValues
     });
 
+    const { mutateAsync: createPhienCan, isPending } = useCreatePhienCan();
+
     const onSubmit: SubmitHandler<FormDataFarmer> = (data) => {
-        // setFormData(data)
 
         if (data) {
             try {
-                console.log(data)
+
+                const dataSumbit = {...data, nhomThuMuaId, donGia: Number(data.donGia)};
+
+                createPhienCan(dataSumbit);
 
                 reset(defaultValues);
                 onClose();
@@ -59,11 +63,11 @@ const FarmerCreateForm: React.FC<FarmerCreateFormProps> = ({ visible, onClose })
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
                         <FormInputField
-                            name="tenNongDan"
+                            name="tenHoDan"
                             label="Tên nông dân"
                             placeholder="Nhập tên nông dân"
                             control={control}
-                            error={errors.tenNongDan?.message}
+                            error={errors.tenHoDan?.message}
                             required
                         />
                     </div>
@@ -77,28 +81,10 @@ const FarmerCreateForm: React.FC<FarmerCreateFormProps> = ({ visible, onClose })
                             error={errors.donGia?.message}
                         />
                     </div>
-                    {/* <div className="col-span-12">
-                        <FormInputField
-                            name="soDienThoai"
-                            label="Số điện thoại"
-                            placeholder="Nhập tên số điện thoại"
-                            control={control}
-                            error={errors.soDienThoai?.message}
-                        />
-                    </div> */}
-                    {/* <div className="col-span-12">
-                        <FormInputAreaField
-                            name="ghiChu"
-                            label="Ghi chú"
-                            placeholder="Nhập ghi chú"
-                            control={control}
-                            error={errors.ghiChu?.message}
-                        />
-                    </div> */}
                 </div>
                 <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
                     <Box py={2} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                        <PrimaryButton size="large" fullWidth disabled={false} label={false ? "Đang xử lý..." : "Lưu lại"} handleClick={handleSubmit(onSubmit)} />
+                        <PrimaryButton size="large" fullWidth disabled={isPending} label={isPending ? "Đang xử lý..." : "Lưu lại"} handleClick={handleSubmit(onSubmit)} />
                     </Box>
                 </div>
             </Box>

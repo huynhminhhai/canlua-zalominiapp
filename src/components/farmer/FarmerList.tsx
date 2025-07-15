@@ -22,11 +22,9 @@ const FarmerList: React.FC<any> = () => {
     })
 
     const [searchParams] = useSearchParams();
-    const phienCanId = searchParams.get("id");
+    const nhomThuMuaId = searchParams.get("id");
 
-    const { data, isLoading } = useGetPhienCanList(Number(phienCanId));
-
-    console.log(data)
+    const { data, isLoading } = useGetPhienCanList(Number(nhomThuMuaId));
 
     const updateFilter = (key: keyof typeof filters, value: string) => {
         setFilters((prev) => ({ ...prev, [key]: value }));
@@ -90,6 +88,7 @@ const FarmerList: React.FC<any> = () => {
             <FarmerCreateForm
                 visible={showCreateForm}
                 onClose={() => setShowCreateForm(false)}
+                nhomThuMuaId={Number(nhomThuMuaId)}
             />
         </Box>
     )
