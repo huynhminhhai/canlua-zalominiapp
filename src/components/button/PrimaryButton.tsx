@@ -17,7 +17,7 @@ const PrimaryButton: React.FC<ButtonProps> = ({label, handleClick, iconLeft, ico
             <Button variant="primary" size={size} onClick={handleClick} disabled={disabled} fullWidth={fullWidth}>
                 <div className="flex items-center justify-center gap-2 h-[100%]">
                     {iconLeft}
-                    <div className="text-[14px] leading-[1]">{label}</div>
+                    <div className="text-[18px] font-semibold leading-[1]">{label}</div>
                     {iconRight}
                 </div>
             </Button>

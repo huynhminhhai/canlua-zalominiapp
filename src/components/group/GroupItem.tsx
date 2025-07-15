@@ -17,7 +17,7 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
         <Box className="meeting-item" onClick={() => navigate(`/farmer-list?id=${data.id}&tenNhom=${data.tenNhom}`)}>
             <Box>
                 <div className="flex items-start gap-3 border-[1px] rounded-xl bg-white shadow-sm">
-                    <Box px={4} py={4} width={98} height={152} className="bg-blue-100 text-primary-color rounded-xl relative overflow-hidden scale-[1.02]">
+                    <Box px={4} py={4} width={98} height={152} className="bg-blue-100 text-primary-color rounded-xl relative overflow-hidden scale-[0.95]">
                         <img className="w-[100%] h-[100%] absolute top-0 left-0 opacity-5 scale-[2.5]" src={images.shape4} alt="shape" />
                         <div className="flex-center flex-col h-[100%] relative z-[2]">
                             <div className="text-[16px] leading-[1] font-semibold text-center mb-2 whitespace-nowrap">{renderDayOfWeek(formatDate(data.ngayTao))}</div>
@@ -26,7 +26,7 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
                     </Box>
                     <Box py={2} pr={2} className="flex-1">
                         <div className="flex items-center justify-between gap-[12px] mb-2">
-                            <h3 className="text-[18px] leading-[24px] font-semibold line-clamp-2">{data.tenNhom}</h3>
+                            <h3 className="text-primary-color text-[18px] leading-[24px] font-semibold line-clamp-2">{data.tenNhom}</h3>
 
                             <GroupDropdown data={data} />
                         </div>

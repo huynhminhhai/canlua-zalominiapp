@@ -77,7 +77,7 @@ const GroupDropdown: React.FC<GroupDropdownProps> = ({
                     setOpen((prev) => !prev);
                 }}
             >
-                <Icon icon="solar:menu-dots-bold" fontSize={24} color="#808080" />
+                <Icon icon="solar:menu-dots-bold" fontSize={24} color="#2262c6" />
             </button>
 
             {open && (

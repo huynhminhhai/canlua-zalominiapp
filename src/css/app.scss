@@ -424,7 +424,8 @@ tbody tr td:not(:first-child) {
   height: 46px;
   font-size: 18px;
   line-height: 1;
-  font-weight: 500;
+  font-weight: 600;
+  color: var(--primary-color);
 }
 
 textarea.zaui-input {

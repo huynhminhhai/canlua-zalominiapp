@@ -105,6 +105,7 @@ const RiceWeightInput: React.FC = () => {
   const saveWeightData = async (weightData: WeightData) => {
 
     // Simulate API call - remove this in production
+
     console.log('🚀 Calling API with data:', weightData);
 
     try {
@@ -412,7 +413,7 @@ const RiceWeightInput: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto bg-transparent min-h-screen">
-      <div className="rounded-lg shadow-lg p-3">
+      <div className="rounded-lg shadow-lg py-3 px-2">
         <input
           ref={hiddenInputRef}
           className="absolute opacity-0 w-0 h-0"
@@ -421,7 +422,7 @@ const RiceWeightInput: React.FC = () => {
         <div className='flex items-center justify-center mb-3'>
           <button
             onClick={handleFocusTrick}
-            className="px-6 py-3 bg-primary-color text-[16px] text-white border-primary-color border rounded-lg font-semibold mx-auto mb-3 flex items-center gap-2 shadow-md"
+            className="px-6 py-3 bg-primary-color text-[16px] text-white border-primary-color border rounded-full font-semibold mx-auto mb-3 flex items-center gap-2 shadow-md"
           >
             <span>
               {isEditable ? 'Chuyển sang chế độ xem' : 'Bắt đầu nhập số cân'}
@@ -497,7 +498,7 @@ const RiceWeightInput: React.FC = () => {
                             className={`w-full h-12 text-center border rounded text-lg font-semibold text-primary-color disabled:opacity-100 disabled:bg-gray-100 ${isEditable && tableNum === currentTable && rowIndex === currentRow && colIndex === currentCol
                               ? 'border-primary-color bg-blue-50 ring-2 ring-blue-200'
                               : cell.isComplete
-                                ? 'border-green-500 bg-green-50'
+                                ? 'border-primary-color'
                                 : 'border-gray-300'
                               }`}
                             disabled={!isEditable}
