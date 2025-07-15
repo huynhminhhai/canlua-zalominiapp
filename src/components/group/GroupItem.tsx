@@ -26,7 +26,7 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
                     </Box>
                     <Box py={2} pr={2} className="flex-1">
                         <div className="flex items-center justify-between gap-[12px] mb-2">
-                            <h3 className="text-primary-color text-[16px] leading-[24px] font-semibold line-clamp-2">{data.tenNhom}</h3>
+                            <h3 className="text-[18px] leading-[24px] font-semibold line-clamp-2">{data.tenNhom}</h3>
 
                             <GroupDropdown data={data} />
                         </div>
@@ -34,13 +34,13 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
                             <Box>
                                 <ul className="flex flex-col gap-[4px] text-[16px] leading-[22px] font-medium">
                                     <li>
-                                        <span className="text-[18px] font-semibold mr-1">
+                                        <span className="text-[18px] font-semibold mr-2 text-primary-color">
                                             {data.tongTrongLuong}
                                         </span>
                                         kg
                                     </li>
                                     <li>
-                                        <span className="text-[18px] font-semibold mr-1">
+                                        <span className="text-[18px] font-semibold mr-2 text-primary-color">
                                             {data.soLanCan}
                                         </span>
                                         lần cân (bao)

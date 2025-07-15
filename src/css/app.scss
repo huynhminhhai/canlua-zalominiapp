@@ -44,12 +44,13 @@
 }
 
 :root {
-  --primary-color: #062654;
+  --primary-color: #2262c6;
   --secondary-color: #7090c9;
   --third-color: #ebebeb;
   --gray-color: #666666;
   --black-color: #222631;
-  --bg-color: #fafafa;
+  // --bg-color: #fafafa;
+  --bg-color: #f3f4f8;
 }
 
 body {
@@ -309,7 +310,7 @@ tbody tr td:not(:first-child) {
 }
 
 .zaui-bottom-navigation-item-active {
-  color: var(--secondary-color);
+  color: var(--primary-color);
 }
 
 /**

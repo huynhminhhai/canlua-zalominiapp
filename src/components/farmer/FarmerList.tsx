@@ -51,7 +51,7 @@ const FarmerList: React.FC<any> = () => {
 
         if (!data?.result?.length) {
             return (
-                <Box px={4}>
+                <Box px={2}>
                     <EmptyData
                         title="Hiện chưa có nông dân nào!"
                         desc="Nhấn vào nút Thêm để bắt đầu!"
@@ -61,7 +61,7 @@ const FarmerList: React.FC<any> = () => {
         }
 
         return (
-            <Box px={3} pt={3}>
+            <Box px={2} pt={3}>
                 {data.result.map((item: any, index) => (
                     <FarmerItem key={index} data={item} />
                 ))}

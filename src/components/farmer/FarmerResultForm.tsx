@@ -1,33 +1,47 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Box, Button, Header, Input, Modal } from 'zmp-ui'
-import { FormDataFarmerResult, schemaFarmerResult } from './type'
+import { Box, Button, Input, Modal } from 'zmp-ui'
+import { FormDataFarmerResult, PhienCan, schemaFarmerResult } from './type'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { FormInputField, FormInputNumbericField } from 'components/form'
 import { Icon } from '@iconify/react'
 import { debounce, isEqual } from 'lodash'
-import { formatCurrency, parseNumber, roundWeight } from 'utils/number'
+import { parseNumber, roundWeight } from 'utils/number'
 import HeaderDetail from 'components/header-detail'
 import InfoBox from './InfoBox'
 import { WeightTable } from '.'
-
-const defaultValues: FormDataFarmerResult = {
-    tenNongDan: "",
-    donGia: 0,
-    soDienThoai: "",
-    ghiChu: "",
-    truBaoBi: 0,
-    truTapChat: 0,
-    truTienCoc: 0,
-    truTienDaTra: 0
-}
+import { useStoreApp } from 'store/store'
+import { getDataFromStorage } from 'services/zalo'
+import { useUpdatePhienCanOnChange } from 'apiRequest/phienCan'
 
 const FarmerResultForm: React.FC = () => {
 
     const [visibleTruBiModal, setVisibleTruBiModal] = useState(false);
+    const [phienCanData, setPhienCanData] = useState<PhienCan | null>(null);
+    const { phienCan } = useStoreApp();
 
-    const [tongKhoiLuong, setTongKhoiLuong] = useState(5367.9);
-    const [soLanCan, setSoLanCan] = useState(83);
+    const { mutateAsync: updatePhienCan } = useUpdatePhienCanOnChange();
+
+    const loadPhienCanData = async () => {
+
+        if (!phienCan) {
+            const data = await getDataFromStorage(["phienCan"]);
+
+            const localData = JSON.parse(data?.phienCan);
+            // console.log(localData);
+
+            if (localData) {
+                setPhienCanData(localData);
+            }
+        } else {
+            // console.log(phienCan)
+            setPhienCanData(phienCan);
+        }
+    };
+
+    useEffect(() => {
+        loadPhienCanData();
+    }, []);
 
     const {
         control,
@@ -37,88 +51,122 @@ const FarmerResultForm: React.FC = () => {
         formState: { errors }
     } = useForm<FormDataFarmerResult>({
         resolver: yupResolver(schemaFarmerResult),
-        defaultValues
+        defaultValues: {
+            tenHoDan: "",
+            donGia: 0,
+            quyCachTruBi: 0,
+            truTapChat: 0,
+            tienCoc: 0,
+            tienDaTra: 0
+        }
     });
 
+    // Khi có phienCanData thì reset form
+    useEffect(() => {
+        if (phienCanData) {
+            const formData = {
+                tenHoDan: phienCanData.tenHoDan || '',
+                donGia: phienCanData.donGia || 0,
+                quyCachTruBi: phienCanData.quyCachTruBi || 0,
+                truTapChat: phienCanData.truTapChat || 0,
+                tienCoc: phienCanData.tienCoc || 0,
+                tienDaTra: phienCanData.tienDaTra || 0
+            };
+            
+            reset(formData);
+            lastValuesRef.current = formData;
+    
+            // Set thông tin khối lượng
+            setTongKhoiLuong(phienCanData.tongTrongLuong || 0);
+            setSoLanCan(phienCanData.soLanCan || 0);
+            
+            // Reset skip flag để enable auto-save
+            skipFirstUpdate.current = true;
+        }
+    }, [phienCanData, reset]);
+
+    const [tongKhoiLuong, setTongKhoiLuong] = useState(0);
+    const [soLanCan, setSoLanCan] = useState(0);
+
+    // DI CHUYỂN TẤT CẢ HOOKS LÊN ĐÂY - TRƯỚC KHI RETURN SỚM
     const donGia = watch('donGia');
-    const truTienCoc = watch('truTienCoc');
-    const truTienDaTra = watch('truTienDaTra');
+    const tienCoc = watch('tienCoc');
+    const tienDaTra = watch('tienDaTra');
+    const quyCachTruBi = watch('quyCachTruBi');
+    const truTapChat = watch('truTapChat');
 
     const khoiLuongConLai = useMemo(() => {
-        const truBaoBi = parseNumber(getValues('truBaoBi'));
-        const truTapChat = parseNumber(getValues('truTapChat'));
-        const khoiLuongTruBaoBi = truBaoBi === 0 ? 0 : roundWeight(soLanCan / truBaoBi, 'nearest', 1);
+        const _truBaoBi = parseNumber(quyCachTruBi);
+        const _truTapChat = parseNumber(truTapChat);
+        const khoiLuongTruBaoBi = _truBaoBi === 0 ? 0 : roundWeight(soLanCan / _truBaoBi, 'nearest', 1);
 
-        const result = Number((tongKhoiLuong - khoiLuongTruBaoBi - truTapChat).toFixed(1));
+        const result = Number((tongKhoiLuong - khoiLuongTruBaoBi - _truTapChat).toFixed(1));
 
         return result;
-    }, [getValues('truBaoBi'), getValues('truTapChat'), tongKhoiLuong, soLanCan]);
+    }, [quyCachTruBi, truTapChat, tongKhoiLuong, soLanCan]);
 
     const tongTien = useMemo(() => {
         return Math.round(parseNumber(donGia) * khoiLuongConLai);
     }, [donGia, khoiLuongConLai]);
 
     const tongTienConLai = useMemo(() => {
-        return tongTien - parseNumber(truTienCoc) - parseNumber(truTienDaTra);
-    }, [tongTien, truTienCoc, truTienDaTra]);
+        return tongTien - parseNumber(tienCoc) - parseNumber(tienDaTra);
+    }, [tongTien, tienCoc, tienDaTra]);
 
-    // API cập nhật form
     const updateFarmerResult = async (data: FormDataFarmerResult) => {
         try {
-
             const normalizedData: FormDataFarmerResult = {
-                ...data,
+                tenHoDan: (data.tenHoDan || '').trim(),
+                donGia: parseNumber(data.donGia) || 0,
+                quyCachTruBi: parseNumber(data.quyCachTruBi) || 0,
                 truTapChat: typeof data.truTapChat === 'string'
                     ? (data.truTapChat as string).trim() === ''
                         ? 0
                         : parseFloat(data.truTapChat as string)
-                    : data.truTapChat ?? 0,
-                donGia: parseNumber(data.donGia)
+                    : parseNumber(data.truTapChat) || 0,
+                tienCoc: parseNumber(data.tienCoc) || 0,
+                tienDaTra: parseNumber(data.tienDaTra) || 0
             };
 
-            console.log('🔄 Gọi API cập nhật với data:', normalizedData);
+            const dataSubmit = { ...phienCanData, ...normalizedData };
 
-            console.log('✅ Gọi API và Cập nhật lại form với data:');
+            console.log('🔄 Gọi API cập nhật với data:', dataSubmit);
+
+            const response = await updatePhienCan(dataSubmit);
+
             reset(normalizedData);
             lastValuesRef.current = normalizedData;
+
+            if (response?.result) {
+                console.log(response.result);
+                setPhienCanData(response.result);
+            }
+            
         } catch (error) {
             console.error("❌ Lỗi khi cập nhật:", error);
         }
     };
 
-    // Debounce hàm update để tránh spam
     const debouncedUpdate = useCallback(
         debounce((data: FormDataFarmerResult) => {
             updateFarmerResult(data);
         }, 800),
-        []
+        [phienCanData]
     );
 
-    const lastValuesRef = useRef<FormDataFarmerResult>(defaultValues);
+    const lastValuesRef = useRef<FormDataFarmerResult>({
+        tenHoDan: "",
+        donGia: 0,
+        quyCachTruBi: 0,
+        truTapChat: 0,
+        tienCoc: 0,
+        tienDaTra: 0
+    });
+
     const skipFirstUpdate = useRef(true);
 
-    // Fetch detail đừng xóa
-    useEffect(() => {
-
-        const detailData = {
-            tenNongDan: "Chú 2",
-            donGia: 8000,
-            soDienThoai: "",
-            ghiChu: "",
-            truBaoBi: 8,
-            truTapChat: 0.0,
-            truTienCoc: 1000000,
-            truTienDaTra: 0
-        };
-
-        reset(detailData);
-        lastValuesRef.current = detailData;
-    }, []);
-
-    // Lắng nghe toàn bộ form thay đổi
     const watchedFields = watch();
 
-    // Gọi Debounce khi có thay đổi
     useEffect(() => {
         if (skipFirstUpdate.current) {
             skipFirstUpdate.current = false;
@@ -131,18 +179,21 @@ const FarmerResultForm: React.FC = () => {
         }
     }, [watchedFields]);
 
+    // CHỈ SAU KHI TẤT CẢ HOOKS ĐÃ ĐƯỢC GỌI MỚI RETURN SỚM
+    if (!phienCanData) return <Box>not found</Box>;
+
     return (
         <Box>
-            <HeaderDetail title='Chú 2' weight={tongKhoiLuong.toString()} count={soLanCan.toString()} />
-            <Box px={3} pt={6} pb={3}>
+            <HeaderDetail title={phienCanData?.tenHoDan || "Chi tiết phiên cân"} weight={tongKhoiLuong.toString()} count={soLanCan.toString()} />
+            <Box px={2} pt={6} pb={3}>
                 <div className="grid grid-cols-12 gap-x-3 shadow-md bg-white px-3 pb-2 pt-4 rounded-lg mb-4">
                     <div className="col-span-12">
                         <FormInputField
-                            name="tenNongDan"
+                            name="tenHoDan"
                             label="Tên nông dân"
                             placeholder="Nhập tên nông dân"
                             control={control}
-                            error={errors.tenNongDan?.message}
+                            error={errors.tenHoDan?.message}
                             required
                         />
                     </div>
@@ -159,14 +210,14 @@ const FarmerResultForm: React.FC = () => {
                     <div className="col-span-12 mb-3">
                         <Input
                             label="Trừ bao bì (kg)"
-                            value={getValues('truBaoBi') === 0 ? "0" : `${roundWeight(soLanCan / (Number(getValues('truBaoBi'))), 'nearest', 1)}`}
+                            value={getValues('quyCachTruBi') === 0 ? "0" : `${roundWeight(soLanCan / (Number(getValues('quyCachTruBi'))), 'nearest', 1)}`}
                             suffix={
-                                <Box className='bg-[#74b4da] rounded-lg' p={3} onClick={() => setVisibleTruBiModal(true)}>
+                                <Box className='bg-primary-color rounded-lg' p={3} onClick={() => setVisibleTruBiModal(true)}>
                                     <Icon icon="solar:settings-linear" fontSize={20} color='#ffffff' />
                                 </Box>
                             }
                             disabled
-                            helperText={`${getValues('truBaoBi')} bao (lần cân)/1kg`}
+                            helperText={`${getValues('quyCachTruBi')} bao (lần cân)/1kg`}
                         />
                     </div>
                     <div className="col-span-12">
@@ -193,42 +244,42 @@ const FarmerResultForm: React.FC = () => {
                     </div>
                     <div className="col-span-12">
                         <FormInputNumbericField
-                            name="truTienCoc"
+                            name="tienCoc"
                             label="Trừ tiền cọc (đ)"
                             placeholder=""
                             control={control}
-                            error={errors.truTienCoc?.message}
+                            error={errors.tienCoc?.message}
                         />
                     </div>
                     <div className="col-span-12">
                         <FormInputNumbericField
-                            name="truTienDaTra"
+                            name="tienDaTra"
                             label="Trừ tiền đã trả (đ)"
                             placeholder=""
                             control={control}
-                            error={errors.truTienDaTra?.message}
+                            error={errors.tienDaTra?.message}
                         />
                     </div>
                 </div>
 
-                <div className="grid grid-cols-12 gap-x-0 border-[1px] bg-white rounded-lg overflow-hidden shadow-md">
-                    <InfoBox label="Tổng khối lượng" value={tongKhoiLuong} colorClass="text-blue-700" />
-                    <InfoBox label="Số lần cân (bao)" value={soLanCan} colorClass="text-blue-700" />
-                    <InfoBox label="Khối lượng còn lại" value={khoiLuongConLai} note='(Trừ tạp chất và bao bì)' noteFs={12} colorClass='text-blue-700' />
+                <div className="grid grid-cols-12 gap-x-0 bg-white rounded-lg overflow-hidden shadow-md">
+                    <InfoBox label="Tổng khối lượng" value={tongKhoiLuong} colorClass="text-primary-color" />
+                    <InfoBox label="Số lần cân (bao)" value={soLanCan} colorClass="text-primary-color" />
+                    <InfoBox label="Khối lượng còn lại" value={khoiLuongConLai} note='(Trừ tạp chất và bao bì)' noteFs={12} colorClass='text-primary-color' />
                     <InfoBox
                         label="Tổng tiền"
                         value={tongTien}
                         formatNumber
                         note='(Đơn giá x KL còn lại)'
                         noteFs={12}
-                        colorClass='text-blue-700'
+                        colorClass='text-primary-color'
                     />
                     <InfoBox
                         label="Tổng tiền còn lại"
                         labelFs={18}
                         value={tongTienConLai}
                         formatNumber
-                        colorClass="text-blue-700"
+                        colorClass="text-primary-color"
                         fs={24}
                         fw='bold'
                         span={12}
@@ -250,7 +301,7 @@ const FarmerResultForm: React.FC = () => {
                     </Box>
                     <Box>
                         <Controller
-                            name="truBaoBi"
+                            name="quyCachTruBi"
                             control={control}
                             render={({ field }) => (
                                 <Input

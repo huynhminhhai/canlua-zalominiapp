@@ -78,7 +78,7 @@ const FarmerDropdown: React.FC<FarmerDropdownProps> = ({
                     setOpen((prev) => !prev);
                 }}
             >
-                <Icon icon='fluent-mdl2:gripper-dots-vertical' fontSize={32} color="#062654" />
+                <Icon icon='fluent-mdl2:gripper-dots-vertical' fontSize={32} color="#2262c6" />
             </div>
 
             {open && (

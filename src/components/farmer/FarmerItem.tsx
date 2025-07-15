@@ -5,6 +5,7 @@ import FarmerDropdown from "./FarmerDropdown"
 import { PhienCan } from "./type"
 import { formatDate, getHourFromDate } from "utils/date"
 import { formatCurrencyVN, parseNumber, roundWeight } from "utils/number"
+import { useStoreApp } from "store/store"
 
 type InfoItemProps = {
     title: string,
@@ -21,24 +22,25 @@ const InfoItem: React.FC<InfoItemProps> = ({
     title,
     value,
     note,
-    colorClass = 'text-black'
+    colorClass = 'text-gray-700'
 }) => {
 
     return (
         <div className="flex items-center justify-between border-b p-3 text-[18px] leading-[20px] font-medium">
-            <div className="text-[15px]">{title}</div>
+            <div className="text-[16px]">{title}</div>
             {
                 note &&
                 <div className="text-[16px] text-gray-color font-medium"> ({note})</div>
             }
-            <div className={`${colorClass}`}>{value}</div>
+            <div className={`${colorClass} font-semibold`}>{value}</div>
         </div>
     )
 }
 
 const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const { setPhienCan } = useStoreApp();
 
     const truBaoBi = parseNumber(data?.quyCachTruBi);
     const truTapChat = parseNumber(data?.truTapChat);
@@ -51,14 +53,19 @@ const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
 
     const conLai = thanhTien - data?.tienCoc - data?.tienDaTra;
 
+    const handleOnClick = () => {
+        setPhienCan(data);
+        navigate(`/farmer-detail?id=${data.id}`);
+    }
+
     return (
-        <Box mx={1} mb={4} className="bg-white shadow-sm rounded-lg overflow-hidden border">
+        <Box mb={4} className="bg-white shadow-sm rounded-lg overflow-hidden border">
             <Box flex alignItems="center" className="bg-blue-100">
                 <div className="flex items-center w-full">
                     <FarmerDropdown data={data} />
                     <div className="flex flex-col gap-2 py-4 px-3 w-full border-r border-l border-gray-300 flex-[1_0_0]">
                         <div className="text-[20px] leading-[26px] font-semibold text-primary-color">{data?.tenHoDan}</div>
-                        <div className="text-[16px] font-medium leading-[1] flex items-center gap-2">
+                        <div className="text-[15px] font-medium leading-[1] flex items-center gap-2">
                             <span>
                                 {
                                     data?.ngayTao &&
@@ -76,7 +83,7 @@ const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
                 </div>
                 <div
                     className="h-[77px] flex items-center justify-center text-[18px] font-semibold px-5 leading-[1] text-primary-color"
-                    onClick={() => navigate(`/farmer-detail?id=${data.id}`)}
+                    onClick={() => handleOnClick()}
                 >
                     Mở
                 </div>

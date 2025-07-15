@@ -16,12 +16,10 @@ export type FormDataFarmerResult = {
     id?: number;
     tenHoDan: string;
     donGia?: string | number;
-    soDienThoai?: string;
-    ghiChu?: string;
-    truBaoBi?: number;
+    quyCachTruBi?: number;
     truTapChat?: number;
-    truTienCoc?: number;
-    truTienDaTra?: number;
+    tienCoc?: number;
+    tienDaTra?: number;
 }
 
 export const schemaFarmerResult = yup.object().shape({

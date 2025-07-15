@@ -94,6 +94,23 @@ export const useUpdatePhienCan = () => {
     });
 };
 
+export const useUpdatePhienCanOnChange = () => {
+    const { showError } = useCustomSnackbar();
+
+    return useMutation({
+        mutationFn: async (formData: any) => {
+            return await phienCanApiRequest.updatePhienCan(formData);
+        },
+        onSuccess: () => {
+            // queryClient.invalidateQueries({ queryKey: ["phienCanList"] });
+        },
+        onError: (error: string) => {
+            console.error(`Lỗi: ${error}`)
+            showError(error)
+        },
+    });
+};
+
 export const useDeletePhienCan = () => {
     const queryClient = useQueryClient();
     const { showSuccess, showError } = useCustomSnackbar();

@@ -411,7 +411,7 @@ const RiceWeightInput: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-gray-50 min-h-screen">
+    <div className="max-w-4xl mx-auto bg-transparent min-h-screen">
       <div className="rounded-lg shadow-lg p-3">
         <input
           ref={hiddenInputRef}
@@ -421,7 +421,7 @@ const RiceWeightInput: React.FC = () => {
         <div className='flex items-center justify-center mb-3'>
           <button
             onClick={handleFocusTrick}
-            className="px-6 py-3 bg-[#74b4da] text-[16px] text-white border-[#74b4da] border rounded-lg font-semibold mx-auto mb-3 flex items-center gap-2 shadow-md"
+            className="px-6 py-3 bg-primary-color text-[16px] text-white border-primary-color border rounded-lg font-semibold mx-auto mb-3 flex items-center gap-2 shadow-md"
           >
             <span>
               {isEditable ? 'Chuyển sang chế độ xem' : 'Bắt đầu nhập số cân'}
@@ -432,13 +432,13 @@ const RiceWeightInput: React.FC = () => {
 
         {/* Page Navigation */}
         <div className="flex items-center gap-2 mb-6">
-          <span className="text-md font-medium text-gray-700">Trang:</span>
+          <span className="text-lg font-medium text-gray-700">Trang:</span>
           {Array.from({ length: Math.max(currentPage, pagesData.length) }, (_, i) => i + 1).map(pageNum => (
             <button
               key={pageNum}
               onClick={() => goToPage(pageNum)}
               className={`shawow-md px-3 py-1 rounded text-sm font-medium transition-colors ${pageNum === currentPage
-                ? 'bg-[#74b4da] text-white'
+                ? 'bg-primary-color text-white'
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
             >
@@ -450,7 +450,7 @@ const RiceWeightInput: React.FC = () => {
         <div className="space-y-6 mb-6">
           {[1, 2, 3].map((tableNum) => (
             <div key={tableNum} className={`bg-white border rounded-lg overflow-hidden transition-all duration-300 shadow-md`}>
-              <div className={`px-4 py-3 text-lg text-center font-semibold text-white bg-[#74b4da]`}>
+              <div className={`px-4 py-3 text-lg text-center font-semibold text-white bg-primary-color`}>
                 Bảng {tableNum} - Trang {currentPage}
               </div>
 
@@ -495,7 +495,7 @@ const RiceWeightInput: React.FC = () => {
                             onInput={(e) => handleInputChange((e.target as HTMLInputElement).value, tableNum, rowIndex, colIndex)}
                             maxLength={limitInput}
                             className={`w-full h-12 text-center border rounded text-lg font-semibold text-primary-color disabled:opacity-100 disabled:bg-gray-100 ${isEditable && tableNum === currentTable && rowIndex === currentRow && colIndex === currentCol
-                              ? 'border-[#74b4da] bg-blue-50 ring-2 ring-blue-200'
+                              ? 'border-primary-color bg-blue-50 ring-2 ring-blue-200'
                               : cell.isComplete
                                 ? 'border-green-500 bg-green-50'
                                 : 'border-gray-300'
@@ -520,14 +520,14 @@ const RiceWeightInput: React.FC = () => {
                   ))}
                 </div>
 
-                <div className="grid grid-cols-5 gap-1 mt-2 pt-2 border-t">
+                <div className="grid grid-cols-5 gap-1 mt-2">
                   {[0, 1, 2, 3, 4].map((colIndex) => (
-                    <div key={colIndex} className={`text-white text-center py-2 rounded text-lg font-semibold bg-[#74b4da]`}>
+                    <div key={colIndex} className={`text-white text-center py-2 rounded text-lg font-semibold bg-primary-color`}>
                       {getColumnSum(tableNum, colIndex).toFixed(1)}
                     </div>
                   ))}
                 </div>
-                <div className='pt-4 pb-2 text-4xl font-bold text-blue-900 text-center'>
+                <div className='pt-4 pb-2 text-4xl font-bold text-primary-color text-center'>
                   {[0, 1, 2, 3, 4].reduce((acc, i) => acc + getColumnSum(tableNum, i), 0).toFixed(1)}
                 </div>
               </div>
@@ -539,10 +539,10 @@ const RiceWeightInput: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div className="bg-blue-100 rounded-lg p-4 shadow-md">
             <div className="text-center">
-              <div className="text-xl font-bold text-blue-600 mb-2">
+              <div className="text-xl font-bold text-primary-color mb-2">
                 Tổng trang {currentPage}: {getPageTotalSum().toFixed(1)}
               </div>
-              <div className="text-md font-medium text-blue-700">
+              <div className="text-md font-medium text-primary-color">
                 Đã nhập: {getCurrentPageCompletedCount()}/75 ô
               </div>
             </div>

@@ -63,7 +63,7 @@ const GroupList: React.FC<any> = () => {
         }
 
         return (
-            <Box px={3} pt={3}>
+            <Box px={2} pt={2}>
                 {data.result.map((item: any, index) => (
                     <GroupItem key={index} data={item} />
                 ))}

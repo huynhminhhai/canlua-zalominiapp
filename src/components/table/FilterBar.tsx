@@ -27,7 +27,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
     const [filterVisible, setFilterVisible] = useState(false);
 
     return (
-        <div className="bg-white flex flex-col px-3 pb-3 pt-4 border-b-[1px] shadow-sm"
+        <div className="bg-white flex flex-col px-2 pb-3 pt-4 border-b-[1px] shadow-sm"
             style={{
                 gap: filterVisible ? "8px" : "0px",
                 transition: "gap 0.3s ease-in-out"
