@@ -421,7 +421,7 @@ const RiceWeightInput: React.FC = () => {
         <div className='flex items-center justify-center mb-3'>
           <button
             onClick={handleFocusTrick}
-            className="px-6 py-3 bg-white text-[16px] text-primary-color border-primary-color border rounded-lg font-semibold mx-auto mb-3 flex items-center gap-2 shadow-md"
+            className="px-6 py-3 bg-[#74b4da] text-[16px] text-white border-[#74b4da] border rounded-lg font-semibold mx-auto mb-3 flex items-center gap-2 shadow-md"
           >
             <span>
               {isEditable ? 'Chuyển sang chế độ xem' : 'Bắt đầu nhập số cân'}

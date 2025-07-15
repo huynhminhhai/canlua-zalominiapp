@@ -14,7 +14,7 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
     const navigate = useNavigate()
 
     return (
-        <Box className="meeting-item" onClick={() => navigate(`/farmer-list?id=1`)}>
+        <Box className="meeting-item" onClick={() => navigate(`/farmer-list?id=${data.id}`)}>
             <Box>
                 <div className="flex items-start gap-3 border-[1px] rounded-xl bg-white shadow-sm">
                     <Box px={4} py={4} width={98} height={152} className="bg-blue-100 text-primary-color rounded-xl relative overflow-hidden scale-[1.02]">

@@ -34,6 +34,11 @@ export const formatCurrency = (value: string | number) => {
     return new Intl.NumberFormat('vi-VN').format(Number(numericValue));
 };
 
+export const formatCurrencyVN = (value?: number | string): string => {
+    const number = Number(value ?? 0);
+    return isNaN(number) ? '0' : number.toLocaleString('vi-VN');
+};
+
 export const roundWeight = (
     weight: number,
     type: 'up' | 'down' | 'nearest' = 'nearest',

@@ -14,6 +14,7 @@ import { IsComingSoonModal, LoginModal, RegisterApModal } from "./modal";
 import Navigation from "./navigation";
 import { pdfjs } from 'react-pdf';
 import { FarmerDetailPage, FarmerListPage } from "pages/farmer";
+import { SettingsPage } from "pages/settings";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -95,6 +96,9 @@ const MyApp = () => {
                         {/* FARMER */}
                         <Route path="/farmer-list" element={<FarmerListPage></FarmerListPage>}></Route>
                         <Route path="/farmer-detail" element={<FarmerDetailPage></FarmerDetailPage>}></Route>
+                      
+                        {/* SETTINGS */}
+                        <Route path="/settings" element={<SettingsPage></SettingsPage>}></Route>
                       </Routes>
                       <Navigation />
                     </AuthWrapper>

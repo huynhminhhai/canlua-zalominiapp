@@ -3,10 +3,11 @@ import { EmptyData } from "components/data";
 import { ManagementItemSkeleton } from "components/skeleton";
 import { debounce } from "lodash";
 import React, { useEffect, useState } from "react"
-import { Box, Input } from "zmp-ui";
+import { Box, Input, useSearchParams } from "zmp-ui";
 import FarmerItem from "./FarmerItem";
 import { FilterBar } from "components/table";
 import FarmerCreateForm from "./FarmerCreateForm";
+import { useGetPhienCanList } from "apiRequest/phienCan";
 
 const FarmerList: React.FC<any> = () => {
     
@@ -20,7 +21,12 @@ const FarmerList: React.FC<any> = () => {
         search: '',
     })
 
-    const { data, isLoading } = useGetNewsListNormal(param);
+    const [searchParams] = useSearchParams();
+    const phienCanId = searchParams.get("id");
+
+    const { data, isLoading } = useGetPhienCanList(Number(phienCanId));
+
+    console.log(data)
 
     const updateFilter = (key: keyof typeof filters, value: string) => {
         setFilters((prev) => ({ ...prev, [key]: value }));
@@ -45,7 +51,7 @@ const FarmerList: React.FC<any> = () => {
             return <Box><ManagementItemSkeleton count={5} /></Box>
         }
 
-        if (!data?.data?.length) {
+        if (!data?.result?.length) {
             return (
                 <Box px={4}>
                     <EmptyData
@@ -57,15 +63,8 @@ const FarmerList: React.FC<any> = () => {
         }
 
         return (
-            <Box pt={4}>
-                <FarmerItem />
-                <FarmerItem />
-            </Box>
-        )
-
-        return (
-            <Box px={3}>
-                {data.data.map((item: any, index) => (
+            <Box px={3} pt={3}>
+                {data.result.map((item: any, index) => (
                     <FarmerItem key={index} data={item} />
                 ))}
             </Box>
