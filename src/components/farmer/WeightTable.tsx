@@ -1,5 +1,8 @@
 import { Icon } from '@iconify/react';
+import { useCreateGiaTriCan, useGetGiaTriCanList } from 'apiRequest/giaTriCan';
 import React, { useState, useRef, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { useStoreApp } from 'store/store';
 
 interface WeightData {
   phienCanId?: number; // Optional cho lần đầu tạo mới
@@ -17,6 +20,8 @@ interface CellData {
 
 const RiceWeightInput: React.FC = () => {
 
+  const { setPhienCan } = useStoreApp();
+
   const [isEditable, setIsEditable] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentTable, setCurrentTable] = useState(1);
@@ -24,6 +29,12 @@ const RiceWeightInput: React.FC = () => {
   const [currentCol, setCurrentCol] = useState(0);
   const limitInput = 2;
   const numberOfTables = 3;
+
+  const [searchParams] = useSearchParams();
+  const phienCanId = searchParams.get("id");
+
+  const { mutateAsync: createGiaTriCan } = useCreateGiaTriCan();
+  const { data: phienCanData } = useGetGiaTriCanList(Number(phienCanId));
 
   // Khởi tạo dữ liệu cho nhiều trang, mỗi trang có 3 hoặc 4 bảng, mỗi bảng 5x5 ô
   const [pagesData, setPagesData] = useState<CellData[][][][]>(() => {
@@ -104,28 +115,35 @@ const RiceWeightInput: React.FC = () => {
   // Hàm gọi API để lưu dữ liệu
   const saveWeightData = async (weightData: WeightData) => {
 
-    // Simulate API call - remove this in production
-
-    console.log('🚀 Calling API with data:', weightData);
+    console.log('🚀 Calling API with data:', {...weightData, phienCanId: Number(phienCanId)});
 
     try {
-      // Giả lập API call
-      await new Promise(resolve => setTimeout(resolve, 500)); // Simulate network delay
+      // await new Promise(resolve => setTimeout(resolve, 500)); // Simulate network delay
 
-      // Giả lập response từ API
-      const mockResponse = {
-        success: true,
-        data: {
-          // phienCanId: weightData.phienCanId || Math.floor(Math.random() * 10000) + 1000, // Use existing ID or generate new one
-          trongLuong: weightData.trongLuong,
-          viTriTrang: weightData.viTriTrang,
-          viTriBang: weightData.viTriBang,
-          viTriCot: weightData.viTriCot,
-          viTriDong: weightData.viTriDong
-        }
-      };
+      const dataSubmit = {...weightData, phienCanId: Number(phienCanId)};
 
-      return mockResponse; // Return result in production
+      const response =  await createGiaTriCan(dataSubmit);
+
+      console.log(response);
+
+      if (response && response.result) {
+        console.log(response.result?.phienCan);
+        setPhienCan(response.result?.phienCan);
+      }
+
+      // const mockResponse = {
+      //   success: true,
+      //   data: {
+      //     phienCanId,
+      //     trongLuong: weightData.trongLuong,
+      //     viTriTrang: weightData.viTriTrang,
+      //     viTriBang: weightData.viTriBang,
+      //     viTriCot: weightData.viTriCot,
+      //     viTriDong: weightData.viTriDong
+      //   }
+      // };
+
+      // return mockResponse;
     } catch (error) {
       console.error('Error calling API:', error);
       throw error;
@@ -170,18 +188,18 @@ const RiceWeightInput: React.FC = () => {
 
   const handleInputFocus = (page: number, table: number, row: number, col: number) => {
     const nextEmptyPosition = findNextEmptyCell();
-    
+
     // Tính toán index tuyến tính để so sánh dễ dàng
     const getLinearIndex = (pos: any) => {
-      return (pos.page - 1) * (numberOfTables * 5 * 5) + 
-             (pos.table - 1) * (5 * 5) + 
-             pos.col * 5 + 
-             pos.row;
+      return (pos.page - 1) * (numberOfTables * 5 * 5) +
+        (pos.table - 1) * (5 * 5) +
+        pos.col * 5 +
+        pos.row;
     };
-    
+
     const currentClickIndex = getLinearIndex({ page, table, row, col });
     const nextEmptyIndex = getLinearIndex(nextEmptyPosition);
-    
+
     // Nếu click vào ô phía sau ô input mới nhất
     if (currentClickIndex > nextEmptyIndex) {
       // Focus vào ô input mới nhất
@@ -189,15 +207,15 @@ const RiceWeightInput: React.FC = () => {
       setCurrentTable(nextEmptyPosition.table);
       setCurrentRow(nextEmptyPosition.row);
       setCurrentCol(nextEmptyPosition.col);
-      
+
       setTimeout(() => {
         const nextInput = inputRefs.current[nextEmptyPosition.table - 1]?.[nextEmptyPosition.row]?.[nextEmptyPosition.col];
         if (nextInput) {
           nextInput.focus();
-          nextInput.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center', 
-            inline: 'center' 
+          nextInput.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'center'
           });
         }
       }, 0);
@@ -374,42 +392,121 @@ const RiceWeightInput: React.FC = () => {
     }
   };
 
-  // const handleToggleEditable = () => {
-  //   setIsEditable(!isEditable);
-
-  //   setTimeout(() => {
-  //     const currentInput = inputRefs.current[currentTable - 1]?.[currentRow]?.[currentCol];
-  //     currentInput?.focus();
-  //   }, 0);
-  // };
-
   const handleToggleEditable = () => {
     setIsEditable(!isEditable);
-  
+
     if (!isEditable) {
       // Khi chuyển sang chế độ editable, tìm ô kế tiếp để focus
       const nextPosition = findNextEmptyCell();
-      
+
       // Cập nhật current position
       setCurrentPage(nextPosition.page);
       setCurrentTable(nextPosition.table);
       setCurrentRow(nextPosition.row);
       setCurrentCol(nextPosition.col);
-  
+
       setTimeout(() => {
         const nextInput = inputRefs.current[nextPosition.table - 1]?.[nextPosition.row]?.[nextPosition.col];
         if (nextInput) {
           nextInput.focus();
 
-          nextInput.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center', 
-            inline: 'center' 
+          nextInput.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'center'
           });
         }
       }, 100);
     }
   };
+
+  // Thêm hàm để map dữ liệu từ API vào state
+  const mapApiDataToState = (apiData: any) => {
+    const { danhSachTrang } = apiData.result;
+
+    const newPagesData: CellData[][][][] = [];
+
+    // Duyệt qua từng trang
+    danhSachTrang.forEach((trang, pageIndex) => {
+      const pageData: CellData[][][] = [];
+
+      // Khởi tạo 3 bảng cho mỗi trang
+      for (let tableIndex = 0; tableIndex < numberOfTables; tableIndex++) {
+        const tableData: CellData[][] = [];
+
+        // Khởi tạo 5 hàng cho mỗi bảng
+        for (let rowIndex = 0; rowIndex < 5; rowIndex++) {
+          const rowData: CellData[] = [];
+
+          // Khởi tạo 5 cột cho mỗi hàng
+          for (let colIndex = 0; colIndex < 5; colIndex++) {
+            rowData.push({
+              value: '',
+              isComplete: false
+            });
+          }
+
+          tableData.push(rowData);
+        }
+
+        pageData.push(tableData);
+      }
+
+      // Map dữ liệu từ API vào structure đã khởi tạo
+      trang.danhSachBang.forEach((bang) => {
+        const tableIndex = bang.viTriBang - 1; // Convert to 0-based index
+
+        if (tableIndex >= 0 && tableIndex < numberOfTables) {
+          bang.grid.cells.forEach((cot) => {
+            const colIndex = cot.viTriCot - 1; // Convert to 0-based index
+
+            if (colIndex >= 0 && colIndex < 5) {
+              cot.rows.forEach((dong) => {
+                const rowIndex = dong.viTriDong - 1; // Convert to 0-based index
+
+                if (rowIndex >= 0 && rowIndex < 5 && dong.trongLuong > 0) {
+                  pageData[tableIndex][rowIndex][colIndex] = {
+                    value: dong.trongLuong.toString(),
+                    isComplete: true
+                  };
+                }
+              });
+            }
+          });
+        }
+      });
+
+      newPagesData.push(pageData);
+    });
+
+    // Nếu không có dữ liệu từ API, tạo ít nhất 1 trang trống
+    if (newPagesData.length === 0) {
+      const emptyPage: CellData[][][] = [];
+      for (let table = 0; table < numberOfTables; table++) {
+        const tableRows: CellData[][] = [];
+        for (let row = 0; row < 5; row++) {
+          const tableCols: CellData[] = [];
+          for (let col = 0; col < 5; col++) {
+            tableCols.push({
+              value: '',
+              isComplete: false
+            });
+          }
+          tableRows.push(tableCols);
+        }
+        emptyPage.push(tableRows);
+      }
+      newPagesData.push(emptyPage);
+    }
+
+    setPagesData(newPagesData);
+  };
+
+  useEffect(() => {
+    if (phienCanData && phienCanData.result) {
+      mapApiDataToState(phienCanData);
+    }
+  }, [phienCanData]);
 
   return (
     <div className="max-w-4xl mx-auto bg-transparent min-h-screen">

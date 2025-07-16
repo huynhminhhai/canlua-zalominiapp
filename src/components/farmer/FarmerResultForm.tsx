@@ -22,26 +22,22 @@ const FarmerResultForm: React.FC = () => {
 
     const { mutateAsync: updatePhienCan } = useUpdatePhienCanOnChange();
 
-    const loadPhienCanData = async () => {
-
-        if (!phienCan) {
-            const data = await getDataFromStorage(["phienCan"]);
-
-            const localData = JSON.parse(data?.phienCan);
-            // console.log(localData);
-
-            if (localData) {
-                setPhienCanData(localData);
-            }
-        } else {
-            // console.log(phienCan)
-            setPhienCanData(phienCan);
-        }
-    };
-
     useEffect(() => {
+        const loadPhienCanData = async () => {
+            if (!phienCan) {
+                const data = await getDataFromStorage(["phienCan"]);
+                const localData = JSON.parse(data?.phienCan);
+
+                if (localData) {
+                    setPhienCanData(localData);
+                }
+            } else {
+                setPhienCanData(phienCan);
+            }
+        };
+
         loadPhienCanData();
-    }, []);
+    }, [phienCan]);
 
     const {
         control,
@@ -72,14 +68,14 @@ const FarmerResultForm: React.FC = () => {
                 tienCoc: phienCanData.tienCoc || 0,
                 tienDaTra: phienCanData.tienDaTra || 0
             };
-            
+
             reset(formData);
             lastValuesRef.current = formData;
-    
+
             // Set thông tin khối lượng
             setTongKhoiLuong(phienCanData.tongTrongLuong || 0);
             setSoLanCan(phienCanData.soLanCan || 0);
-            
+
             // Reset skip flag để enable auto-save
             skipFirstUpdate.current = true;
         }
@@ -141,7 +137,7 @@ const FarmerResultForm: React.FC = () => {
                 console.log(response.result);
                 setPhienCanData(response.result);
             }
-            
+
         } catch (error) {
             console.error("❌ Lỗi khi cập nhật:", error);
         }
