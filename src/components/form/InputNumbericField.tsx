@@ -72,6 +72,7 @@ const InputNumericField: React.FC<InputNumericFieldProps> = ({
                 placeholder={placeholder}
                 disabled={disabled}
                 value={formatCurrency(field.value ?? '')}
+                onFocus={(e) => e.target.select()}
                 onChange={(e) => {
                     const raw = e.target.value.replace(/[^0-9]/g, '');
                     const parsed = raw === '' ? 0 : Number(raw);

@@ -229,6 +229,7 @@ const FarmerResultForm: React.FC = () => {
                                         maxLength={4}
                                         label="Trừ tạp chất (kg)"
                                         value={field.value?.toString() || "0"}
+                                        onFocus={(e) => e.target.select()}
                                         onChange={(e) => {
                                             const input = e.target.value.replace(',', '.');
                                             field.onChange(input);

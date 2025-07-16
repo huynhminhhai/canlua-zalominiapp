@@ -428,6 +428,10 @@ tbody tr td:not(:first-child) {
   color: var(--primary-color);
 }
 
+.zaui-input::placeholder {
+  font-weight: 500;
+}
+
 textarea.zaui-input {
   line-height: 20px;
 }
