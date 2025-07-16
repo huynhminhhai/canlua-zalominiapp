@@ -20,14 +20,14 @@ interface CellData {
 
 const RiceWeightInput: React.FC = () => {
 
-  const { setPhienCan } = useStoreApp();
+  const { setPhienCan, phienCan } = useStoreApp();
 
   const [isEditable, setIsEditable] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentTable, setCurrentTable] = useState(1);
   const [currentRow, setCurrentRow] = useState(0);
   const [currentCol, setCurrentCol] = useState(0);
-  const limitInput = 2;
+  const limitInput = phienCan?.quyCachNhap || 2;
   const numberOfTables = 3;
 
   const [searchParams] = useSearchParams();
@@ -115,13 +115,13 @@ const RiceWeightInput: React.FC = () => {
   // Hàm gọi API để lưu dữ liệu
   const saveWeightData = async (weightData: WeightData) => {
 
-    console.log('🚀 Calling API with data:', {...weightData, phienCanId: Number(phienCanId)});
+    console.log('🚀 Calling API with data:', { ...weightData, phienCanId: Number(phienCanId) });
 
     try {
 
-      const dataSubmit = {...weightData, phienCanId: Number(phienCanId)};
+      const dataSubmit = { ...weightData, phienCanId: Number(phienCanId) };
 
-      const response =  await createGiaTriCan(dataSubmit);
+      const response = await createGiaTriCan(dataSubmit);
 
       if (response && response.result) {
         setPhienCan(response.result?.phienCan);
@@ -134,25 +134,59 @@ const RiceWeightInput: React.FC = () => {
   };
 
   const handleInputChange = (value: string, table: number, row: number, col: number) => {
-    if (!/^\d*$/.test(value)) return; // Chỉ cho phép số
+    // Chỉ cho phép số và dấu chấm thập phân
+    if (!/^\d*\.?\d*$/.test(value)) return;
+
+    // Giới hạn độ dài input
     if (value.length > limitInput) return;
 
     const newPagesData = [...pagesData];
     const currentPageData = newPagesData[currentPage - 1];
 
     if (currentPageData) {
-      // const currentCell = currentPageData[table - 1][row][col];
-
+      // Cập nhật giá trị hiển thị
       currentPageData[table - 1][row][col].value = value;
 
-      // Đánh dấu ô đã hoàn thành nếu đã nhập đủ ký tự
-      if (value.length === limitInput) {
-        currentPageData[table - 1][row][col].isComplete = true;
-        setPagesData(newPagesData);
+      // Kiểm tra xem có phải nhập số lẻ không
+      const isDecimalMode = phienCan?.choPhepNhapSoLe;
+      const decimalPlaces = phienCan?.soThapPhan || 1;
 
-        // Chuẩn bị dữ liệu API
+      // Xác định điều kiện hoàn thành
+      let isComplete = false;
+      let processedValue = value;
+
+      if (isDecimalMode) {
+        // Nếu cho phép nhập số lẻ
+        if (value.length === limitInput) {
+          // Tự động thêm dấu chấm thập phân nếu chưa có
+          if (!value.includes('.')) {
+            const integerPart = value.slice(0, -decimalPlaces);
+            const decimalPart = value.slice(-decimalPlaces);
+            processedValue = `${integerPart}.${decimalPart}`;
+
+            // Cập nhật giá trị hiển thị với dấu chấm
+            currentPageData[table - 1][row][col].value = processedValue;
+          }
+          isComplete = true;
+        }
+      } else {
+        // Nếu chỉ nhập số nguyên
+        if (value.length === limitInput) {
+          isComplete = true;
+        }
+      }
+
+      // Cập nhật trạng thái hoàn thành
+      currentPageData[table - 1][row][col].isComplete = isComplete;
+      setPagesData(newPagesData);
+
+      // Nếu đã hoàn thành, gọi API và chuyển ô tiếp theo
+      if (isComplete) {
+        // Chuẩn bị dữ liệu cho API
         const weightData: WeightData = {
-          trongLuong: parseInt(value),
+          trongLuong: isDecimalMode
+            ? parseFloat(processedValue)
+            : parseInt(processedValue),
           viTriTrang: currentPage,
           viTriBang: table,
           viTriCot: col + 1,
@@ -160,13 +194,20 @@ const RiceWeightInput: React.FC = () => {
         };
 
         saveWeightData(weightData);
-
         moveToNextCell();
-      } else {
-        currentPageData[table - 1][row][col].isComplete = false;
-        setPagesData(newPagesData);
       }
     }
+  };
+
+
+  const parseCellValue = (cellValue: string): number => {
+    if (!cellValue) return 0;
+
+    // Nếu có dấu chấm thì parse float, không thì parse int
+    if (cellValue.includes('.')) {
+      return parseFloat(cellValue) || 0;
+    }
+    return parseInt(cellValue) || 0;
   };
 
   const handleInputFocus = (page: number, table: number, row: number, col: number) => {
@@ -244,34 +285,49 @@ const RiceWeightInput: React.FC = () => {
     setCurrentCol(nextCol);
   };
 
+  // Hàm tính tổng cột
   const getColumnSum = (table: number, col: number) => {
     const currentPageData = getCurrentPageData();
     if (!currentPageData[table - 1]) return 0;
 
-    return currentPageData[table - 1].reduce((sum, row) => {
-      const cellValue = parseInt(row[col].value) || 0;
+    const sum = currentPageData[table - 1].reduce((sum, row) => {
+      const cellValue = parseCellValue(row[col].value);
       return sum + cellValue;
     }, 0);
+
+    // Làm tròn theo số thập phân được cấu hình
+    const decimalPlaces = phienCan?.soThapPhan || 1;
+    return Math.round(sum * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
   };
 
+  // Hàm tính tổng trang
   const getPageTotalSum = () => {
     const currentPageData = getCurrentPageData();
-    return currentPageData.reduce((total, table) =>
+    const sum = currentPageData.reduce((total, table) =>
       total + table.reduce((tableSum, row) =>
         tableSum + row.reduce((rowSum, cell) => {
-          const cellValue = parseInt(cell.value) || 0;
+          const cellValue = parseCellValue(cell.value);
           return rowSum + cellValue;
         }, 0), 0), 0);
+
+    // Làm tròn theo số thập phân được cấu hình
+    const decimalPlaces = phienCan?.soThapPhan || 1;
+    return Math.round(sum * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
   };
 
+  // Hàm tính tổng tất cả trang
   const getAllPagesTotal = () => {
-    return pagesData.reduce((grandTotal, page) =>
+    const sum = pagesData.reduce((grandTotal, page) =>
       grandTotal + page.reduce((pageTotal, table) =>
         pageTotal + table.reduce((tableSum, row) =>
           tableSum + row.reduce((rowSum, cell) => {
-            const cellValue = parseInt(cell.value) || 0;
+            const cellValue = parseCellValue(cell.value);
             return rowSum + cellValue;
           }, 0), 0), 0), 0);
+
+    // Làm tròn theo số thập phân được cấu hình
+    const decimalPlaces = phienCan?.soThapPhan || 1;
+    return Math.round(sum * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
   };
 
   const getCompletedCellsCount = () => {
@@ -527,6 +583,8 @@ const RiceWeightInput: React.FC = () => {
             </button>
           ))}
         </div>
+
+        <div className='text-[16px] text-gray-600 font-medium mb-1 italic'>Lưu ý: Nhập {phienCan?.quyCachNhap} số {phienCan?.choPhepNhapSoLe && 'và lấy số lẻ'}</div>
 
         <div className="space-y-6 mb-6">
           {[1, 2, 3].map((tableNum) => (

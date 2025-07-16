@@ -35,7 +35,7 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
                                 <ul className="flex flex-col gap-[4px] text-[16px] leading-[22px] font-medium">
                                     <li>
                                         <span className="text-[18px] font-semibold mr-2 text-primary-color">
-                                            {data.tongTrongLuong}
+                                            {data.tongTrongLuong?.toFixed(1)}
                                         </span>
                                         kg
                                     </li>
