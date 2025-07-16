@@ -58,12 +58,12 @@ const AccountPage: React.FC = () => {
                                 <Box m={4}>
                                     <List className="bg-white rounded-lg">
                                         <ManagementTitle title="Tài khoản" />
-                                        <Item
+                                        {/* <Item
                                             onClick={() => navigate('/profile-account')}
                                             title="Thông tin tài khoản"
                                             prefix={<img src={images.resume} width={30} />}
                                             suffix={<Icon fontSize={20} icon="formkit:right" />}
-                                        />
+                                        /> */}
                                         <Item
                                             onClick={logout}
                                             title="Đăng xuất"

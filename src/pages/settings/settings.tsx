@@ -1,13 +1,14 @@
 import { Icon } from "@iconify/react";
 import { useGetCauHinhHeThong, useUpdateCauHinhHeThong } from "apiRequest/cauHinhHeThong";
 import { HeaderSub } from "components/header-sub";
-import React, { useState, useCallback } from "react";
-import { Box, Page, Button } from "zmp-ui";
+import React, { useState, useCallback, useEffect, useRef } from "react";
+import { Box, Page, Button, Input } from "zmp-ui";
+import _ from "lodash";
 
 // Enum cho các loại nhập liệu
 enum InputType {
   TWO_DIGITS = "nhap2",
-  THREE_DIGITS_REMAINDER = "nhap3laydu", 
+  THREE_DIGITS_REMAINDER = "nhap3laydu",
   THREE_DIGITS = "nhap3",
   FOUR_DIGITS_REMAINDER = "nhap4"
 }
@@ -39,15 +40,21 @@ interface ApiConfig {
 const FarmerPage: React.FunctionComponent = () => {
   // State quản lý loại nhập liệu được chọn
   const [selectedInputType, setSelectedInputType] = useState<InputType | null>(null);
-  
+
   // State cho input test
   const [testInput, setTestInput] = useState<string>("");
-  
+
   // State cho kết quả tính toán
   const [calculationResult, setCalculationResult] = useState<CalculationResult | null>(null);
 
   // State cho trạng thái loading khi update
   const [isUpdating, setIsUpdating] = useState(false);
+
+  // State cho quy cách trừ bì
+  const [quyCachTruBi, setQuyCachTruBi] = useState<number>(0);
+
+  // State cho trạng thái loading khi update quy cách trừ bì
+  const [isUpdatingTruBi, setIsUpdatingTruBi] = useState(false);
 
   // Hook gọi API lấy cấu hình hệ thống
   const { data: cauHinhHeThong, isLoading, refetch } = useGetCauHinhHeThong();
@@ -65,7 +72,7 @@ const FarmerPage: React.FunctionComponent = () => {
     },
     {
       id: InputType.THREE_DIGITS_REMAINDER,
-      name: "Nhập 3 số lấy số dư", 
+      name: "Nhập 3 số lấy số dư",
       title: "Nhập 3 số lấy số dư",
       example: "Ví dụ: nhập 500, 522, 555",
       result: "50.0 kg, 52.2 kg, 55.5 kg",
@@ -74,7 +81,7 @@ const FarmerPage: React.FunctionComponent = () => {
     {
       id: InputType.THREE_DIGITS,
       name: "Nhập 3 số",
-      title: "Nhập 3 số", 
+      title: "Nhập 3 số",
       example: "Ví dụ: nhập 100, 122, 155",
       result: "100 kg, 122 kg, 155 kg",
       description: "Nhập trực tiếp số kg"
@@ -83,7 +90,7 @@ const FarmerPage: React.FunctionComponent = () => {
       id: InputType.FOUR_DIGITS_REMAINDER,
       name: "Nhập 4 số lấy số dư",
       title: "Nhập 4 số lấy số dư",
-      example: "Ví dụ: nhập 1000, 1025, 1055", 
+      example: "Ví dụ: nhập 1000, 1025, 1055",
       result: "100.0 kg, 102.5 kg, 105.5 kg",
       description: "Chia 10 để lấy số dư"
     }
@@ -124,7 +131,7 @@ const FarmerPage: React.FunctionComponent = () => {
   // Function map API config sang InputType
   const mapApiConfigToInputType = useCallback((apiConfig: any): InputType | null => {
     const { quyCachNhap, choPhepNhapSoLe, soThapPhan } = apiConfig;
-    
+
     if (quyCachNhap === 2 && !choPhepNhapSoLe && soThapPhan === 0) {
       return InputType.TWO_DIGITS;
     }
@@ -137,14 +144,14 @@ const FarmerPage: React.FunctionComponent = () => {
     if (quyCachNhap === 4 && choPhepNhapSoLe && soThapPhan === 1) {
       return InputType.FOUR_DIGITS_REMAINDER;
     }
-    
+
     return null;
   }, []);
 
   // Function xử lý tính toán theo loại nhập liệu
   const calculateWeight = useCallback((input: string, inputType: InputType): number => {
     const numericInput = parseFloat(input);
-    
+
     if (isNaN(numericInput)) {
       throw new Error("Vui lòng nhập số hợp lệ");
     }
@@ -152,16 +159,16 @@ const FarmerPage: React.FunctionComponent = () => {
     switch (inputType) {
       case InputType.TWO_DIGITS:
         return numericInput;
-        
+
       case InputType.THREE_DIGITS_REMAINDER:
         return numericInput / 10;
-        
+
       case InputType.THREE_DIGITS:
         return numericInput;
-        
+
       case InputType.FOUR_DIGITS_REMAINDER:
         return numericInput / 10;
-        
+
       default:
         throw new Error("Loại nhập liệu không hợp lệ");
     }
@@ -170,7 +177,7 @@ const FarmerPage: React.FunctionComponent = () => {
   // Function xử lý nhiều số cách nhau bởi dấu phẩy
   const calculateMultipleWeights = useCallback((input: string, inputType: InputType): CalculationResult[] => {
     const inputs = input.split(',').map(item => item.trim());
-    
+
     return inputs.map(singleInput => {
       const weight = calculateWeight(singleInput, inputType);
       return {
@@ -181,17 +188,59 @@ const FarmerPage: React.FunctionComponent = () => {
     });
   }, [calculateWeight]);
 
+  // Function cập nhật quy cách trừ bì
+  const updateQuyCachTruBi = useCallback(async (newValue: number) => {
+    try {
+      setIsUpdatingTruBi(true);
+
+      if (!cauHinhHeThong?.result) {
+        throw new Error("Không thể lấy cấu hình hiện tại");
+      }
+
+      // Payload để update quy cách trừ bì
+      const updatePayload = {
+        ...cauHinhHeThong.result,
+        quyCachTruBi: newValue
+      };
+
+      console.log('call api update quy cách trừ bì:', updatePayload);
+
+      // Gọi API update
+      await updateCauHinh(updatePayload);
+
+    } catch (error) {
+      console.error("Lỗi khi cập nhật quy cách trừ bì:", error);
+    } finally {
+      setIsUpdatingTruBi(false);
+    }
+  }, [cauHinhHeThong, updateCauHinh]);
+
+  // Debounced function để update quy cách trừ bì
+  const debouncedUpdateQuyCachTruBi = useCallback(
+    _.debounce(async (value: number) => {
+      await updateQuyCachTruBi(value);
+    }, 500),
+    [updateQuyCachTruBi]
+  );
+
+  // Cleanup debounced function khi component unmount
+  useEffect(() => {
+    return () => {
+      debouncedUpdateQuyCachTruBi.cancel();
+    };
+  }, [debouncedUpdateQuyCachTruBi]);
+
   // Function cập nhật cấu hình qua API
   const updateCauHinhHeThong = useCallback(async (inputType: InputType) => {
     try {
       setIsUpdating(true);
-      
+
       if (!cauHinhHeThong?.result) {
         throw new Error("Không thể lấy cấu hình hiện tại");
       }
 
       const apiConfig = mapInputTypeToApiConfig(inputType);
-      
+
       // Payload để update
       const updatePayload = {
         ...cauHinhHeThong.result,
@@ -202,20 +251,29 @@ const FarmerPage: React.FunctionComponent = () => {
 
       // Gọi API update
       await updateCauHinh(updatePayload);
-      
+
     } catch (error) {
       console.error("Lỗi khi cập nhật cấu hình:", error);
     } finally {
       setIsUpdating(false);
     }
-  }, [cauHinhHeThong, mapInputTypeToApiConfig, refetch]);
+  }, [cauHinhHeThong, mapInputTypeToApiConfig, updateCauHinh]);
+
+  // Handler cho việc thay đổi quy cách trừ bì
+  const handleQuyCachTruBiChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value) || 0;
+    setQuyCachTruBi(value);
+    
+    // Gọi debounced function
+    debouncedUpdateQuyCachTruBi(value);
+  }, [debouncedUpdateQuyCachTruBi]);
 
   // Handler cho việc thay đổi loại nhập liệu
   const handleInputTypeChange = useCallback(async (inputType: InputType) => {
     setSelectedInputType(inputType);
     setCalculationResult(null);
     setTestInput("");
-    
+
     // Cập nhật qua API
     await updateCauHinhHeThong(inputType);
   }, [updateCauHinhHeThong]);
@@ -229,7 +287,7 @@ const FarmerPage: React.FunctionComponent = () => {
     try {
       const results = calculateMultipleWeights(testInput, selectedInputType);
       setCalculationResult(results[0]); // Hiển thị kết quả đầu tiên
-      
+
       // Log tất cả kết quả nếu có nhiều số
       if (results.length > 1) {
         console.log("Tất cả kết quả:", results);
@@ -256,6 +314,11 @@ const FarmerPage: React.FunctionComponent = () => {
       if (inputType) {
         setSelectedInputType(inputType);
       }
+
+      // Load quy cách trừ bì từ API
+      if (cauHinhHeThong.result.quyCachTruBi !== undefined) {
+        setQuyCachTruBi(cauHinhHeThong.result.quyCachTruBi);
+      }
     }
   }, [cauHinhHeThong, mapApiConfigToInputType]);
 
@@ -278,7 +341,37 @@ const FarmerPage: React.FunctionComponent = () => {
     <Page className="relative flex-1 flex flex-col pb-[66px]">
       <HeaderSub title="Cấu hình nhập liệu" />
       <Box px={2} py={4}>
-        <div className="grid grid-cols-12 gap-3">
+        <div className="grid grid-cols-12 gap-6">
+          
+          {/* Quy cách trừ bì */}
+          <div className="col-span-12">
+            <Box className="rounded-lg overflow-hidden shadow-md">
+              <div className="p-4 bg-primary-color text-white text-[18px] leading-[24px] font-medium flex items-center gap-3">
+                <Icon icon='carbon:settings-edit' fontSize={18} />
+                Quy cách trừ bì
+                {isUpdatingTruBi && (
+                  <Icon icon="eos-icons:loading" fontSize={16} className="animate-spin ml-auto" />
+                )}
+              </div>
+              <div className="bg-white border-primary-color p-4">
+                <Input
+                  type="number"
+                  inputMode="numeric"
+                  maxLength={4}
+                  value={quyCachTruBi}
+                  onChange={handleQuyCachTruBiChange}
+                  disabled={isUpdatingTruBi}
+                  suffix={
+                    <Box pr={4} className="text-[16px] font-medium whitespace-nowrap">
+                      bao / 1 kg
+                    </Box>
+                  }
+                />
+              </div>
+            </Box>
+          </div>
+
+          {/* Quy cách nhập */}
           <div className="col-span-12">
             <Box className="rounded-lg overflow-hidden shadow-md">
               <div className="p-4 bg-primary-color text-white text-[18px] leading-[24px] font-medium flex items-center gap-3">
@@ -290,15 +383,15 @@ const FarmerPage: React.FunctionComponent = () => {
               </div>
               <div className="bg-white border-primary-color">
                 {inputConfigs.map((config) => (
-                  <Box 
+                  <Box
                     key={config.id}
                     py={3}
                     px={4}
-                    flex 
-                    alignItems="center" 
+                    flex
+                    alignItems="center"
                     className="gap-4 border-b last:border-b-0"
                   >
-                    <input 
+                    <input
                       className="scale-[1.4]"
                       id={config.id}
                       name="input-type"
@@ -317,10 +410,9 @@ const FarmerPage: React.FunctionComponent = () => {
               </div>
             </Box>
           </div>
-
-          {/* Test Area */}
+          {/* Test */}
           {selectedInputType && (
-            <div className="col-span-12 mt-4">
+            <div className="col-span-12">
               <Box className="rounded-lg overflow-hidden shadow-md">
                 <div className="p-4 bg-primary-color text-white text-[18px] leading-[24px] font-medium flex items-center gap-3">
                   <Icon icon='carbon:test-tool' fontSize={18} />
@@ -338,18 +430,18 @@ const FarmerPage: React.FunctionComponent = () => {
                         selectedInputType === InputType.TWO_DIGITS
                           ? 2
                           : selectedInputType === InputType.THREE_DIGITS_REMAINDER
-                          ? 3
-                          : selectedInputType === InputType.THREE_DIGITS
-                          ? 3
-                          : 4
+                            ? 3
+                            : selectedInputType === InputType.THREE_DIGITS
+                              ? 3
+                              : 4
                       }
                       value={testInput}
                       onChange={(e) => setTestInput(e.target.value)}
                       placeholder="VD: 500, 522, 555"
-                      className="w-full h-[42px] p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full h-[42px] p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-[16px] font-semibold text-gray-700"
                     />
                   </div>
-                  
+
                   {calculationResult && (
                     <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-md">
                       <div className="text-[16px] font-medium text-green-800">
@@ -357,7 +449,7 @@ const FarmerPage: React.FunctionComponent = () => {
                       </div>
                     </div>
                   )}
-                  
+
                   {testInput.trim() && !calculationResult && (
                     <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
                       <div className="text-sm text-red-800">
