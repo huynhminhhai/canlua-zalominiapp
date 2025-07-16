@@ -118,32 +118,15 @@ const RiceWeightInput: React.FC = () => {
     console.log('🚀 Calling API with data:', {...weightData, phienCanId: Number(phienCanId)});
 
     try {
-      // await new Promise(resolve => setTimeout(resolve, 500)); // Simulate network delay
 
       const dataSubmit = {...weightData, phienCanId: Number(phienCanId)};
 
       const response =  await createGiaTriCan(dataSubmit);
 
-      console.log(response);
-
       if (response && response.result) {
-        console.log(response.result?.phienCan);
         setPhienCan(response.result?.phienCan);
       }
 
-      // const mockResponse = {
-      //   success: true,
-      //   data: {
-      //     phienCanId,
-      //     trongLuong: weightData.trongLuong,
-      //     viTriTrang: weightData.viTriTrang,
-      //     viTriBang: weightData.viTriBang,
-      //     viTriCot: weightData.viTriCot,
-      //     viTriDong: weightData.viTriDong
-      //   }
-      // };
-
-      // return mockResponse;
     } catch (error) {
       console.error('Error calling API:', error);
       throw error;

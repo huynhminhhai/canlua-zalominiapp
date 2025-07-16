@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import http from "services/http";
-import { useCustomSnackbar } from "utils/useCustomSnackbar";
 
 export type GiaTriCanCreateParam = {
     phienCanId?: number;
