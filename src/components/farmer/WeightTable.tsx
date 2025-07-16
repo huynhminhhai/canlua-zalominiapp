@@ -529,7 +529,7 @@ const RiceWeightInput: React.FC = () => {
         </div>
 
         {/* Page Navigation */}
-        <div className="flex items-center gap-2 mb-6">
+        <div className="flex items-center gap-2 mb-6 flex-wrap">
           <span className="text-lg font-medium text-gray-700">Trang:</span>
           {Array.from({ length: Math.max(currentPage, pagesData.length) }, (_, i) => i + 1).map(pageNum => (
             <button
