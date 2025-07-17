@@ -15,6 +15,7 @@ import Navigation from "./navigation";
 import { pdfjs } from 'react-pdf';
 import { FarmerDetailPage, FarmerListPage } from "pages/farmer";
 import { SettingsPage } from "pages/settings";
+import { CalcPage } from "pages/calc";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -99,6 +100,9 @@ const MyApp = () => {
                       
                         {/* SETTINGS */}
                         <Route path="/settings" element={<SettingsPage></SettingsPage>}></Route>
+
+                        {/* CALC */}
+                        <Route path="/calc" element={<CalcPage></CalcPage>}></Route>
                       </Routes>
                       <Navigation />
                     </AuthWrapper>

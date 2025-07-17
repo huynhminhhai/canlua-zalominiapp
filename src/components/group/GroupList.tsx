@@ -8,10 +8,11 @@ import { FilterBar } from "components/table";
 import { formatDate, parseDate } from "components/form/DatePicker";
 import GroupCreateForm from "./GroupCreateForm";
 import { useGetNhomThuMuaList } from "apiRequest/nhomThuMua";
+import { useStoreApp } from "store/store";
 
 const GroupList: React.FC<any> = () => {
 
-    const navigate = useNavigate();
+    const { accessToken, setIsShowModalIsLogin } = useStoreApp();
 
     const [showCreateForm, setShowCreateForm] = useState(false);
     const [filters, setFilters] = useState({
@@ -19,7 +20,7 @@ const GroupList: React.FC<any> = () => {
     });
     const [param, setParam] = useState({
         page: 1,
-        pageSize: 5,
+        pageSize: 999,
         search: '',
         tuNgay: '',
         denNgay: '',
@@ -45,6 +46,14 @@ const GroupList: React.FC<any> = () => {
 
     useDebouncedParam(filters.search, 'search');
 
+    const handleToggleCreate = () => {
+        if (!accessToken) {
+            setIsShowModalIsLogin(true);
+        } else {
+            setShowCreateForm(true);
+        }
+    }
+
     const renderContent = () => {
 
         if (isLoading) {
@@ -56,7 +65,9 @@ const GroupList: React.FC<any> = () => {
                 <Box px={4}>
                     <EmptyData
                         title="Hiện chưa có nhóm thu mua nào!"
-                        desc="Nhấn vào nút Thêm để bắt đầu!"
+                        desc="Nhấn vào nút Thêm mới để bắt đầu!"
+                        handleClick={() => handleToggleCreate()}
+                        textBtn="Thêm mới"
                     />
                 </Box>
             );
@@ -71,12 +82,11 @@ const GroupList: React.FC<any> = () => {
         )
     };
 
-
     return (
         <Box>
             <FilterBar
                 showAddButton
-                onAddButtonClick={() => setShowCreateForm(true)}
+                onAddButtonClick={() => handleToggleCreate()}
             >
                 <div className="col-span-12">
                     <Input

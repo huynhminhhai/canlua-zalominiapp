@@ -20,25 +20,12 @@ const LoginModal = () => {
             title='Chức năng cần đăng nhập'
         >
             <List className="bg-white rounded-lg">
-                <div className="pt-4 pb-1 text-primary-color text-[16px] leading-[1] font-semibold">
-                    Đăng nhập
-                </div>
-                <Item
-                    onClick={() => {
-                        navigate('/login')
-                        setIsShowModalIsLogin(false)
-                    }}
-                    title="Dành cho ban điều hành"
-                    prefix={<img src={images.login} width={30} />}
-                    suffix={<Icon fontSize={20} icon="formkit:right" />}
-                    className='!px-0'
-                />
                 <Item
                     onClick={() => {
                         loginWithZalo()
                         setIsShowModalIsLogin(false)
                     }}
-                    title="Dành cho hộ gia đình"
+                    title="Liên kết số điện thoại"
                     prefix={<img src={images.zalo} width={30} />}
                     suffix={<Icon fontSize={20} icon="formkit:right" />}
                     className='!px-0'

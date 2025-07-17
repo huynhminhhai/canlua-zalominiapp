@@ -78,15 +78,9 @@ const AccountPage: React.FC = () => {
                                 <List className="bg-white rounded-lg">
                                     <ManagementTitle title="Đăng nhập" />
                                     <Item
-                                        onClick={() => navigate('/farmer-detail?id=1')}
-                                        title="test"
-                                        prefix={<img src={images.resume} width={30} />}
-                                        suffix={<Icon fontSize={20} icon="formkit:right" />}
-                                    />
-                                    <Item
                                         onClick={() => navigate('/login')}
                                         title="Bằng tài khoản"
-                                        prefix={<img src={images.zalo} width={30} />}
+                                        prefix={<img src={images.login} width={30} />}
                                         suffix={<Icon fontSize={20} icon="formkit:right" />}
                                     />
                                     <Item

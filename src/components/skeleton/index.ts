@@ -10,3 +10,4 @@ export { default as MeetingSectionSkeleton } from "./meeting/MeetingSectionSkele
 export { default as InvoiceItemSkeleton } from "./invoice/InvoiceItemSkeleton";
 export { default as ManagementItemSkeleton } from "./management/ManagementItemSkeleton";
 export { default as ChartSkeleton } from "./chart/ChartSkeleton";
+export { default as SettingsSkeleton } from "./settings/SettingsSkeletion";

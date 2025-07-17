@@ -8,8 +8,11 @@ import FarmerItem from "./FarmerItem";
 import { FilterBar } from "components/table";
 import FarmerCreateForm from "./FarmerCreateForm";
 import { useGetPhienCanList } from "apiRequest/phienCan";
+import { useStoreApp } from "store/store";
 
 const FarmerList: React.FC<any> = () => {
+
+    const { accessToken, setIsShowModalIsLogin } = useStoreApp();
     
     const [showCreateForm, setShowCreateForm] = useState(false);
     const [filters, setFilters] = useState({
@@ -44,6 +47,14 @@ const FarmerList: React.FC<any> = () => {
 
     useDebouncedParam(filters.search, 'search');
 
+    const handleToggleCreate = () => {
+        if (!accessToken) {
+            setIsShowModalIsLogin(true);
+        } else {
+            setShowCreateForm(true);
+        }
+    }
+
     const renderContent = () => {
         if (isLoading) {
             return <Box><ManagementItemSkeleton count={5} /></Box>
@@ -54,7 +65,9 @@ const FarmerList: React.FC<any> = () => {
                 <Box px={2}>
                     <EmptyData
                         title="Hiện chưa có nông dân nào!"
-                        desc="Nhấn vào nút Thêm để bắt đầu!"
+                        desc="Nhấn vào nút Thêm mới để bắt đầu!"
+                        handleClick={() => setShowCreateForm(true)}
+                        textBtn="Thêm mới"
                     />
                 </Box>
             );

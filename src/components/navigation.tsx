@@ -9,12 +9,16 @@ const Navigation: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { account, isTrigger, setIsTrigger } = useStoreApp();
+  const { account, isTrigger, setIsTrigger, accessToken, setIsShowModalIsLogin } = useStoreApp();
 
   const tabs: Record<string, MenuItem & { requiresLogin?: boolean; requiredRole?: string }> = {
     "/": {
       label: "Trang chủ",
       icon: <div className="relative"><Icon icon="solar:home-linear" /></div>,
+    },
+    "/calc": {
+      label: "Máy tính",
+      icon: <div className="relative"><Icon icon="solar:calculator-minimalistic-linear" /></div>,
     },
     "/settings": {
       label: "Cài đặt",
@@ -26,7 +30,7 @@ const Navigation: FC = () => {
     },
   };
 
-  const HAS_BOTTOM_NAVIGATION_PAGES = ["/", "/account", "/settings"];
+  const HAS_BOTTOM_NAVIGATION_PAGES = ["/", "/account", "/settings", "/calc"];
 
   const hasBottomNav = useMemo(() => {
     return HAS_BOTTOM_NAVIGATION_PAGES.includes(location.pathname);
@@ -35,13 +39,15 @@ const Navigation: FC = () => {
   if (!hasBottomNav) return null;
 
   const visibleTabs = Object.keys(tabs).filter((path) => {
-    // Luôn hiển thị các tab cố định
-    if (path === "/" || path === "/account" || path === "/settings") {
-      return true;
-    }
+    // // Luôn hiển thị các tab cố định
+    // if (path === "/" || path === "/account" || path === "/settings") {
+    //   return true;
+    // }
   
-    // Các tab khác chỉ hiện nếu đã có tài khoản (đã đăng nhập)
-    return !!account;
+    // // Các tab khác chỉ hiện nếu đã có tài khoản (đã đăng nhập)
+    // return !!account;
+
+    return true;
   });
 
   return (
@@ -53,6 +59,12 @@ const Navigation: FC = () => {
           icon={tabs[path].icon}
           activeIcon={tabs[path].activeIcon}
           onClick={() => {
+
+            if (path === "/settings" && !accessToken) {
+              setIsShowModalIsLogin(true);
+              return;
+            }      
+
             setIsTrigger(!isTrigger);
             navigate(path)
           }}

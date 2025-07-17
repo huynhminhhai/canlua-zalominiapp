@@ -1,0 +1,1 @@
+export { default as CalcPage } from "./calc";

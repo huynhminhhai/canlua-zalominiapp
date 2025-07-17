@@ -1,9 +1,10 @@
 import { Icon } from "@iconify/react";
 import { useGetCauHinhHeThong, useUpdateCauHinhHeThong } from "apiRequest/cauHinhHeThong";
 import { HeaderSub } from "components/header-sub";
-import React, { useState, useCallback, useEffect, useRef } from "react";
-import { Box, Page, Button, Input } from "zmp-ui";
+import React, { useState, useCallback, useEffect } from "react";
+import { Box, Page, Input } from "zmp-ui";
 import _ from "lodash";
+import { SettingsSkeleton } from "components/skeleton";
 
 // Enum cho các loại nhập liệu
 enum InputType {
@@ -203,8 +204,6 @@ const FarmerPage: React.FunctionComponent = () => {
         quyCachTruBi: newValue
       };
 
-      console.log('call api update quy cách trừ bì:', updatePayload);
-
       // Gọi API update
       await updateCauHinh(updatePayload);
 
@@ -263,7 +262,7 @@ const FarmerPage: React.FunctionComponent = () => {
   const handleQuyCachTruBiChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value) || 0;
     setQuyCachTruBi(value);
-    
+
     // Gọi debounced function
     debouncedUpdateQuyCachTruBi(value);
   }, [debouncedUpdateQuyCachTruBi]);
@@ -322,148 +321,140 @@ const FarmerPage: React.FunctionComponent = () => {
     }
   }, [cauHinhHeThong, mapApiConfigToInputType]);
 
-  // Hiển thị loading khi đang fetch data
-  if (isLoading) {
-    return (
-      <Page className="relative flex-1 flex flex-col pb-[66px]">
-        <HeaderSub title="Cấu hình nhập liệu" />
-        <Box px={2} py={4} className="flex items-center justify-center">
-          <div className="text-center">
-            <Icon icon="eos-icons:loading" fontSize={32} className="animate-spin text-primary-color" />
-            <div className="mt-2 text-gray-600">Đang tải cấu hình...</div>
-          </div>
-        </Box>
-      </Page>
-    );
-  }
-
   return (
     <Page className="relative flex-1 flex flex-col pb-[66px]">
-      <HeaderSub title="Cấu hình nhập liệu" />
-      <Box px={2} py={4}>
-        <div className="grid grid-cols-12 gap-6">
-          
-          {/* Quy cách trừ bì */}
-          <div className="col-span-12">
-            <Box className="rounded-lg overflow-hidden shadow-md">
-              <div className="p-4 bg-primary-color text-white text-[18px] leading-[24px] font-medium flex items-center gap-3">
-                <Icon icon='carbon:settings-edit' fontSize={18} />
-                Quy cách trừ bì
-                {isUpdatingTruBi && (
-                  <Icon icon="eos-icons:loading" fontSize={16} className="animate-spin ml-auto" />
-                )}
-              </div>
-              <div className="bg-white border-primary-color p-4">
-                <Input
-                  type="number"
-                  inputMode="numeric"
-                  maxLength={4}
-                  value={quyCachTruBi}
-                  onChange={handleQuyCachTruBiChange}
-                  disabled={isUpdatingTruBi}
-                  suffix={
-                    <Box pr={4} className="text-[16px] font-medium whitespace-nowrap">
-                      bao / 1 kg
-                    </Box>
-                  }
-                />
-              </div>
-            </Box>
-          </div>
+      <HeaderSub title="Cấu hình hệ thống" />
+      {
+        isLoading ?
+          <Box px={2} py={4} className="flex items-center justify-center">
+            <SettingsSkeleton />
+          </Box>
+          :
+          <Box px={2} py={4}>
+            <div className="grid grid-cols-12 gap-6">
 
-          {/* Quy cách nhập */}
-          <div className="col-span-12">
-            <Box className="rounded-lg overflow-hidden shadow-md">
-              <div className="p-4 bg-primary-color text-white text-[18px] leading-[24px] font-medium flex items-center gap-3">
-                <Icon icon='tdesign:gesture-typing' fontSize={18} />
-                Quy cách nhập liệu
-                {isUpdating && (
-                  <Icon icon="eos-icons:loading" fontSize={16} className="animate-spin ml-auto" />
-                )}
-              </div>
-              <div className="bg-white border-primary-color">
-                {inputConfigs.map((config) => (
-                  <Box
-                    key={config.id}
-                    py={3}
-                    px={4}
-                    flex
-                    alignItems="center"
-                    className="gap-4 border-b last:border-b-0"
-                  >
-                    <input
-                      className="scale-[1.4]"
-                      id={config.id}
-                      name="input-type"
-                      type="radio"
-                      checked={selectedInputType === config.id}
-                      onChange={() => handleInputTypeChange(config.id)}
-                      disabled={isUpdating}
-                    />
-                    <label htmlFor={config.id} className="cursor-pointer flex-1">
-                      <div className="text-[20px] leading-[24px] font-semibold text-primary-color">{config.title}</div>
-                      <div className="text-[16px] leading-[22px] font-medium text-gray-800 mt-2">{config.example}</div>
-                      <div className="text-[16px] leading-[22px] font-medium text-green-700">⟹ {config.result}</div>
-                    </label>
-                  </Box>
-                ))}
-              </div>
-            </Box>
-          </div>
-          {/* Test */}
-          {selectedInputType && (
-            <div className="col-span-12">
-              <Box className="rounded-lg overflow-hidden shadow-md">
-                <div className="p-4 bg-primary-color text-white text-[18px] leading-[24px] font-medium flex items-center gap-3">
-                  <Icon icon='carbon:test-tool' fontSize={18} />
-                  Test tính toán
-                </div>
-                <div className="bg-white p-4">
-                  <div className="mb-3">
-                    <label className="block text-[16px] leading-[22px] font-medium text-gray-700 mb-2">
-                      Nhập giá trị test (có thể nhập nhiều số cách nhau bởi dấu phẩy):
-                    </label>
-                    <input
+              {/* Quy cách trừ bì */}
+              <div className="col-span-12">
+                <Box className="rounded-lg overflow-hidden shadow-md">
+                  <div className="p-4 bg-primary-color text-white text-[18px] leading-[24px] font-medium flex items-center gap-3">
+                    <Icon icon='carbon:settings-edit' fontSize={18} />
+                    Quy cách trừ bì
+                    {isUpdatingTruBi && (
+                      <Icon icon="eos-icons:loading" fontSize={16} className="animate-spin ml-auto" />
+                    )}
+                  </div>
+                  <div className="bg-white border-primary-color p-4">
+                    <Input
+                      type="number"
                       inputMode="numeric"
-                      type="text"
-                      maxLength={
-                        selectedInputType === InputType.TWO_DIGITS
-                          ? 2
-                          : selectedInputType === InputType.THREE_DIGITS_REMAINDER
-                            ? 3
-                            : selectedInputType === InputType.THREE_DIGITS
-                              ? 3
-                              : 4
+                      maxLength={4}
+                      value={quyCachTruBi}
+                      onChange={handleQuyCachTruBiChange}
+                      disabled={isUpdatingTruBi}
+                      suffix={
+                        <Box pr={4} className="text-[16px] font-medium whitespace-nowrap">
+                          bao / 1 kg
+                        </Box>
                       }
-                      value={testInput}
-                      onChange={(e) => setTestInput(e.target.value)}
-                      placeholder="VD: 500, 522, 555"
-                      className="w-full h-[42px] p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-[16px] font-semibold text-gray-700"
                     />
                   </div>
+                </Box>
+              </div>
 
-                  {calculationResult && (
-                    <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-md">
-                      <div className="text-[16px] font-medium text-green-800">
-                        <strong>Kết quả:</strong> {calculationResult.input} ⟹ {calculationResult.output} {calculationResult.unit}
-                      </div>
+              {/* Quy cách nhập */}
+              <div className="col-span-12">
+                <Box className="rounded-lg overflow-hidden shadow-md">
+                  <div className="p-4 bg-primary-color text-white text-[18px] leading-[24px] font-medium flex items-center gap-3">
+                    <Icon icon='tdesign:gesture-typing' fontSize={18} />
+                    Quy cách nhập liệu
+                    {isUpdating && (
+                      <Icon icon="eos-icons:loading" fontSize={16} className="animate-spin ml-auto" />
+                    )}
+                  </div>
+                  <div className="bg-white border-primary-color">
+                    {inputConfigs.map((config) => (
+                      <Box
+                        key={config.id}
+                        py={3}
+                        px={4}
+                        flex
+                        alignItems="center"
+                        className="gap-4 border-b last:border-b-0"
+                      >
+                        <input
+                          className="scale-[1.4]"
+                          id={config.id}
+                          name="input-type"
+                          type="radio"
+                          checked={selectedInputType === config.id}
+                          onChange={() => handleInputTypeChange(config.id)}
+                          disabled={isUpdating}
+                        />
+                        <label htmlFor={config.id} className="cursor-pointer flex-1">
+                          <div className="text-[20px] leading-[24px] font-semibold text-primary-color">{config.title}</div>
+                          <div className="text-[16px] leading-[22px] font-medium text-gray-800 mt-2">{config.example}</div>
+                          <div className="text-[16px] leading-[22px] font-medium text-green-700">⟹ {config.result}</div>
+                        </label>
+                      </Box>
+                    ))}
+                  </div>
+                </Box>
+              </div>
+              {/* Test */}
+              {selectedInputType && (
+                <div className="col-span-12">
+                  <Box className="rounded-lg overflow-hidden shadow-md">
+                    <div className="p-4 bg-primary-color text-white text-[18px] leading-[24px] font-medium flex items-center gap-3">
+                      <Icon icon='carbon:test-tool' fontSize={18} />
+                      Test tính toán
                     </div>
-                  )}
+                    <div className="bg-white p-4">
+                      <div className="mb-3">
+                        <label className="block text-[16px] leading-[22px] font-medium text-gray-700 mb-2">
+                          Nhập giá trị test (có thể nhập nhiều số cách nhau bởi dấu phẩy):
+                        </label>
+                        <input
+                          inputMode="numeric"
+                          type="text"
+                          maxLength={
+                            selectedInputType === InputType.TWO_DIGITS
+                              ? 2
+                              : selectedInputType === InputType.THREE_DIGITS_REMAINDER
+                                ? 3
+                                : selectedInputType === InputType.THREE_DIGITS
+                                  ? 3
+                                  : 4
+                          }
+                          value={testInput}
+                          onChange={(e) => setTestInput(e.target.value)}
+                          placeholder="VD: 500, 522, 555"
+                          className="w-full h-[42px] p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-[16px] font-semibold text-gray-700"
+                        />
+                      </div>
 
-                  {testInput.trim() && !calculationResult && (
-                    <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
-                      <div className="text-sm text-red-800">
-                        <strong>Lỗi:</strong> Vui lòng nhập số hợp lệ
-                      </div>
+                      {calculationResult && (
+                        <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-md">
+                          <div className="text-[16px] font-medium text-green-800">
+                            <strong>Kết quả:</strong> {calculationResult.input} ⟹ {calculationResult.output} {calculationResult.unit}
+                          </div>
+                        </div>
+                      )}
+
+                      {testInput.trim() && !calculationResult && (
+                        <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
+                          <div className="text-sm text-red-800">
+                            <strong>Lỗi:</strong> Vui lòng nhập số hợp lệ
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  )}
+                  </Box>
                 </div>
-              </Box>
-            </div>
-          )}
+              )}
 
-        </div>
-      </Box>
+            </div>
+          </Box>
+      }
     </Page>
   );
 };

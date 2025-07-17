@@ -61,7 +61,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                             >
                                 <div className="flex items-center justify-center gap-1">
                                     <Icon fontSize={18} icon="material-symbols:add-rounded" />
-                                    Thêm
+                                    Thêm mới
                                 </div>
                             </Button>
                         </Box>
