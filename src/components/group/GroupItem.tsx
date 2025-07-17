@@ -16,12 +16,12 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
     return (
         <Box className="meeting-item" onClick={() => navigate(`/farmer-list?id=${data.id}&tenNhom=${data.tenNhom}`)}>
             <Box>
-                <div className="flex items-start gap-3 border-[1px] rounded-xl bg-white shadow-sm">
-                    <Box px={4} py={4} width={98} height={152} className="bg-blue-100 text-primary-color rounded-xl relative overflow-hidden scale-[0.95]">
+                <div className="flex items-start gap-3 rounded-xl bg-white shadow-sm pl-[2px]">
+                    <Box px={4} py={4} width={108} height={152} className="bg-blue-100 text-primary-color rounded-xl relative overflow-hidden scale-[0.95]">
                         <img className="w-[100%] h-[100%] absolute top-0 left-0 opacity-5 scale-[2.5]" src={images.shape4} alt="shape" />
                         <div className="flex-center flex-col h-[100%] relative z-[2]">
-                            <div className="text-[16px] leading-[1] font-semibold text-center mb-2 whitespace-nowrap">{renderDayOfWeek(formatDate(data.ngayTao))}</div>
-                            <div className="text-[14px] leading-[1] font-semibold text-center">{formatDate(data.ngayTao)}</div>
+                            <div className="text-[18px] leading-[1] font-semibold text-center mb-2 whitespace-nowrap">{data?.ngayCapNhat && renderDayOfWeek(formatDate(data.ngayCapNhat))}</div>
+                            <div className="text-[16px] leading-[1] font-semibold text-center">{data?.ngayCapNhat && formatDate(data.ngayCapNhat)}</div>
                         </div>
                     </Box>
                     <Box py={2} pr={2} className="flex-1">
@@ -46,7 +46,7 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
                                         lần cân (bao)
                                     </li>
                                     <li className="flex items-center gap-[4px] mt-[4px] text-[14px] text-gray-500">
-                                        <Icon icon='solar:phone-outline' fontSize={14} />
+                                        <Icon icon='solar:phone-outline' fontSize={18} />
                                         <span className="font-medium">
                                             {data.moTa || 'Chưa có SĐT'}
                                         </span>

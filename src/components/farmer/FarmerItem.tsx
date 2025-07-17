@@ -30,7 +30,7 @@ const InfoItem: React.FC<InfoItemProps> = ({
             <div className="text-[16px]">{title}</div>
             {
                 note &&
-                <div className="text-[16px] text-gray-color font-medium"> ({note})</div>
+                <div className="text-[16px] text-gray-600 font-semibold"> ({note})</div>
             }
             <div className={`${colorClass} font-semibold`}>{value}</div>
         </div>
