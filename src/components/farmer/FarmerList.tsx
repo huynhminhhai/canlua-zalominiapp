@@ -1,4 +1,3 @@
-import { useGetNewsListNormal } from "apiRequest/news";
 import { EmptyData } from "components/data";
 import { ManagementItemSkeleton } from "components/skeleton";
 import { debounce } from "lodash";

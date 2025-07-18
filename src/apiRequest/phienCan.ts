@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import http from "services/http";
+import { useStoreApp } from "store/store";
 import { useCustomSnackbar } from "utils/useCustomSnackbar";
 
 type PhienCanQueryParams = {
@@ -48,6 +49,7 @@ export const useGetPhienCanList = (id: number) => {
 export const useCreatePhienCan = () => {
     const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
+    const { setIsShowModalUpgrade } = useStoreApp();
 
     return useMutation({
         mutationFn: async (formData: PhienCanCreateParams) => {
@@ -57,7 +59,7 @@ export const useCreatePhienCan = () => {
 
             if (res?.result?.error !== 200) {
                 
-                showError(res?.result?.message);
+                setIsShowModalUpgrade(true);
 
                 return;
             }

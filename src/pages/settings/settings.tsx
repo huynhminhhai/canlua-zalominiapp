@@ -425,12 +425,12 @@ const FarmerPage: React.FunctionComponent = () => {
                   <Box className="rounded-lg overflow-hidden shadow-md">
                     <div className="p-4 bg-primary-color text-white text-[18px] leading-[24px] font-medium flex items-center gap-3">
                       <Icon icon='carbon:test-tool' fontSize={18} />
-                      Test tính toán
+                      Nhập thử
                     </div>
                     <div className="bg-white p-4">
                       <div className="mb-3">
                         <label className="block text-[16px] leading-[22px] font-medium text-gray-700 mb-2">
-                          Nhập giá trị test (có thể nhập nhiều số cách nhau bởi dấu phẩy):
+                          Nhập số cân để thử nghiệm (cách nhau bởi dấu phẩy, ví dụ: 500, 522):
                         </label>
                         <input
                           inputMode="numeric"

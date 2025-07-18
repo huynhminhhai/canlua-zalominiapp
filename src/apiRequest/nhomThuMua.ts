@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import http from "services/http";
+import { useStoreApp } from "store/store";
 import { buildQueryString } from "utils/handleApi";
 import { useCustomSnackbar } from "utils/useCustomSnackbar";
 
@@ -42,6 +43,7 @@ export const useGetNhomThuMuaList = (param: NhomThuMuaQueryParams) => {
 export const useCreateNhomThuMua = () => {
     const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
+    const { setIsShowModalUpgrade } = useStoreApp();
 
     return useMutation({
         mutationFn: async (formData: any) => {
@@ -51,7 +53,7 @@ export const useCreateNhomThuMua = () => {
 
             if (res?.result?.error !== 200) {
                 
-                showError(res?.result?.message);
+                setIsShowModalUpgrade(true);
 
                 return;
             }

@@ -235,7 +235,7 @@ export default function BusinessCalculator() {
         </div> */}
 
       {/* Display */}
-      <div className="bg-gray-900 text-white text-right font-mono p-4 rounded-lg mb-4 min-h-16 flex items-center text-3xl shadow-sm justify-end">
+      <div className="bg-gray-900 text-white text-right font-mono px-4 py-6 rounded-lg mb-4 min-h-16 flex items-center text-3xl shadow-sm justify-end">
         {/* {formatNumber(display)} */}
         {isExpressionMode ? (expression || '0') : (expression || ' ')}
       </div>
@@ -244,19 +244,19 @@ export default function BusinessCalculator() {
       <div className="grid grid-cols-4 gap-2 text-2xl">
         <button
           onClick={clear}
-          className="col-span-2 text-[16px] bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold shadow-sm"
+          className="col-span-2 text-[16px] bg-blue-300 text-white py-3 rounded-lg font-semibold shadow-sm"
         >
           Xóa (AC)
         </button>
         <button
           onClick={isExpressionMode ? backspaceExpression : backspace}
-          className="bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold"
+          className="bg-blue-300 text-white py-3 rounded-lg font-semibold"
         >
           <Icon icon={"carbon:delete"} fontSize={24} className='m-auto' />
         </button>
         <button
           onClick={() => isExpressionMode ? inputToExpression('÷') : performOperation('/')}
-          className="bg-gray-300 shadow-sm text-gray-800 py-3 rounded-lg font-semibold "
+          className="bg-blue-300 shadow-sm text-white py-3 rounded-lg font-semibold "
         >
           ÷
         </button>
@@ -272,7 +272,7 @@ export default function BusinessCalculator() {
         ))}
         <button
           onClick={() => isExpressionMode ? inputToExpression('×') : performOperation('*')}
-          className="bg-gray-300 shadow-sm text-gray-800 py-3 rounded-lg font-semibold "
+          className="bg-blue-300 shadow-sm text-white py-3 rounded-lg font-semibold "
         >
           ×
         </button>
@@ -288,7 +288,7 @@ export default function BusinessCalculator() {
         ))}
         <button
           onClick={() => isExpressionMode ? inputToExpression('-') : performOperation('-')}
-          className="bg-gray-300 shadow-sm text-gray-800 py-3 rounded-lg font-semibold "
+          className="bg-blue-300 shadow-sm text-white py-3 rounded-lg font-semibold "
         >
           -
         </button>
@@ -304,7 +304,7 @@ export default function BusinessCalculator() {
         ))}
         <button
           onClick={() => isExpressionMode ? inputToExpression('+') : performOperation('+')}
-          className="bg-gray-300 shadow-sm text-gray-800 py-3 rounded-lg font-semibold "
+          className="bg-blue-300 shadow-sm text-white py-3 rounded-lg font-semibold "
         >
           +
         </button>
@@ -323,7 +323,7 @@ export default function BusinessCalculator() {
         </button>
         <button
           onClick={() => isExpressionMode ? calculateExpression() : performOperation('=')}
-          className="bg-blue-400 text-white py-3 rounded-lg font-semibold shadow-sm"
+          className="bg-blue-300 text-white py-3 rounded-lg font-semibold shadow-sm"
         >
           =
         </button>

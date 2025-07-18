@@ -100,9 +100,11 @@ const InvoiceDetailPage: React.FC = () => {
                                     <div className="text-[15px] font-medium text-gray-500 mb-1">Ngày lập hóa đơn</div>
                                     <div className="text-[20px] font-semibold">
                                         {
-                                            isPending && <Icon icon={'eos-icons:loading'} fontSize={18} />
+                                            isPending ? <Icon icon={'eos-icons:loading'} fontSize={18} /> :
+                                                (
+                                                    paymentData && formatDate(paymentData.thoiGianTao)
+                                                )
                                         }
-                                        {paymentData && formatDate(paymentData.thoiGianTao)}
                                     </div>
                                 </div>
                             </div>
@@ -112,9 +114,11 @@ const InvoiceDetailPage: React.FC = () => {
                                     <div className="text-[15px] font-medium text-gray-500 mb-1">Thời hạn đến</div>
                                     <div className="text-[20px] font-semibold">
                                         {
-                                            isPending && <Icon icon={'eos-icons:loading'} fontSize={18} />
+                                            isPending ? <Icon icon={'eos-icons:loading'} fontSize={18} /> :
+                                                (
+                                                    paymentData?.ngayKetThuc && formatDate(paymentData.ngayKetThuc)
+                                                )
                                         }
-                                        {paymentData?.ngayKetThuc && formatDate(paymentData.ngayKetThuc)}
                                     </div>
                                 </div>
                             </div>
@@ -122,10 +126,14 @@ const InvoiceDetailPage: React.FC = () => {
                             <div className="col-span-6">
                                 <div className="flex flex-col gap-1">
                                     <div className="text-[15px] font-medium text-gray-500 mb-1">Loại gói</div>
-                                    {
-                                        isPending && <Icon icon={'eos-icons:loading'} fontSize={18} />
-                                    }
-                                    <div className="text-[20px] font-semibold">{paymentData && `${paymentData.chuKy} tháng`}</div>
+                                    <div className="text-[20px] font-semibold">
+                                        {
+                                            isPending ? <Icon icon={'eos-icons:loading'} fontSize={18} /> :
+                                                (
+                                                    paymentData && `${paymentData.chuKy} tháng`
+                                                )
+                                        }
+                                    </div>
                                 </div>
                             </div>
 
@@ -134,9 +142,11 @@ const InvoiceDetailPage: React.FC = () => {
                                     <div className="text-[15px] font-medium text-gray-500 mb-1">Tự động gia hạn</div>
                                     <div className="text-[20px] font-semibold">
                                         {
-                                            isPending && <Icon icon={'eos-icons:loading'} fontSize={18} />
+                                            isPending ? <Icon icon={'eos-icons:loading'} fontSize={18} /> :
+                                                (
+                                                    paymentData && (paymentData.tuDongGiaHan ? 'Có' : 'Không')
+                                                )
                                         }
-                                        {paymentData && (paymentData.tuDongGiaHan ? 'Có' : 'Không')}
                                     </div>
                                 </div>
                             </div>
@@ -146,9 +156,9 @@ const InvoiceDetailPage: React.FC = () => {
                                     <div className="text-[15px] font-medium text-gray-500 mb-1">Số tiền</div>
                                     <div className="text-[24px] font-bold text-blue-600">
                                         {
-                                            isPending && <Icon icon={'eos-icons:loading'} fontSize={20} />
+                                            isPending ? <Icon icon={'eos-icons:loading'} fontSize={20} /> :
+                                                (paymentData && `${formatCurrency(paymentData.giaTien)} đ`)
                                         }
-                                        {paymentData && `${formatCurrency(paymentData.giaTien)} đ`}
                                     </div>
                                 </div>
                             </div>
@@ -157,13 +167,13 @@ const InvoiceDetailPage: React.FC = () => {
                                 <div className="flex flex-col gap-1">
                                     <div className="text-[15px] font-medium text-gray-500 mb-1">Trạng thái</div>
                                     {
-                                        isPending && <Icon icon={'eos-icons:loading'} fontSize={18} />
-                                    }
-                                    {
-                                        statusInfo &&
-                                        <div className={`${statusInfo.bgColor} ${statusInfo.textColor} text-[14px] font-semibold leading-[1] text-center px-3 py-[6px] rounded-xl w-fit`}>
-                                            {statusInfo.text}
-                                        </div>
+                                        isPending ? <Icon icon={'eos-icons:loading'} fontSize={18} /> :
+                                            (
+                                                statusInfo &&
+                                                <div className={`${statusInfo.bgColor} ${statusInfo.textColor} text-[14px] font-semibold leading-[1] text-center px-3 py-[6px] rounded-xl w-fit`}>
+                                                    {statusInfo.text}
+                                                </div>
+                                            )
                                     }
                                 </div>
                             </div>
@@ -174,15 +184,14 @@ const InvoiceDetailPage: React.FC = () => {
                             {/* <div className="text-[15px] px-3 font-medium text-gray-color">QR code</div> */}
                             <div>
                                 {
-                                    isPending &&
-                                    // <Icon icon={'uim:image-v'} fontSize={300} className="opacity-60" />
-                                    <div className="w-[63%] h-auto mx-auto">
-                                        <Skeleton count={1} height={250} />
-                                    </div>
-                                }
-                                {
-                                    qrCodeData?.qrcodeImage &&
-                                    <img className="w-[80%] h-auto mx-auto" src={`data:image/jpeg;base64,${qrCodeData.qrcodeImage}`} alt="qrcode" />
+                                    isPending ?
+                                        <div className="w-[63%] h-auto mx-auto">
+                                            <Skeleton count={1} height={250} />
+                                        </div> :
+                                        (
+                                            qrCodeData?.qrcodeImage &&
+                                            <img className="w-[80%] h-auto mx-auto" src={`data:image/jpeg;base64,${qrCodeData.qrcodeImage}`} alt="qrcode" />
+                                        )
                                 }
                             </div>
                         </div>

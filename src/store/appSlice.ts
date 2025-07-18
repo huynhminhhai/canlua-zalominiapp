@@ -3,6 +3,7 @@ export interface AppSliceType {
     isShowModalRegisterAp: boolean;
     isShowModalIsComingSoon: boolean;
     isShowModalIsLogin: boolean;
+    isShowModalUpgrade: boolean;
     isResidentMainTab: string;
     isTrigger: boolean;
     currentPlayingVideo: HTMLVideoElement | null;
@@ -13,6 +14,7 @@ export interface AppSliceType {
     setIsShowModalRegisterAp: (show: boolean) => void;
     setIsShowModalIsComingSoon: (show: boolean) => void;
     setIsShowModalIsLogin: (show: boolean) => void;
+    setIsShowModalUpgrade: (show: boolean) => void;
     setIsTrigger: (show: boolean) => void;
     setCurrentPlayingVideo: (video: HTMLVideoElement | null) => void;
     setPlayingVideoId: (videoId: string | null) => void;
@@ -23,6 +25,7 @@ export const createAppSlice = (set: any): AppSliceType => ({
     isShowModalRegisterAp: false,
     isShowModalIsComingSoon: false,
     isShowModalIsLogin: false,
+    isShowModalUpgrade: false,
     isResidentMainTab: 'residentTab',
     isTrigger: false,
     currentPlayingVideo: null,
@@ -55,6 +58,12 @@ export const createAppSlice = (set: any): AppSliceType => ({
         set((state: AppSliceType) => ({
             ...state,
             isShowModalIsLogin: show,
+        })
+        ),
+    setIsShowModalUpgrade: (show: boolean) =>
+        set((state: AppSliceType) => ({
+            ...state,
+            isShowModalUpgrade: show,
         })
         ),
     setIsTrigger: (show: boolean) =>

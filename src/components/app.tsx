@@ -10,7 +10,7 @@ import { useStoreApp } from "store/store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { getDataFromStorage } from "services/zalo";
 import ForbiddenPage from "pages/403";
-import { IsComingSoonModal, LoginModal, RegisterApModal } from "./modal";
+import { IsComingSoonModal, LoginModal, RegisterApModal, UpgradeModal } from "./modal";
 import Navigation from "./navigation";
 import { pdfjs } from 'react-pdf';
 import { FarmerDetailPage, FarmerListPage } from "pages/farmer";
@@ -77,6 +77,7 @@ const MyApp = () => {
               <RegisterApModal />
               <IsComingSoonModal />
               <LoginModal />
+              <UpgradeModal />
               <LoadingFullScreen isLoading={isLoadingFullScreen} />
               <Routes>
 

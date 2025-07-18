@@ -14,7 +14,8 @@ const BlurLoading = ({ isLoading }) => {
         >
           <div>
             <motion.img
-              width={80}
+              className="rounded-lg"
+              width={60}
               src={images.logopng}
               alt="logo"
               initial={{ opacity: 0.5, scale: 0.9 }}

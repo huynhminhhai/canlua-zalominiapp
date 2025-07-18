@@ -1,3 +1,4 @@
+import { Icon } from '@iconify/react';
 import { useGetGoiDangKyMoiNhat, useGetGoiSuDungById } from 'apiRequest/goiSuDung';
 import { MeetingItemSkeleton } from 'components/skeleton';
 import React from 'react'
@@ -19,8 +20,11 @@ const PlanCurrent = () => {
 
         if (!data?.result) {
             return (
-                <Box>
-                    Chưa kích hoạt gói sử dụng nào
+                <Box px={4} py={6} className='bg-white rounded-xl shadow-sm border-[1px]'>
+                    <div className='text-[16px] font-medium flex items-center gap-2'>
+                        <Icon icon="mynaui:package-solid" fontSize={22} />
+                        Bạn chưa đăng ký gói dịch vụ nào
+                    </div>
                 </Box>
             );
         }

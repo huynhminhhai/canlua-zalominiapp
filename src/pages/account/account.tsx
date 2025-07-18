@@ -45,14 +45,12 @@ const AccountPage: React.FC = () => {
                                     <Avatar className="border-[2px] border-primary-color" src={images.vnpt} size={80} />
                                 </div>
                                 <div className="flex flex-col w-full">
-                                    <div className="text-[22px] leading-6 font-semibold text-primary-color mb-2 tracking-[1.2px]">{account && account?.phoneNumber}</div>
+                                    <div className="text-[18px] leading-6 font-semibold text-primary-color mb-2 tracking-[1.2px]">{account && account?.phoneNumber}</div>
 
                                     <div className="text-[15px] font-medium flex items-center gap-1">
                                         <Icon icon="fluent:premium-24-regular" fontSize={18} className="mb-[0px]" />
                                         {
-                                            isLoading && <Icon icon="line-md:loading-twotone-loop" fontSize={16} />
-                                        }
-                                        {
+                                            isLoading ? <Icon icon="line-md:loading-twotone-loop" fontSize={16} /> :
                                             data && data?.result ? `Gói ${data?.result?.chuKy} tháng` :
                                                 'Tài khoản miễn phí'
                                         }
