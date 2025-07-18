@@ -10,6 +10,7 @@ import { formatCurrency } from "utils/number"
 import { useStoreApp } from "store/store"
 import { saveImageFromZalo } from "services/zalo"
 import { useCustomSnackbar } from "utils/useCustomSnackbar"
+import Skeleton from "react-loading-skeleton"
 
 const getStatusInfo = (status) => {
     switch (status) {
@@ -91,8 +92,8 @@ const InvoiceDetailPage: React.FC = () => {
             <Box px={2} pb={4} pt={4}>
                 <Box py={4} px={2} className="bg-white rounded-lg shadow-md relative overflow-hidden">
                     <Box pb={4} mb={4} className="dashed-border-bottom">
-                        <div className="w-[22px] h-[22px] bg-[#ebebeb] rounded-full absolute top-[208px] left-[-14px]"></div>
-                        <div className="w-[22px] h-[22px] bg-[#ebebeb] rounded-full absolute top-[208px] right-[-14px]"></div>
+                        <div className="w-[22px] h-[22px] bg-[#ebebeb] rounded-full absolute top-[234px] left-[-14px]"></div>
+                        <div className="w-[22px] h-[22px] bg-[#ebebeb] rounded-full absolute top-[234px] right-[-14px]"></div>
                         <div className="grid grid-cols-12 gap-4 px-3 py-4">
                             <div className="col-span-6">
                                 <div className="flex flex-col gap-1">
@@ -169,16 +170,19 @@ const InvoiceDetailPage: React.FC = () => {
                         </div>
                     </Box>
                     <Box>
-                        <div className="flex flex-col gap-1 py-3">
-                            <div className="text-[15px] px-3 font-medium text-gray-color">QR code</div>
+                        <div className="flex flex-col gap-1">
+                            {/* <div className="text-[15px] px-3 font-medium text-gray-color">QR code</div> */}
                             <div>
                                 {
                                     isPending &&
-                                    <Icon icon={'uim:image-v'} fontSize={350} className="opacity-60" />
+                                    // <Icon icon={'uim:image-v'} fontSize={300} className="opacity-60" />
+                                    <div className="w-[63%] h-auto mx-auto">
+                                        <Skeleton count={1} height={250} />
+                                    </div>
                                 }
                                 {
                                     qrCodeData?.qrcodeImage &&
-                                    <img className="w-full h-auto" src={`data:image/jpeg;base64,${qrCodeData.qrcodeImage}`} alt="qrcode" />
+                                    <img className="w-[80%] h-auto mx-auto" src={`data:image/jpeg;base64,${qrCodeData.qrcodeImage}`} alt="qrcode" />
                                 }
                             </div>
                         </div>

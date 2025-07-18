@@ -45,10 +45,10 @@ const AccountPage: React.FC = () => {
                                     <Avatar className="border-[2px] border-primary-color" src={images.vnpt} size={80} />
                                 </div>
                                 <div className="flex flex-col w-full">
-                                    <div className="text-[20px] leading-6 font-semibold text-primary-color mb-2 tracking-[1px]">{account && account?.phoneNumber}</div>
+                                    <div className="text-[22px] leading-6 font-semibold text-primary-color mb-2 tracking-[1.2px]">{account && account?.phoneNumber}</div>
 
-                                    <div className="text-[15px] font-semibold flex items-center gap-1">
-                                        <Icon icon="fluent:premium-16-filled" fontSize={16} className="mb-[2px]" />
+                                    <div className="text-[15px] font-medium flex items-center gap-1">
+                                        <Icon icon="fluent:premium-24-regular" fontSize={18} className="mb-[0px]" />
                                         {
                                             isLoading && <Icon icon="line-md:loading-twotone-loop" fontSize={16} />
                                         }
@@ -59,7 +59,7 @@ const AccountPage: React.FC = () => {
                                     </div>
                                     {
                                         data && data?.result?.ngayKetThuc &&
-                                        <div className="font-semibold flex items-center gap-1">
+                                        <div className="font-medium flex items-center gap-1">
                                             {/* <Icon icon={'ri:time-fill'} fontSize={16} /> */}
                                             Hạn sử dụng:
                                             <span className="text-orange-600">
