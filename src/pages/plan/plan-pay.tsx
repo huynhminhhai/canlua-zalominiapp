@@ -8,7 +8,7 @@ import { formatDate } from "utils/date"
 import { Box, Button, Page } from "zmp-ui"
 import { formatCurrency } from "utils/number"
 import { useStoreApp } from "store/store"
-import { downloadFileHelper } from "services/zalo"
+import { saveImageFromZalo } from "services/zalo"
 import { useCustomSnackbar } from "utils/useCustomSnackbar"
 
 const getStatusInfo = (status) => {
@@ -71,10 +71,12 @@ const InvoiceDetailPage: React.FC = () => {
 
     const handleDownloadQrCode = async (fileUrl: string) => {
 
+        console.log(fileUrl);
+
         setIsLoadingFullScreen(true);
 
         try {
-            await downloadFileHelper(fileUrl);
+            await saveImageFromZalo(fileUrl);
             showSuccess('Tải tập tin thành công!');
         } catch (error) {
             showWarning('Tải tập tin thất bại!');
@@ -84,96 +86,116 @@ const InvoiceDetailPage: React.FC = () => {
     };
 
     return (
-        <Page className="relative flex-1 flex flex-col !bg-[#f4f5f6]">
-            <Box>
-                <HeaderSub title="Thanh toán gói nâng cấp" />
-                <Box px={2} pb={4} pt={10}>
-                    <Box p={4} className="bg-white rounded-lg">
-                        <Box pb={4} mb={4} className="dashed-border-bottom relative">
-                            <div className="w-[22px] h-[22px] bg-[#f4f5f6] rounded-full absolute bottom-[-12px] left-[-25px]"></div>
-                            <div className="w-[22px] h-[22px] bg-[#f4f5f6] rounded-full absolute bottom-[-12px] right-[-25px]"></div>
-                            <div className="grid grid-cols-12 gap-3 px-3 py-4">
-                                <div className="col-span-6">
-                                    <div className="flex flex-col gap-1">
-                                        <div className="text-[12px] font-medium text-gray-500">Ngày lập hóa đơn</div>
-                                        <div className="text-[16px] font-semibold">
-                                            {paymentData && formatDate(paymentData.thoiGianTao)}
-                                        </div>
+        <Page className="relative flex-1 flex flex-col pb-[66px]">
+            <HeaderSub title="Thanh toán gói nâng cấp" />
+            <Box px={2} pb={4} pt={4}>
+                <Box py={4} px={2} className="bg-white rounded-lg shadow-md relative overflow-hidden">
+                    <Box pb={4} mb={4} className="dashed-border-bottom">
+                        <div className="w-[22px] h-[22px] bg-[#ebebeb] rounded-full absolute top-[208px] left-[-14px]"></div>
+                        <div className="w-[22px] h-[22px] bg-[#ebebeb] rounded-full absolute top-[208px] right-[-14px]"></div>
+                        <div className="grid grid-cols-12 gap-4 px-3 py-4">
+                            <div className="col-span-6">
+                                <div className="flex flex-col gap-1">
+                                    <div className="text-[15px] font-medium text-gray-500 mb-1">Ngày lập hóa đơn</div>
+                                    <div className="text-[20px] font-semibold">
+                                        {
+                                            isPending && <Icon icon={'eos-icons:loading'} fontSize={18} />
+                                        }
+                                        {paymentData && formatDate(paymentData.thoiGianTao)}
                                     </div>
                                 </div>
-
-                                <div className="col-span-6">
-                                    <div className="flex flex-col gap-1">
-                                        <div className="text-[12px] font-medium text-gray-500">Thời hạn đến</div>
-                                        <div className="text-[16px] font-semibold">
-                                            {paymentData?.ngayKetThuc && formatDate(paymentData.ngayKetThuc)}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="col-span-6">
-                                    <div className="flex flex-col gap-1">
-                                        <div className="text-[12px] font-medium text-gray-500">Loại gói</div>
-                                        <div className="text-[16px] font-semibold">{paymentData && paymentData.chuKy} tháng</div>
-                                    </div>
-                                </div>
-
-                                <div className="col-span-6">
-                                    <div className="flex flex-col gap-1">
-                                        <div className="text-[12px] font-medium text-gray-500">Tự động gia hạn</div>
-                                        <div className="text-[16px] font-semibold">
-                                            {paymentData && paymentData.tuDongGiaHan ? 'Có' : 'Không'}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="col-span-6">
-                                    <div className="flex flex-col gap-1">
-                                        <div className="text-[12px] font-medium text-gray-500">Số tiền</div>
-                                        <div className="text-[20px] font-semibold text-blue-600">
-                                            {paymentData && formatCurrency(paymentData.giaTien)}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {
-                                    statusInfo &&
-                                    <div className="col-span-6">
-                                        <div className="flex flex-col gap-1">
-                                            <div className="text-[12px] font-medium text-gray-500">Trạng thái</div>
-                                            <div className={`${statusInfo.bgColor} ${statusInfo.textColor} text-[12px] font-semibold leading-[1] text-center px-3 py-[6px] rounded-xl w-fit`}>
-                                                {statusInfo.text}
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
                             </div>
-                        </Box>
-                        <Box>
-                            <div className="flex flex-col gap-1 px-3 py-4">
-                                <div className="text-[12px] font-medium text-gray-color">QR code</div>
-                                <div>
+
+                            <div className="col-span-6">
+                                <div className="flex flex-col gap-1">
+                                    <div className="text-[15px] font-medium text-gray-500 mb-1">Thời hạn đến</div>
+                                    <div className="text-[20px] font-semibold">
+                                        {
+                                            isPending && <Icon icon={'eos-icons:loading'} fontSize={18} />
+                                        }
+                                        {paymentData?.ngayKetThuc && formatDate(paymentData.ngayKetThuc)}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="col-span-6">
+                                <div className="flex flex-col gap-1">
+                                    <div className="text-[15px] font-medium text-gray-500 mb-1">Loại gói</div>
                                     {
-                                        qrCodeData?.qrcodeImage &&
-                                        <img className="w-full h-auto" src={`data:image/jpeg;base64,${qrCodeData.qrcodeImage}`} alt="qrcode" />
+                                        isPending && <Icon icon={'eos-icons:loading'} fontSize={18} />
+                                    }
+                                    <div className="text-[20px] font-semibold">{paymentData && `${paymentData.chuKy} tháng`}</div>
+                                </div>
+                            </div>
+
+                            <div className="col-span-6">
+                                <div className="flex flex-col gap-1">
+                                    <div className="text-[15px] font-medium text-gray-500 mb-1">Tự động gia hạn</div>
+                                    <div className="text-[20px] font-semibold">
+                                        {
+                                            isPending && <Icon icon={'eos-icons:loading'} fontSize={18} />
+                                        }
+                                        {paymentData && (paymentData.tuDongGiaHan ? 'Có' : 'Không')}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="col-span-6">
+                                <div className="flex flex-col gap-1">
+                                    <div className="text-[15px] font-medium text-gray-500 mb-1">Số tiền</div>
+                                    <div className="text-[24px] font-bold text-blue-600">
+                                        {
+                                            isPending && <Icon icon={'eos-icons:loading'} fontSize={20} />
+                                        }
+                                        {paymentData && `${formatCurrency(paymentData.giaTien)} đ`}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="col-span-6">
+                                <div className="flex flex-col gap-1">
+                                    <div className="text-[15px] font-medium text-gray-500 mb-1">Trạng thái</div>
+                                    {
+                                        isPending && <Icon icon={'eos-icons:loading'} fontSize={18} />
+                                    }
+                                    {
+                                        statusInfo &&
+                                        <div className={`${statusInfo.bgColor} ${statusInfo.textColor} text-[14px] font-semibold leading-[1] text-center px-3 py-[6px] rounded-xl w-fit`}>
+                                            {statusInfo.text}
+                                        </div>
                                     }
                                 </div>
                             </div>
-                        </Box>
+                        </div>
                     </Box>
-                    {
-                        qrCodeData?.qrcodeImage
-                        &&
-                        <Box mt={4}>
-                            <Button onClick={() => handleDownloadQrCode(qrCodeData?.qrcodeImage)} className="!bg-white !text-gray-color" size="large" fullWidth>
-                                <div className="flex items-center gap-2 justify-center">
-                                    <Icon className="mt-1" fontSize={16} icon='line-md:download' />
-                                    <span className="font-semibold">Lưu mã QR Code</span>
-                                </div>
-                            </Button>
-                        </Box>
-                    }
+                    <Box>
+                        <div className="flex flex-col gap-1 py-3">
+                            <div className="text-[15px] px-3 font-medium text-gray-color">QR code</div>
+                            <div>
+                                {
+                                    isPending &&
+                                    <Icon icon={'uim:image-v'} fontSize={350} className="opacity-60" />
+                                }
+                                {
+                                    qrCodeData?.qrcodeImage &&
+                                    <img className="w-full h-auto" src={`data:image/jpeg;base64,${qrCodeData.qrcodeImage}`} alt="qrcode" />
+                                }
+                            </div>
+                        </div>
+                    </Box>
                 </Box>
+                {
+                    qrCodeData?.qrcodeImage
+                    &&
+                    <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3 px-3 pt-3">
+                        <Button variant="secondary" onClick={() => handleDownloadQrCode(`data:image/jpeg;base64,${qrCodeData.qrcodeImage}`)} size="large" fullWidth>
+                            <div className="flex items-center gap-2 justify-center">
+                                <Icon className="mt-1" fontSize={16} icon='line-md:download' />
+                                <span className="font-semibold">Lưu mã QR Code</span>
+                            </div>
+                        </Button>
+                    </div>
+                }
             </Box>
         </Page>
     )

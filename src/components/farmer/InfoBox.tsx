@@ -20,7 +20,7 @@ const InfoBox = ({
     span = 6,
     note,
     formatNumber = false,
-    fs = 22,
+    fs = 24,
     fw = 'semibold',
     labelFs = 15,
     noteFs = 14
@@ -35,7 +35,12 @@ const InfoBox = ({
         <div className={`col-span-${span} h-full`}>
             <div className='flex flex-col items-center gap-1 px-2 py-4 border-[1px] h-full'>
                 <div className={`text-[${labelFs}px] text-gray-600 leading-[22px] font-medium`}>{label}</div>
-                <div className={`text-[${fs}px] ${colorClass} leading-[24px] font-${fw}`}>
+                <div
+                    style={{
+                        fontSize: `${fs}px`
+                    }}
+                    className={`${colorClass} leading-[1.5] font-${fw}`}
+                >
                     {displayValue}
                 </div>
                 {note && (

@@ -11,9 +11,6 @@ const PlanCurrent = () => {
 
     const { data: goiSuDung, isLoading: isLoadingGoiSuDung } = useGetGoiSuDungById(data?.result?.goiSuDungId);
 
-    console.log(data?.result)
-    console.log('goi su dung', goiSuDung?.result)
-
     const renderContent = () => {
 
         if (isLoading || isLoadingGoiSuDung) {

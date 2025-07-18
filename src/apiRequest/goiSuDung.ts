@@ -52,6 +52,7 @@ export const useGetGoiSuDungById = (id: Number) => {
             const res = await goiSuDungApiRequest.getGoiSuDungById(id);
             return res
         },
+        enabled: !!id,
         staleTime: 0,
         retry: 1,
     });

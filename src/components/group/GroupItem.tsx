@@ -16,7 +16,7 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
     return (
         <Box className="meeting-item" onClick={() => navigate(`/farmer-list?id=${data.id}&tenNhom=${data.tenNhom}`)}>
             <Box>
-                <div className="flex items-start gap-3 rounded-xl bg-white shadow-sm pl-[2px]">
+                <div className="flex items-start gap-3 rounded-xl bg-white shadow-sm pl-[1px]">
                     <Box px={4} py={4} width={108} height={152} className="bg-blue-100 text-primary-color rounded-xl relative overflow-hidden scale-[0.95]">
                         <img className="w-[100%] h-[100%] absolute top-0 left-0 opacity-5 scale-[2.5]" src={images.shape4} alt="shape" />
                         <div className="flex-center flex-col h-[100%] relative z-[2]">

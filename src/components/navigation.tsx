@@ -21,7 +21,7 @@ const Navigation: FC = () => {
       icon: <div className="relative"><Icon icon="solar:calculator-minimalistic-linear" /></div>,
     },
     "/settings": {
-      label: "Cài đặt",
+      label: "Cấu hình",
       icon: <div className="relative"><Icon icon="solar:settings-linear" /></div>,
     },
     "/account": {

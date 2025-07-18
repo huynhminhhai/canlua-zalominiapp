@@ -277,7 +277,7 @@ const FarmerResultForm: React.FC = () => {
                         value={tongTienConLai}
                         formatNumber
                         colorClass="text-primary-color"
-                        fs={24}
+                        fs={30}
                         fw='bold'
                         span={12}
                         note="(Đã trừ tiền cọc và tiền đã trả)"

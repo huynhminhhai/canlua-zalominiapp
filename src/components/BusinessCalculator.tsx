@@ -244,19 +244,19 @@ export default function BusinessCalculator() {
       <div className="grid grid-cols-4 gap-2 text-2xl">
         <button
           onClick={clear}
-          className="col-span-2 text-[16px] bg-gray-400 text-white py-3 rounded-lg font-semibold shadow-sm"
+          className="col-span-2 text-[16px] bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold shadow-sm"
         >
           Xóa (AC)
         </button>
         <button
           onClick={isExpressionMode ? backspaceExpression : backspace}
-          className="bg-gray-400 text-white py-3 rounded-lg font-semibold"
+          className="bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold"
         >
           <Icon icon={"carbon:delete"} fontSize={24} className='m-auto' />
         </button>
         <button
           onClick={() => isExpressionMode ? inputToExpression('÷') : performOperation('/')}
-          className="bg-gray-400 shadow-sm text-white py-3 rounded-lg font-semibold "
+          className="bg-gray-300 shadow-sm text-gray-800 py-3 rounded-lg font-semibold "
         >
           ÷
         </button>
@@ -265,14 +265,14 @@ export default function BusinessCalculator() {
           <button
             key={num}
             onClick={() => isExpressionMode ? inputToExpression(String(num)) : inputNumber(num)}
-            className="bg-gray-100 text-gray-800 py-3 rounded-lg font-semibold shadow-sm"
+            className="bg-gray-50 text-gray-800 py-3 rounded-lg font-semibold shadow-sm"
           >
             {num}
           </button>
         ))}
         <button
           onClick={() => isExpressionMode ? inputToExpression('×') : performOperation('*')}
-          className="bg-gray-400 shadow-sm text-white py-3 rounded-lg font-semibold "
+          className="bg-gray-300 shadow-sm text-gray-800 py-3 rounded-lg font-semibold "
         >
           ×
         </button>
@@ -281,14 +281,14 @@ export default function BusinessCalculator() {
           <button
             key={num}
             onClick={() => isExpressionMode ? inputToExpression(String(num)) : inputNumber(num)}
-            className="bg-gray-100 text-gray-800 py-3 rounded-lg font-semibold shadow-sm"
+            className="bg-gray-50 text-gray-800 py-3 rounded-lg font-semibold shadow-sm"
           >
             {num}
           </button>
         ))}
         <button
           onClick={() => isExpressionMode ? inputToExpression('-') : performOperation('-')}
-          className="bg-gray-400 shadow-sm text-white py-3 rounded-lg font-semibold "
+          className="bg-gray-300 shadow-sm text-gray-800 py-3 rounded-lg font-semibold "
         >
           -
         </button>
@@ -297,27 +297,27 @@ export default function BusinessCalculator() {
           <button
             key={num}
             onClick={() => isExpressionMode ? inputToExpression(String(num)) : inputNumber(num)}
-            className="bg-gray-100 text-gray-800 py-3 rounded-lg font-semibold shadow-sm"
+            className="bg-gray-50 text-gray-800 py-3 rounded-lg font-semibold shadow-sm"
           >
             {num}
           </button>
         ))}
         <button
           onClick={() => isExpressionMode ? inputToExpression('+') : performOperation('+')}
-          className="bg-gray-400 shadow-sm text-white py-3 rounded-lg font-semibold "
+          className="bg-gray-300 shadow-sm text-gray-800 py-3 rounded-lg font-semibold "
         >
           +
         </button>
 
         <button
           onClick={() => isExpressionMode ? inputToExpression('0') : inputNumber(0)}
-          className="col-span-2 bg-gray-100 text-gray-800 py-3 rounded-lg font-semibold shadow-sm"
+          className="col-span-2 bg-gray-50 text-gray-800 py-3 rounded-lg font-semibold shadow-sm"
         >
           0
         </button>
         <button
           onClick={() => isExpressionMode ? inputToExpression('.') : inputDecimal()}
-          className="bg-gray-100 text-gray-800 py-3 rounded-lg font-semibold shadow-sm"
+          className="bg-gray-50 text-gray-800 py-3 rounded-lg font-semibold shadow-sm"
         >
           .
         </button>
@@ -333,13 +333,13 @@ export default function BusinessCalculator() {
         <div className="grid grid-cols-2 gap-2 mt-2">
           <button
             onClick={() => inputToExpression('(')}
-            className="bg-gray-100 text-gray-800 text-lg py-3 rounded-lg font-semibold shadow-sm"
+            className="bg-gray-50 text-gray-800 text-lg py-3 rounded-lg font-semibold shadow-sm"
           >
             (
           </button>
           <button
             onClick={() => inputToExpression(')')}
-            className="bg-gray-100 text-gray-800 text-lg py-3 rounded-lg font-semibold shadow-sm"
+            className="bg-gray-50 text-gray-800 text-lg py-3 rounded-lg font-semibold shadow-sm"
           >
             )
           </button>

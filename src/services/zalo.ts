@@ -1,4 +1,4 @@
-import { openWebview, openMediaPicker, openChat, getUserInfo, getPhoneNumber, getAccessToken, openPermissionSetting, getStorage, setStorage, removeStorage, createShortcut, getLocation, downloadFile } from "zmp-sdk/apis";
+import { openWebview, openMediaPicker, openChat, getUserInfo, getPhoneNumber, getAccessToken, openPermissionSetting, getStorage, setStorage, removeStorage, createShortcut, getLocation, downloadFile, saveImageToGallery } from "zmp-sdk/apis";
 
 export const openUrlInWebview = async (link: string, style?: 'normal' | 'bottomSheet'): Promise<void> => {
     try {
@@ -184,7 +184,17 @@ export const downloadFileHelper = async (url: string) => {
     await downloadFile({
         url
     });
-    
+
     console.log("Tải tập tin thành công!");
 
 };
+
+export const saveImageFromZalo = async (url: string) => {
+    try {
+        await saveImageToGallery({
+            imageUrl: url,
+        });
+    } catch (error) {
+        console.error(error);
+    }
+}

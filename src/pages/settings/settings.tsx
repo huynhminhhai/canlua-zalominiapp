@@ -65,35 +65,35 @@ const FarmerPage: React.FunctionComponent = () => {
   const inputConfigs: InputConfig[] = [
     {
       id: InputType.TWO_DIGITS,
-      name: "Nhập 2 số",
-      title: "Nhập 2 số",
-      example: "Ví dụ: nhập 20",
-      result: "20 kg",
-      description: "Nhập trực tiếp số kg"
+      name: "Nhập 2 chữ số",
+      title: "Nhập 2 chữ số",
+      example: "Ví dụ: 75",
+      result: "75 kg",
+      description: "Nhập trọng lượng đơn giản"
     },
     {
       id: InputType.THREE_DIGITS_REMAINDER,
-      name: "Nhập 3 số lấy số dư",
-      title: "Nhập 3 số lấy số dư",
-      example: "Ví dụ: nhập 500, 522, 555",
-      result: "50.0 kg, 52.2 kg, 55.5 kg",
-      description: "Chia 10 để lấy số dư"
+      name: "Nhập 3 chữ số có phần dư",
+      title: "Nhập 3 chữ số có phần dư",
+      example: "Ví dụ: 755",
+      result: "75.5 kg",
+      description: "Chữ số cuối làm phần thập phân"
     },
     {
       id: InputType.THREE_DIGITS,
-      name: "Nhập 3 số",
-      title: "Nhập 3 số",
-      example: "Ví dụ: nhập 100, 122, 155",
-      result: "100 kg, 122 kg, 155 kg",
-      description: "Nhập trực tiếp số kg"
+      name: "Nhập 3 chữ số",
+      title: "Nhập 3 chữ số",
+      example: "Ví dụ: nhập 150",
+      result: "155 kg",
+      description: "Nhập trọng lượng 3 số"
     },
     {
       id: InputType.FOUR_DIGITS_REMAINDER,
-      name: "Nhập 4 số lấy số dư",
-      title: "Nhập 4 số lấy số dư",
-      example: "Ví dụ: nhập 1000, 1025, 1055",
-      result: "100.0 kg, 102.5 kg, 105.5 kg",
-      description: "Chia 10 để lấy số dư"
+      name: "Nhập 4 chữ số có số dư",
+      title: "Nhập 4 chữ số có số dư",
+      example: "Ví dụ: nhập 1505",
+      result: "150.5 kg",
+      description: "Chữ số cuối làm phần thập phân"
     }
   ];
 
@@ -321,6 +321,48 @@ const FarmerPage: React.FunctionComponent = () => {
     }
   }, [cauHinhHeThong, mapApiConfigToInputType]);
 
+  const renderInputGroup = (
+    title: string,
+    filterIds: InputType[]
+  ) => {
+    return (
+      <Box>
+        <div className="py-4 px-4 flex items-center gap-3 bg-indigo-50 text-[20px] text-primary-color font-semibold">
+          <Icon icon={'mdi:scale'} fontSize={20} className="text-primary-color" />
+          {title}
+        </div>
+        {inputConfigs
+          .filter((config) => filterIds.includes(config.id))
+          .map((config) => (
+            <Box
+              key={config.id}
+              py={3}
+              px={5}
+              flex
+              alignItems="flex-start"
+              className="gap-5 border-b last:border-b-0"
+            >
+              <input
+                className="scale-[1.4] mt-1"
+                id={config.id}
+                name="input-type"
+                type="radio"
+                checked={selectedInputType === config.id}
+                onChange={() => handleInputTypeChange(config.id)}
+                disabled={isUpdating}
+              />
+              <label htmlFor={config.id} className="cursor-pointer flex-1">
+                <div className="text-[18px] leading-[24px] font-semibold">{config.title}</div>
+                <div className="text-[16px] leading-[22px] font-normal text-gray-500 mt-2">{config.description}</div>
+                <div className="text-[18px] leading-[24px] font-medium text-gray-800 mt-2 mb-1">{config.example}</div>
+                <div className="text-[18px] leading-[24px] font-medium text-green-700">⟹ {config.result}</div>
+              </label>
+            </Box>
+          ))}
+      </Box>
+    );
+  };
+
   return (
     <Page className="relative flex-1 flex flex-col pb-[66px]">
       <HeaderSub title="Cấu hình hệ thống" />
@@ -337,7 +379,7 @@ const FarmerPage: React.FunctionComponent = () => {
               <div className="col-span-12">
                 <Box className="rounded-lg overflow-hidden shadow-md">
                   <div className="p-4 bg-primary-color text-white text-[18px] leading-[24px] font-medium flex items-center gap-3">
-                    <Icon icon='carbon:settings-edit' fontSize={18} />
+                    <Icon icon='carbon:settings-edit' fontSize={20} />
                     Quy cách trừ bì
                     {isUpdatingTruBi && (
                       <Icon icon="eos-icons:loading" fontSize={16} className="animate-spin ml-auto" />
@@ -365,38 +407,15 @@ const FarmerPage: React.FunctionComponent = () => {
               <div className="col-span-12">
                 <Box className="rounded-lg overflow-hidden shadow-md">
                   <div className="p-4 bg-primary-color text-white text-[18px] leading-[24px] font-medium flex items-center gap-3">
-                    <Icon icon='tdesign:gesture-typing' fontSize={18} />
+                    <Icon icon='carbon:settings-edit' fontSize={20} />
                     Quy cách nhập liệu
                     {isUpdating && (
                       <Icon icon="eos-icons:loading" fontSize={16} className="animate-spin ml-auto" />
                     )}
                   </div>
-                  <div className="bg-white border-primary-color">
-                    {inputConfigs.map((config) => (
-                      <Box
-                        key={config.id}
-                        py={3}
-                        px={4}
-                        flex
-                        alignItems="center"
-                        className="gap-4 border-b last:border-b-0"
-                      >
-                        <input
-                          className="scale-[1.4]"
-                          id={config.id}
-                          name="input-type"
-                          type="radio"
-                          checked={selectedInputType === config.id}
-                          onChange={() => handleInputTypeChange(config.id)}
-                          disabled={isUpdating}
-                        />
-                        <label htmlFor={config.id} className="cursor-pointer flex-1">
-                          <div className="text-[20px] leading-[24px] font-semibold text-primary-color">{config.title}</div>
-                          <div className="text-[16px] leading-[22px] font-medium text-gray-800 mt-2">{config.example}</div>
-                          <div className="text-[16px] leading-[22px] font-medium text-green-700">⟹ {config.result}</div>
-                        </label>
-                      </Box>
-                    ))}
+                  <div className="bg-white border-[1px]">
+                    {renderInputGroup('< 100 kg', [InputType.TWO_DIGITS, InputType.THREE_DIGITS_REMAINDER])}
+                    {renderInputGroup('>= 100 kg', [InputType.THREE_DIGITS, InputType.FOUR_DIGITS_REMAINDER])}
                   </div>
                 </Box>
               </div>
