@@ -11,7 +11,8 @@ type InfoItemProps = {
     title: string,
     value: string,
     note?: string,
-    colorClass?: string
+    colorClass?: string,
+    icon?: string
 }
 
 type FarmerItemProps = {
@@ -22,23 +23,30 @@ const InfoItem: React.FC<InfoItemProps> = ({
     title,
     value,
     note,
-    colorClass = 'text-gray-700'
+    colorClass = 'text-gray-700',
+    icon
 }) => {
-
     return (
-        <div className="flex items-center justify-between border-b p-3 text-[18px] leading-[20px] font-medium">
-            <div className="text-[16px]">{title}</div>
-            {
-                note &&
-                <div className="text-[16px] text-gray-600 font-semibold"> ({note})</div>
-            }
-            <div className={`${colorClass} font-semibold`}>{value}</div>
+        <div className="flex items-center justify-between py-3 px-4 hover:bg-gray-50 transition-colors duration-200 group">
+            <div className="flex items-center gap-3">
+                {icon && (
+                    <div className="w-9 h-9 bg-blue-50 rounded-full flex items-center justify-center group-hover:bg-blue-100 transition-colors duration-200">
+                        <Icon icon={icon} fontSize={22} className="text-primary-color" />
+                    </div>
+                )}
+                <div className="flex flex-col">
+                    <span className="text-[16px] font-medium text-gray-800">{title}</span>
+                    {note && (
+                        <span className="text-[16px] font-medium text-gray-500 mt-0.5">{note}</span>
+                    )}
+                </div>
+            </div>
+            <div className={`${colorClass} font-bold text-[20px]`}>{value}</div>
         </div>
     )
 }
 
 const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
-
     const navigate = useNavigate();
     const { setPhienCan } = useStoreApp();
 
@@ -46,11 +54,8 @@ const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
     const truTapChat = parseNumber(data?.truTapChat);
 
     const khoiLuongTruBaoBi = truBaoBi === 0 ? 0 : roundWeight(data?.soLanCan / truBaoBi, 'nearest', 1);
-
     const khoiLuongConLai = Number((data?.tongTrongLuong - khoiLuongTruBaoBi - truTapChat).toFixed(1));
-
     const thanhTien = Math.round(data?.donGia * khoiLuongConLai);
-
     const conLai = thanhTien - data?.tienCoc - data?.tienDaTra;
 
     const handleOnClick = () => {
@@ -59,43 +64,99 @@ const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
     }
 
     return (
-        <Box mb={4} className="bg-white shadow-sm rounded-lg overflow-hidden border">
-            <Box flex alignItems="center" className="bg-blue-100">
-                <div className="flex items-center w-full">
-                    <FarmerDropdown data={data} />
-                    <div className="flex flex-col gap-2 py-4 px-3 w-full border-r border-l border-gray-300 flex-[1_0_0]">
-                        <div className="text-[20px] leading-[26px] font-semibold text-primary-color">{data?.tenHoDan}</div>
-                        <div className="text-[15px] font-medium leading-[1] flex items-center gap-2">
-                            <span>
-                                {
-                                    data?.ngayTao &&
-                                    getHourFromDate(data?.ngayTao)
-                                }
-                            </span>
-                            <span>
-                                {
-                                    data?.ngayTao &&
-                                    formatDate(data?.ngayTao)
-                                }
-                            </span>
+        <Box mb={4} className="bg-white shadow-lg rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 group">
+            {/* Header Section */}
+            <div className="bg-gradient-to-r from-blue-500 to-primary-color p-4">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                        <FarmerDropdown data={data} />
+                        <div className="flex flex-col gap-2">
+                            <h3 className="text-xl font-bold text-white">{data?.tenHoDan}</h3>
+                            <div className="flex items-center gap-4 text-blue-100">
+                                <div className="flex items-center gap-1.5">
+                                    <Icon icon="mdi:clock-outline" className="w-4 h-4" />
+                                    <span className="text-sm font-semibold">
+                                        {data?.ngayTao && getHourFromDate(data?.ngayTao)}
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-1.5">
+                                    <Icon icon="mdi:calendar-outline" className="w-4 h-4" />
+                                    <span className="text-sm font-semibold">
+                                        {data?.ngayTao && formatDate(data?.ngayTao)}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                    <button
+                        className="bg-white/20 backdrop-blur-sm text-white px-5 py-3 rounded-xl font-semibold text-[16px] flex items-center gap-2"
+                        onClick={handleOnClick}
+                    >
+                        <span>Mở</span>
+                        <Icon icon="mdi:chevron-right" fontSize={20} />
+                    </button>
                 </div>
-                <div
-                    className="h-[77px] flex items-center justify-center text-[18px] font-semibold px-5 leading-[1] text-primary-color"
-                    onClick={() => handleOnClick()}
-                >
-                    Mở
+            </div>
+
+            {/* Content Section */}
+            <div className="divide-y divide-gray-100">
+                <InfoItem
+                    title="Khối lượng"
+                    value={`${khoiLuongConLai} kg`}
+                    note={`${data?.soLanCan} lần cân`}
+                    icon="mdi:scale"
+                    colorClass="text-blue-600"
+                />
+
+                <InfoItem
+                    title="Đơn giá"
+                    value={`${formatCurrencyVN(data?.donGia)} đ/kg`}
+                    icon="mdi:cash"
+                    colorClass="text-gray-700"
+                />
+
+                <InfoItem
+                    title="Thành tiền"
+                    value={`${formatCurrencyVN(thanhTien)} đ`}
+                    icon="mdi:calculator"
+                    colorClass="text-purple-600"
+                />
+
+                <InfoItem
+                    title="Tiền cọc"
+                    value={`-${formatCurrencyVN(data?.tienCoc)} đ`}
+                    icon="mdi:hand-coin"
+                    colorClass="text-orange-600"
+                />
+
+                <InfoItem
+                    title="Đã trả"
+                    value={`-${formatCurrencyVN(data?.tienDaTra)} đ`}
+                    icon="mdi:check-circle"
+                    colorClass="text-green-600"
+                />
+
+                <div className="bg-gradient-to-r from-red-100 to-pink-100">
+                    <InfoItem
+                        title="Còn lại"
+                        value={`${formatCurrencyVN(conLai)} đ`}
+                        icon="mdi:alert-circle"
+                        colorClass="text-red-600 text-lg"
+                    />
                 </div>
-            </Box>
-            <Box>
-                <InfoItem title="Khối lượng" value={`${ (khoiLuongConLai)} kg`} note={`${data?.soLanCan} lần cân`} />
-                <InfoItem title="Đơn giá" value={`${formatCurrencyVN(data?.donGia)} đ/kg`} />
-                <InfoItem title="Thành tiền" value={`${formatCurrencyVN(thanhTien)} đ`} />
-                <InfoItem title="Tiền cọc" value={`${formatCurrencyVN(data?.tienCoc)} đ`} colorClass="text-orange-500" />
-                <InfoItem title="Đã trả" value={`${formatCurrencyVN(data?.tienDaTra)} đ`} colorClass="text-green-600" />
-                <InfoItem title="Còn lại" value={`${formatCurrencyVN(conLai)} đ`} colorClass="text-red-600" />
-            </Box>
+            </div>
+
+            {/* Status Bar */}
+            <div className="bg-gray-50 px-4 py-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span className="text-xs text-gray-600 font-medium">Hoạt động</span>
+                </div>
+                <div className="text-xs text-gray-500">
+                    ID: {data?.id}
+                </div>
+            </div>
         </Box>
     )
 }

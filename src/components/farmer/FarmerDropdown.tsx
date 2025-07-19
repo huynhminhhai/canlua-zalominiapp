@@ -72,13 +72,13 @@ const FarmerDropdown: React.FC<FarmerDropdownProps> = ({
     return (
         <div className="relative" ref={dropdownRef}>
             <div
-                className="w-[60px] h-[77px] flex justify-center items-center"
+                className="flex justify-center items-center"
                 onClick={(e) => {
                     e.stopPropagation();
                     setOpen((prev) => !prev);
                 }}
             >
-                <Icon icon='fluent-mdl2:gripper-dots-vertical' fontSize={32} color="#2262c6" />
+                <Icon icon='mage:dots' fontSize={32} color="#fff" />
             </div>
 
             {open && (
