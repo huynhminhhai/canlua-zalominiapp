@@ -20,7 +20,7 @@ const InfoBox = ({
     span = 6,
     note,
     formatNumber = false,
-    fs = 24,
+    fs = 22,
     fw = 'semibold',
     labelFs = 15,
     noteFs = 14

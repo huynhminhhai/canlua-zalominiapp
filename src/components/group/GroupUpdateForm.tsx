@@ -21,7 +21,7 @@ const GroupUpdateForm: React.FC<GroupUpdateFormProps> = ({ visible, onClose, dat
         moTa: data.moTa,
     }
     
-    const { handleSubmit, control, reset, watch, setValue, formState: { errors } } = useForm<FormDataGroup>({
+    const { handleSubmit, control, reset, formState: { errors } } = useForm<FormDataGroup>({
         resolver: yupResolver(schemaGroup),
         defaultValues
     });
@@ -38,12 +38,14 @@ const GroupUpdateForm: React.FC<GroupUpdateFormProps> = ({ visible, onClose, dat
         }
     }, [visible, data, reset]);
 
-    const onSubmit: SubmitHandler<FormDataGroup> = async (data) => {
+    const onSubmit: SubmitHandler<FormDataGroup> = async (formData) => {
 
-        if (data) {
+        if (formData) {
             try {
-                const dataSubmit = {...data, id: defaultValues.id};
+                const dataSubmit = {...data, ...formData};
                 
+                // console.log(dataSubmit);
+
                 await updateNhomThuMua(dataSubmit);
 
                 onClose();

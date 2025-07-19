@@ -64,9 +64,9 @@ const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
     }
 
     return (
-        <Box mb={4} className="bg-white shadow-lg rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 group">
+        <Box mb={4} className="bg-white shadow-md rounded-2xl overflow-hidden border border-gray-100 group">
             {/* Header Section */}
-            <div className="bg-gradient-to-r from-blue-500 to-primary-color p-4">
+            <div className="bg-gradient-to-r from-blue-500 to-primary-color px-2 py-3">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <FarmerDropdown data={data} />

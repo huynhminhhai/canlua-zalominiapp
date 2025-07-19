@@ -71,7 +71,7 @@ const GroupDropdown: React.FC<GroupDropdownProps> = ({
     return (
         <div className="relative" ref={dropdownRef} onClick={(e) => e.stopPropagation()}>
             <button
-                className="border py-[2px] px-[16px] rounded-xl bg-gray-50"
+                className="border py-[6px] px-[16px] rounded-lg bg-gray-50"
                 onClick={(e) => {
                     e.stopPropagation();
                     setOpen((prev) => !prev);

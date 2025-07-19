@@ -32,27 +32,18 @@ export const useGetGiaTriCanList = (id: number) => {
 };
 
 export const useCreateGiaTriCan = () => {
-    // const { showError } = useCustomSnackbar();
 
     return useMutation({
         mutationFn: async (formData: GiaTriCanCreateParam) => {
             return await giaTriCanApiRequest.createGiaTriCan(formData);
         },
-        onSuccess: (res) => {
-
-            // if (res?.result?.error !== 200) {
-                
-            //     showError(res?.result?.message);
-
-            //     return;
-            // }
-
-            // queryClient.invalidateQueries({ queryKey: ["phienCanList"] });
+        onSuccess: () => {
 
         },
         onError: (error: string) => {
             console.error(`Lỗi: ${error}`)
-            // showError(error)
         },
+        retry: 3,
+        retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 10000)
     });
 };

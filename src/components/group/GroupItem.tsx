@@ -20,13 +20,13 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
                     <Box px={4} py={4} width={108} height={152} className="bg-blue-100 text-primary-color rounded-xl relative overflow-hidden scale-[0.95]">
                         <img className="w-[100%] h-[100%] absolute top-0 left-0 opacity-5 scale-[2.5]" src={images.shape4} alt="shape" />
                         <div className="flex-center flex-col h-[100%] relative z-[2]">
-                            <div className="text-[18px] leading-[1] font-semibold text-center mb-2 whitespace-nowrap">{data?.ngayCapNhat && renderDayOfWeek(formatDate(data.ngayCapNhat))}</div>
-                            <div className="text-[16px] leading-[1] font-semibold text-center">{data?.ngayCapNhat && formatDate(data.ngayCapNhat)}</div>
+                            <div className="text-[18px] leading-[1] font-semibold text-center mb-2 whitespace-nowrap">{data?.ngayTao && renderDayOfWeek(formatDate(data.ngayTao))}</div>
+                            <div className="text-[16px] leading-[1] font-semibold text-center">{data?.ngayTao && formatDate(data.ngayTao)}</div>
                         </div>
                     </Box>
                     <Box py={2} pr={2} className="flex-1">
                         <div className="flex items-center justify-between gap-[12px] mb-2">
-                            <h3 className="text-primary-color text-[18px] leading-[24px] font-semibold line-clamp-2">{data.tenNhom}</h3>
+                            <h3 className="text-gray-700 text-[18px] leading-[24px] font-semibold line-clamp-2">{data.tenNhom}</h3>
 
                             <GroupDropdown data={data} />
                         </div>

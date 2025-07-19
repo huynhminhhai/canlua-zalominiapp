@@ -1,5 +1,6 @@
 import { Icon } from '@iconify/react';
 import { useCreateGiaTriCan, useGetGiaTriCanList } from 'apiRequest/giaTriCan';
+import videos from 'assets/videos';
 import React, { useState, useRef, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useStoreApp } from 'store/store';
@@ -32,6 +33,12 @@ const RiceWeightInput: React.FC = () => {
 
   const [searchParams] = useSearchParams();
   const phienCanId = searchParams.get("id");
+
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const handlePlayAudio = () => {
+    audioRef.current?.play();
+  };
 
   const { mutateAsync: createGiaTriCan } = useCreateGiaTriCan();
   const { data: phienCanData } = useGetGiaTriCanList(Number(phienCanId));
@@ -199,7 +206,6 @@ const RiceWeightInput: React.FC = () => {
     }
   };
 
-
   const parseCellValue = (cellValue: string): number => {
     if (!cellValue) return 0;
 
@@ -262,6 +268,8 @@ const RiceWeightInput: React.FC = () => {
     if (nextRow >= 5) {
       nextRow = 0;
       nextCol = currentCol + 1;
+      handlePlayAudio();
+
 
       // Chuyển đến cột tiếp theo
       if (nextCol >= 5) {
@@ -418,7 +426,6 @@ const RiceWeightInput: React.FC = () => {
   };
 
   const handleFocusTrick = () => {
-
     if (hiddenInputRef.current) {
       if (!isEditable) {
         hiddenInputRef.current.focus();
@@ -549,6 +556,7 @@ const RiceWeightInput: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto bg-transparent min-h-screen">
+      <audio src={videos.chanMa} controls ref={audioRef} hidden></audio>
       <div className="rounded-lg shadow-lg py-3 px-2">
         <input
           ref={hiddenInputRef}
@@ -584,12 +592,12 @@ const RiceWeightInput: React.FC = () => {
           ))}
         </div>
 
-        <div className='text-[16px] text-gray-600 font-medium mb-1 italic'>Lưu ý: Nhập {phienCan?.quyCachNhap} số {phienCan?.choPhepNhapSoLe && 'và lấy số lẻ'}</div>
+        <div className='text-[16px] text-gray-700 font-medium mb-2 italic'>Lưu ý: Nhập {phienCan?.quyCachNhap} số {phienCan?.choPhepNhapSoLe && 'và lấy số lẻ'}</div>
 
         <div className="space-y-6 mb-6">
           {[1, 2, 3].map((tableNum) => (
             <div key={tableNum} className={`bg-white border rounded-lg overflow-hidden transition-all duration-300 shadow-md`}>
-              <div className={`px-4 py-3 text-lg text-center font-semibold text-white bg-primary-color`}>
+              <div className={`px-4 py-3 text-lg text-center font-semibold text-white bg-gradient-to-r from-blue-500 to-primary-color`}>
                 Bảng {tableNum} - Trang {currentPage}
               </div>
 
@@ -633,7 +641,7 @@ const RiceWeightInput: React.FC = () => {
                             value={cell.value}
                             onInput={(e) => handleInputChange((e.target as HTMLInputElement).value, tableNum, rowIndex, colIndex)}
                             maxLength={limitInput}
-                            className={`w-full h-12 text-center border rounded text-lg font-semibold text-primary-color disabled:opacity-100 disabled:bg-gray-100 ${isEditable && tableNum === currentTable && rowIndex === currentRow && colIndex === currentCol
+                            className={`w-full h-12 text-center border rounded text-lg font-semibold text-primary-color disabled:opacity-100 disabled:bg-gray-100 disabled:text-gray-600 ${isEditable && tableNum === currentTable && rowIndex === currentRow && colIndex === currentCol
                               ? 'border-primary-color bg-blue-50 ring-2 ring-blue-200'
                               : cell.isComplete
                                 ? 'border-primary-color'
@@ -661,7 +669,7 @@ const RiceWeightInput: React.FC = () => {
 
                 <div className="grid grid-cols-5 gap-1 mt-2">
                   {[0, 1, 2, 3, 4].map((colIndex) => (
-                    <div key={colIndex} className={`text-white text-center py-2 rounded text-lg font-semibold bg-primary-color`}>
+                    <div key={colIndex} className={`text-white text-center py-2 rounded text-lg font-semibold bg-gradient-to-r from-blue-500 to-primary-color`}>
                       {getColumnSum(tableNum, colIndex).toFixed(1)}
                     </div>
                   ))}

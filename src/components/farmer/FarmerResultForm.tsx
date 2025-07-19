@@ -146,7 +146,7 @@ const FarmerResultForm: React.FC = () => {
     const debouncedUpdate = useCallback(
         debounce((data: FormDataFarmerResult) => {
             updateFarmerResult(data);
-        }, 800),
+        }, 1000),
         [phienCanData]
     );
 
@@ -260,9 +260,9 @@ const FarmerResultForm: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-12 gap-x-0 bg-white rounded-lg overflow-hidden shadow-md">
-                    <InfoBox label="Tổng khối lượng" value={`${tongKhoiLuong.toFixed(1)}`} colorClass="text-primary-color" />
-                    <InfoBox label="Số lần cân (bao)" value={soLanCan} colorClass="text-primary-color" />
-                    <InfoBox label="Khối lượng còn lại" value={khoiLuongConLai} note='(Trừ tạp chất và bao bì)' noteFs={12} colorClass='text-primary-color' />
+                    <InfoBox label="Tổng khối lượng" value={`${tongKhoiLuong.toFixed(1)}`} colorClass="text-primary-color" fw='bold' />
+                    <InfoBox label="Số lần cân (bao)" value={soLanCan} colorClass="text-primary-color" fw='bold' />
+                    <InfoBox label="Khối lượng còn lại" value={khoiLuongConLai} note='(Trừ tạp chất và bao bì)' noteFs={12} colorClass='text-primary-color' fw='bold' />
                     <InfoBox
                         label="Tổng tiền"
                         value={tongTien}
@@ -270,6 +270,7 @@ const FarmerResultForm: React.FC = () => {
                         note='(Đơn giá x KL còn lại)'
                         noteFs={12}
                         colorClass='text-primary-color'
+                        fw='bold'
                     />
                     <InfoBox
                         label="Tổng tiền còn lại"
