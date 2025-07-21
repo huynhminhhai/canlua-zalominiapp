@@ -72,7 +72,7 @@ const GroupDropdown: React.FC<GroupDropdownProps> = ({
         <div className="relative" ref={dropdownRef} onClick={(e) => e.stopPropagation()}>
             {/* Trigger Button */}
             <button
-                className="w-11 h-11 rounded-full bg-gray-50 border flex items-center justify-center shadow-sm"
+                className="w-12 h-12 rounded-full border flex items-center justify-center shadow-sm"
                 onClick={(e) => {
                     e.stopPropagation();
                     setOpen((prev) => !prev);

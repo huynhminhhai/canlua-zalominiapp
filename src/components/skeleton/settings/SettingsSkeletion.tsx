@@ -9,7 +9,7 @@ const SettingsSkeleton = () => {
                 {/* Skeleton Quy cách trừ bì */}
                 <div className="col-span-12">
                     <div className="rounded-lg overflow-hidden shadow-md">
-                        <div className="p-4 bg-primary-color text-white flex items-center gap-3">
+                        <div className="p-4 bg-gray-200 text-white flex items-center gap-3">
                             <Skeleton circle width={18} height={18} />
                             <Skeleton width={150} height={24} />
                             <Skeleton className="ml-auto" width={16} height={16} />
@@ -23,7 +23,7 @@ const SettingsSkeleton = () => {
                 {/* Skeleton Quy cách nhập */}
                 <div className="col-span-12">
                     <div className="rounded-lg overflow-hidden shadow-md">
-                        <div className="p-4 bg-primary-color text-white flex items-center gap-3">
+                        <div className="p-4 bg-gray-200 text-white flex items-center gap-3">
                             <Skeleton circle width={18} height={18} />
                             <Skeleton width={180} height={24} />
                             <Skeleton className="ml-auto" width={16} height={16} />
@@ -45,7 +45,7 @@ const SettingsSkeleton = () => {
 
                 <div className="col-span-12">
                     <div className="rounded-lg overflow-hidden shadow-md">
-                        <div className="p-4 bg-primary-color text-white flex items-center gap-3">
+                        <div className="p-4 bg-gray-200 text-white flex items-center gap-3">
                             <Skeleton circle width={18} height={18} />
                             <Skeleton width={150} height={24} />
                             <Skeleton className="ml-auto" width={16} height={16} />

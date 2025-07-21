@@ -327,7 +327,7 @@ const FarmerPage: React.FunctionComponent = () => {
   ) => {
     return (
       <Box>
-        <div className="py-4 px-4 flex items-center gap-3 bg-indigo-50 text-[20px] text-primary-color font-semibold">
+        <div className="py-4 px-4 flex items-center gap-3 bg-blue-100 text-[20px] text-primary-color font-semibold border-l-4 border-blue-500">
           <Icon icon={'mdi:scale'} fontSize={20} className="text-primary-color" />
           {title}
         </div>
@@ -378,7 +378,7 @@ const FarmerPage: React.FunctionComponent = () => {
               {/* Quy cách trừ bì */}
               <div className="col-span-12">
                 <Box className="rounded-lg overflow-hidden shadow-md">
-                  <div className="p-4 bg-primary-color text-white text-[18px] leading-[24px] font-medium flex items-center gap-3">
+                  <div className="p-4 bg-gradient-to-r from-blue-500 to-primary-color text-white text-[18px] leading-[24px] font-medium flex items-center gap-3">
                     <Icon icon='carbon:settings-edit' fontSize={20} />
                     Quy cách trừ bì
                     {isUpdatingTruBi && (
@@ -406,7 +406,7 @@ const FarmerPage: React.FunctionComponent = () => {
               {/* Quy cách nhập */}
               <div className="col-span-12">
                 <Box className="rounded-lg overflow-hidden shadow-md">
-                  <div className="p-4 bg-primary-color text-white text-[18px] leading-[24px] font-medium flex items-center gap-3">
+                  <div className="p-4 bg-gradient-to-r from-blue-500 to-primary-color text-white text-[18px] leading-[24px] font-medium flex items-center gap-3">
                     <Icon icon='carbon:settings-edit' fontSize={20} />
                     Quy cách nhập liệu
                     {isUpdating && (
@@ -423,7 +423,7 @@ const FarmerPage: React.FunctionComponent = () => {
               {selectedInputType && (
                 <div className="col-span-12">
                   <Box className="rounded-lg overflow-hidden shadow-md">
-                    <div className="p-4 bg-primary-color text-white text-[18px] leading-[24px] font-medium flex items-center gap-3">
+                    <div className="p-4 bg-gradient-to-r from-blue-500 to-primary-color text-white text-[18px] leading-[24px] font-medium flex items-center gap-3">
                       <Icon icon='carbon:test-tool' fontSize={18} />
                       Nhập thử
                     </div>

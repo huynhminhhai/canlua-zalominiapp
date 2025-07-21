@@ -40,31 +40,73 @@ const AccountPage: React.FC = () => {
                     {
                         accessToken &&
                         <Box m={4}>
-                            <div onClick={() => navigate('/profile-account')} className="flex items-center gap-3 bg-white rounded-lg p-4" >
-                                <div className="flex-1">
-                                    <Avatar className="border-[2px] border-primary-color" src={images.vnpt} size={80} />
-                                </div>
-                                <div className="flex flex-col w-full">
-                                    <div className="text-[18px] leading-6 font-semibold text-primary-color mb-2 tracking-[1.2px]">{account && account?.phoneNumber}</div>
-
-                                    <div className="text-[15px] font-medium flex items-center gap-1">
-                                        <Icon icon="fluent:premium-24-regular" fontSize={18} className="mb-[0px]" />
-                                        {
-                                            isLoading ? <Icon icon="line-md:loading-twotone-loop" fontSize={16} /> :
-                                            data && data?.result ? `Gói ${data?.result?.chuKy} tháng` :
-                                                'Tài khoản miễn phí'
-                                        }
+                            <div
+                                onClick={() => navigate('/profile-account')}
+                                className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 active:scale-[0.98] transition-all duration-200 cursor-pointer hover:shadow-xl"
+                            >
+                                <div className="flex items-center gap-4">
+                                    {/* Avatar Section */}
+                                    <div className="relative flex-shrink-0">
+                                        <Avatar
+                                            className="border border-primary-color shadow-md"
+                                            src={images.vnpt}
+                                            size={80}
+                                        />
+                                        {/* Premium badge nếu có gói trả phí */}
+                                        {data?.result && (
+                                            <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-md">
+                                                <Icon icon="solar:crown-bold" fontSize={14} className="text-white" />
+                                            </div>
+                                        )}
                                     </div>
-                                    {
-                                        data && data?.result?.ngayKetThuc &&
-                                        <div className="font-medium flex items-center gap-1">
-                                            {/* <Icon icon={'ri:time-fill'} fontSize={16} /> */}
-                                            Hạn sử dụng:
-                                            <span className="text-orange-600">
-                                                {formatDate(data?.result?.ngayKetThuc)}
-                                            </span>
+
+                                    {/* Info Section */}
+                                    <div className="flex-1 min-w-0">
+                                        {/* Phone Number */}
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <h3 className="text-lg font-bold text-gray-800 tracking-wider">
+                                                {account?.phoneNumber || 'Chưa có số điện thoại'}
+                                            </h3>
                                         </div>
-                                    }
+
+                                        {/* Subscription Info */}
+                                        <div className="space-y-2">
+                                            {/* Package Type */}
+                                            <div className="flex items-center gap-2">
+                                                <div className="flex items-center gap-2">
+                                                    <Icon
+                                                        icon={data?.result ? "solar:star-bold" : "solar:user-bold"}
+                                                        fontSize={16}
+                                                        className={data?.result ? "text-yellow-500" : "text-gray-500"}
+                                                    />
+                                                    <span className={`text-sm font-semibold ${data?.result ? 'text-green-600' : 'text-gray-600'}`}>
+                                                        {isLoading ? (
+                                                            <Icon icon="line-md:loading-twotone-loop" fontSize={16} />
+                                                        ) : data?.result ? (
+                                                            `Gói ${data.result.chuKy} tháng`
+                                                        ) : (
+                                                            'Tài khoản miễn phí'
+                                                        )}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            {/* Expiry Date */}
+                                            {data?.result?.ngayKetThuc && (
+                                                <div className="flex items-center gap-2">
+                                                    <div className="flex items-center gap-2">
+                                                        <Icon icon="solar:calendar-bold" fontSize={16} className="text-orange-500" />
+                                                        <div className="text-sm">
+                                                            <span className="text-gray-600 font-medium">Hết hạn: </span>
+                                                            <span className="text-orange-600 font-bold">
+                                                                {formatDate(data.result.ngayKetThuc)}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </Box>
@@ -75,18 +117,20 @@ const AccountPage: React.FC = () => {
                             <>
 
                                 <Box m={4}>
-                                    <List className="bg-white rounded-lg">
+                                    <List className="bg-white rounded-lg shadow-sm">
                                         <ManagementTitle title="Tài khoản" />
                                         <Item
                                             onClick={() => navigate('/plan')}
                                             title="Nâng cấp tài khoản"
-                                            prefix={<Icon fontSize={28} icon="fluent:premium-28-regular" ></Icon>}
+                                            prefix={<div className="w-7 h-7 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-sm">
+                                                <Icon icon="solar:crown-bold" fontSize={16} className="text-white" />
+                                            </div>}
                                             suffix={<Icon fontSize={20} icon="formkit:right" />}
                                         />
                                         <Item
                                             onClick={logout}
                                             title="Đăng xuất"
-                                            prefix={<Icon fontSize={28} icon="clarity:logout-line" />}
+                                            prefix={<img src={images.logout} width={28} />}
                                             suffix={<Icon fontSize={20} icon="formkit:right" />}
                                         />
                                     </List>
@@ -94,18 +138,18 @@ const AccountPage: React.FC = () => {
                             </>
                             :
                             <Box m={4}>
-                                <List className="bg-white rounded-lg">
+                                <List className="bg-white rounded-lg shadow-sm">
                                     <ManagementTitle title="Đăng nhập" />
                                     <Item
                                         onClick={() => navigate('/login')}
                                         title="Bằng tài khoản"
-                                        prefix={<Icon fontSize={28} icon="clarity:login-line" ></Icon>}
+                                        prefix={<img src={images.login} width={30} />}
                                         suffix={<Icon fontSize={20} icon="formkit:right" />}
                                     />
                                     <Item
                                         onClick={() => loginWithZalo()}
                                         title="Liên kết số điện thoại"
-                                        prefix={<img src={images.zalo} width={30} />}
+                                        prefix={<div className="bg-blue-600 rounded-lg pt-[1px] pr-[2px]"><img src={images.zalo} width={30}/></div>}
                                         suffix={<Icon fontSize={20} icon="formkit:right" />}
                                         subTitle={'Yêu cầu truy cập số điện thoại'}
                                     />
@@ -113,7 +157,7 @@ const AccountPage: React.FC = () => {
                             </Box>
                     }
                     <Box m={4}>
-                        <List className="bg-white rounded-lg">
+                        <List className="bg-white rounded-lg shadow-sm">
                             <ManagementTitle title="Cài đặt" />
 
                             <Item
@@ -127,13 +171,13 @@ const AccountPage: React.FC = () => {
                                     });
                                 }}
                                 title="Chia sẻ ứng dụng"
-                                prefix={<Icon fontSize={28} icon="ph:share-fat-light" ></Icon>}
+                                prefix={<img src={images.share} width={30} />}
                                 suffix={<Icon fontSize={20} icon="formkit:right" />}
                             />
                             <Item
                                 onClick={() => createMiniAppShortcut()}
                                 title="Thêm vào màn hình chính"
-                                prefix={<Icon fontSize={28} icon="iconoir:apple-shortcuts" ></Icon>}
+                                prefix={<img src={images.shortcut} width={30} />}
                                 suffix={<Icon fontSize={20} icon="formkit:right" />}
                             />
                         </List>
