@@ -147,7 +147,7 @@ const FarmerDropdown: React.FC<FarmerDropdownProps> = ({
                 <div className="absolute left-0 mt-2 w-72 bg-white border border-gray-200 rounded-2xl shadow-2xl z-30 overflow-hidden animate-in slide-in-from-top-2 duration-200">
                     <div className="py-2">
                         {/* Send Invoice Option */}
-                        <button
+                        {/* <button
                             className="w-full px-4 py-3 flex items-center gap-3 text-left text-gray-700 hover:bg-green-50 transition-colors duration-150 group"
                             onClick={async (e) => {
                                 e.stopPropagation();
@@ -171,10 +171,10 @@ const FarmerDropdown: React.FC<FarmerDropdownProps> = ({
                                 <div className="text-[16px] font-semibold">Gửi hóa đơn</div>
                                 <div className="text-sm font-medium text-gray-500 truncate">Chia sẻ hóa đơn cân lúa</div>
                             </div>
-                        </button>
+                        </button> */}
 
                         {/* Divider */}
-                        <div className="mx-3 my-2 border-t border-gray-100"></div>
+                        {/* <div className="mx-3 my-2 border-t border-gray-100"></div> */}
 
                         {/* Edit Option */}
                         <button
