@@ -21,7 +21,7 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
             >
                 {/* Header với tên nhóm và dropdown */}
                 <div className="flex items-center justify-between p-3 pb-2">
-                    <h3 className="text-gray-800 text-xl font-bold line-clamp-1 flex-1 mr-3">
+                    <h3 className="text-xl font-bold line-clamp-1 flex-1 mr-3">
                         {data.tenNhom}
                     </h3>
                     <GroupDropdown data={data} />
@@ -32,10 +32,10 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
                     <div className="flex items-center gap-2 mb-4">
                         {/* Date card */}
                         <div className="flex-shrink-0 w-24 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex flex-col items-center justify-center text-white shadow-sm">
-                            <div className="text-xs font-semibold mb-1">
+                            <div className="text-sm font-semibold mb-1">
                                 {data?.ngayTao && renderDayOfWeek(formatDate(data.ngayTao))}
                             </div>
-                            <div className="text-sm font-bold leading-tight text-center">
+                            <div className="text-sm font-semibold leading-tight text-center">
                                 {data?.ngayTao && formatDate(data.ngayTao)}
                             </div>
                         </div>
