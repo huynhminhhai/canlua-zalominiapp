@@ -14,49 +14,66 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
     const navigate = useNavigate()
 
     return (
-        <Box className="meeting-item" onClick={() => navigate(`/farmer-list?id=${data.id}&tenNhom=${data.tenNhom}`)}>
-            <Box>
-                <div className="flex items-start gap-3 rounded-xl bg-white shadow-sm pl-[1px]">
-                    <Box px={4} py={4} width={108} height={152} className="bg-blue-100 text-primary-color rounded-xl relative overflow-hidden scale-[0.95]">
-                        <img className="w-[100%] h-[100%] absolute top-0 left-0 opacity-5 scale-[2.5]" src={images.shape4} alt="shape" />
-                        <div className="flex-center flex-col h-[100%] relative z-[2]">
-                            <div className="text-[18px] leading-[1] font-semibold text-center mb-2 whitespace-nowrap">{data?.ngayTao && renderDayOfWeek(formatDate(data.ngayTao))}</div>
-                            <div className="text-[16px] leading-[1] font-semibold text-center">{data?.ngayTao && formatDate(data.ngayTao)}</div>
-                        </div>
-                    </Box>
-                    <Box py={2} pr={2} className="flex-1">
-                        <div className="flex items-center justify-between gap-[12px] mb-2">
-                            <h3 className="text-gray-700 text-[18px] leading-[24px] font-semibold line-clamp-2">{data.tenNhom}</h3>
-
-                            <GroupDropdown data={data} />
-                        </div>
-                        <div className="flex flex-col">
-                            <Box>
-                                <ul className="flex flex-col gap-[4px] text-[16px] leading-[22px] font-medium">
-                                    <li>
-                                        <span className="text-[18px] font-semibold mr-2 text-primary-color">
-                                            {data.tongTrongLuong?.toFixed(1)}
-                                        </span>
-                                        kg
-                                    </li>
-                                    <li>
-                                        <span className="text-[18px] font-semibold mr-2 text-primary-color">
-                                            {data.soLanCan}
-                                        </span>
-                                        lần cân (bao)
-                                    </li>
-                                    <li className="flex items-center gap-[4px] mt-[4px] text-[14px] text-gray-500">
-                                        <Icon icon='solar:phone-outline' fontSize={18} />
-                                        <span className="font-medium">
-                                            {data.moTa || 'Chưa có SĐT'}
-                                        </span>
-                                    </li>
-                                </ul>
-                            </Box>
-                        </div>
-                    </Box>
+        <Box mb={4} className="group-item">
+            <div 
+                className="bg-white rounded-xl shadow-md overflow-hidden"
+                onClick={() => navigate(`/farmer-list?id=${data.id}&tenNhom=${data.tenNhom}`)}
+            >
+                {/* Header với tên nhóm và dropdown */}
+                <div className="flex items-center justify-between p-3 pb-2">
+                    <h3 className="text-gray-800 text-xl font-bold line-clamp-1 flex-1 mr-3">
+                        {data.tenNhom}
+                    </h3>
+                    <GroupDropdown data={data} />
                 </div>
-            </Box>
+
+                <div className="px-3 pb-3">
+                    {/* Thông tin chính */}
+                    <div className="flex items-center gap-2 mb-4">
+                        {/* Date card */}
+                        <div className="flex-shrink-0 w-24 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex flex-col items-center justify-center text-white shadow-sm">
+                            <div className="text-xs font-semibold mb-1">
+                                {data?.ngayTao && renderDayOfWeek(formatDate(data.ngayTao))}
+                            </div>
+                            <div className="text-sm font-bold leading-tight text-center">
+                                {data?.ngayTao && formatDate(data.ngayTao)}
+                            </div>
+                        </div>
+
+                        {/* Stats */}
+                        <div className="flex-1 grid grid-cols-2 gap-2">
+                            <div className="bg-emerald-50 rounded-lg p-3 border border-emerald-300 shadow-sm">
+                                <div className="text-xl font-bold text-emerald-600 mb-1">
+                                    {data.tongTrongLuong?.toFixed(1) || '0.0'}
+                                </div>
+                                <div className="text-[13px] text-emerald-700 font-semibold">kg</div>
+                            </div>
+                            <div className="bg-amber-50 rounded-lg p-3 border border-amber-300 shadow-sm">
+                                <div className="text-xl font-bold text-amber-600 mb-1">
+                                    {data.soLanCan || 0}
+                                </div>
+                                <div className="text-[13px] text-amber-700 font-semibold">lần cân</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Contact info */}
+                    <div className="flex items-center gap-1 py-2 px-3 bg-gray-100 rounded-lg">
+                        <Icon icon='mingcute:phone-line' className="text-gray-600" fontSize={16} />
+                        <span className="text-sm text-gray-600 font-semibold tracking-wide">
+                            {data.moTa || 'Chưa có SĐT'}
+                        </span>
+                    </div>
+
+                    {/* Action indicator */}
+                    <div className="flex justify-end mt-3">
+                        <div className="flex items-center gap-1 text-blue-500">
+                            <span className="text-sm font-semibold">Xem chi tiết</span>
+                            <Icon icon='solar:arrow-right-outline' fontSize={20} />
+                        </div>
+                    </div>
+                </div>
+            </div>
         </Box>
     )
 }

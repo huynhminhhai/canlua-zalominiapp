@@ -27,7 +27,7 @@ const InfoItem: React.FC<InfoItemProps> = ({
     icon
 }) => {
     return (
-        <div className="flex items-center justify-between py-3 px-4 hover:bg-gray-50 transition-colors duration-200 group">
+        <div className="flex items-center justify-between py-3 px-4 hover:bg-gray-100 transition-colors duration-200 group">
             <div className="flex items-center gap-3">
                 {icon && (
                     <div className="w-9 h-9 bg-blue-50 rounded-full flex items-center justify-center group-hover:bg-blue-100 transition-colors duration-200">
@@ -64,13 +64,13 @@ const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
     }
 
     return (
-        <Box mb={4} className="bg-white shadow-md rounded-2xl overflow-hidden border border-gray-100 group">
+        <Box mb={4} className="bg-white shadow-md rounded-2xl overflow-hidden group">
             {/* Header Section */}
             <div className="bg-gradient-to-r from-blue-500 to-primary-color px-2 py-3">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <FarmerDropdown data={data} />
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-1">
                             <h3 className="text-xl font-bold text-white">{data?.tenHoDan}</h3>
                             <div className="flex items-center gap-4 text-blue-100">
                                 <div className="flex items-center gap-1.5">
@@ -137,7 +137,7 @@ const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
                     colorClass="text-green-600"
                 />
 
-                <div className="bg-gradient-to-r from-red-100 to-pink-100">
+                <div className="bg-gradient-to-r from-red-100 to-pink-100 border-l-4 !border-l-red-600">
                     <InfoItem
                         title="Còn lại"
                         value={`${formatCurrencyVN(conLai)} đ`}
