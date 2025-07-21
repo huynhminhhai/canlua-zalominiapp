@@ -4,6 +4,7 @@ import videos from 'assets/videos';
 import React, { useState, useRef, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useStoreApp } from 'store/store';
+import useClickOutside from 'utils/useClickOutSide';
 
 interface WeightData {
   phienCanId?: number; // Optional cho lần đầu tạo mới
@@ -34,12 +35,6 @@ const RiceWeightInput: React.FC = () => {
   const [searchParams] = useSearchParams();
   const phienCanId = searchParams.get("id");
 
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  const handlePlayAudio = () => {
-    audioRef.current?.play();
-  };
-
   const { mutateAsync: createGiaTriCan } = useCreateGiaTriCan();
   const { data: phienCanData } = useGetGiaTriCanList(Number(phienCanId));
 
@@ -68,6 +63,12 @@ const RiceWeightInput: React.FC = () => {
 
   const inputRefs = useRef<(HTMLInputElement | null)[][][]>([]);
   const hiddenInputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLDivElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const handlePlayAudio = () => {
+    audioRef.current?.play();
+  };
 
   // Khởi tạo refs cho trang hiện tại
   useEffect(() => {
@@ -75,19 +76,6 @@ const RiceWeightInput: React.FC = () => {
       Array(5).fill(null).map(() => Array(5).fill(null))
     );
   }, [currentPage]);
-
-  // Focus vào ô input hiện tại
-  // useEffect(() => {
-  //   const timeout = setTimeout(() => {
-  //     const currentInput = inputRefs.current[currentTable - 1]?.[currentRow]?.[currentCol];
-  //     console.log(currentInput);
-  //     if (currentInput) {
-  //       currentInput.focus();
-  //     }
-  //   }, 5000);
-
-  //   return () => clearTimeout(timeout);
-  // }, [currentPage, currentTable, currentRow, currentCol, pagesData]);
 
   // Tạo trang mới nếu chưa tồn tại
   const ensurePageExists = (pageIndex: number) => {
@@ -554,8 +542,12 @@ const RiceWeightInput: React.FC = () => {
     }
   }, [phienCanData]);
 
+  useClickOutside(inputRef, () => {
+    setIsEditable(false);
+  });
+
   return (
-    <div className="max-w-4xl mx-auto bg-transparent min-h-screen">
+    <div className="max-w-4xl mx-auto bg-transparent min-h-screen" ref={inputRef}>
       <audio src={videos.chanMa} controls ref={audioRef} hidden></audio>
       <div className="rounded-lg shadow-lg py-3 px-2">
         <input
