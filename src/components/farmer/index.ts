@@ -5,3 +5,4 @@ export { default as FarmerUpdateForm } from "./FarmerUpdateForm";
 export { default as FarmerResultForm } from "./FarmerResultForm";
 export { default as InfoBox } from "./InfoBox";
 export { default as WeightTable } from "./WeightTable";
+export { default as InputGuide } from "./InputGuide";

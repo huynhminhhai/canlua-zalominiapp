@@ -5,6 +5,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useStoreApp } from 'store/store';
 import useClickOutside from 'utils/useClickOutSide';
+import InputGuide from './InputGuide';
 
 interface WeightData {
   phienCanId?: number; // Optional cho lần đầu tạo mới
@@ -534,6 +535,9 @@ const RiceWeightInput: React.FC = () => {
     }
 
     setPagesData(newPagesData);
+
+    // Chuyển đến trang cuối cùng trong danh sách
+    setCurrentPage(newPagesData.length);
   };
 
   useEffect(() => {
@@ -584,7 +588,7 @@ const RiceWeightInput: React.FC = () => {
           ))}
         </div>
 
-        <div className='text-[16px] text-gray-700 font-medium mb-2 italic'>Lưu ý: Nhập {phienCan?.quyCachNhap} số {phienCan?.choPhepNhapSoLe && 'và lấy số lẻ'}</div>
+        <InputGuide phienCan={phienCan} />
 
         <div className="space-y-6 mb-6">
           {[1, 2, 3].map((tableNum) => (
@@ -679,20 +683,20 @@ const RiceWeightInput: React.FC = () => {
           <div className="bg-blue-100 rounded-lg p-4 shadow-md">
             <div className="text-center">
               <div className="text-xl font-bold text-primary-color mb-2">
-                Tổng trang {currentPage}: {getPageTotalSum().toFixed(1)}
+                Tổng trang {currentPage}: <span className='text-[22px] font-bold'>{getPageTotalSum().toFixed(1)} kg</span>
               </div>
-              <div className="text-md font-medium text-primary-color">
+              <div className="text-md font-semibold text-primary-color">
                 Đã nhập: {getCurrentPageCompletedCount()}/75 ô
               </div>
             </div>
           </div>
 
-          <div className="bg-green-100 rounded-lg p-4 shadow-md">
+          <div className="bg-green-200 rounded-lg p-4 shadow-md">
             <div className="text-center">
               <div className="text-xl font-bold text-green-700 mb-2">
-                Tổng tất cả: {getAllPagesTotal().toFixed(1)}
+                Tổng tất cả: <span className='text-[22px] font-bold'>{getAllPagesTotal().toFixed(1)} kg</span>
               </div>
-              <div className="text-md font-medium text-green-800">
+              <div className="text-md font-semibold text-green-800">
                 Tổng đã nhập: {getCompletedCellsCount()} ô ({pagesData.length} trang)
               </div>
             </div>

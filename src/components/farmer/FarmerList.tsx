@@ -65,7 +65,7 @@ const FarmerList: React.FC<any> = () => {
                     <EmptyData
                         title="Hiện chưa có nông dân nào!"
                         desc="Nhấn vào nút Thêm mới để bắt đầu!"
-                        handleClick={() => setShowCreateForm(true)}
+                        handleClick={() => handleToggleCreate()}
                         textBtn="Thêm mới"
                     />
                 </Box>
@@ -86,7 +86,7 @@ const FarmerList: React.FC<any> = () => {
         <Box>
             <FilterBar
                 showAddButton
-                onAddButtonClick={() => setShowCreateForm(true)}
+                onAddButtonClick={() => handleToggleCreate()}
             >
                 <div className="col-span-12">
                     <Input

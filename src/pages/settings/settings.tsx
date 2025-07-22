@@ -38,6 +38,42 @@ interface ApiConfig {
   soThapPhan: number;
 }
 
+// Cấu hình các loại nhập liệu
+export const inputConfigs: InputConfig[] = [
+  {
+    id: InputType.TWO_DIGITS,
+    name: "Nhập 2 chữ số",
+    title: "Nhập 2 chữ số",
+    example: "Ví dụ: 75",
+    result: "75 kg",
+    description: "Nhập trọng lượng đơn giản"
+  },
+  {
+    id: InputType.THREE_DIGITS_REMAINDER,
+    name: "Nhập 3 chữ số có số dư",
+    title: "Nhập 3 chữ số có số dư",
+    example: "Ví dụ: 755",
+    result: "75.5 kg",
+    description: "Chữ số cuối làm phần thập phân"
+  },
+  {
+    id: InputType.THREE_DIGITS,
+    name: "Nhập 3 chữ số",
+    title: "Nhập 3 chữ số",
+    example: "Ví dụ: nhập 155",
+    result: "155 kg",
+    description: "Nhập trọng lượng 3 số"
+  },
+  {
+    id: InputType.FOUR_DIGITS_REMAINDER,
+    name: "Nhập 4 chữ số có số dư",
+    title: "Nhập 4 chữ số có số dư",
+    example: "Ví dụ: nhập 1505",
+    result: "150.5 kg",
+    description: "Chữ số cuối làm phần thập phân"
+  }
+];
+
 const FarmerPage: React.FunctionComponent = () => {
   // State quản lý loại nhập liệu được chọn
   const [selectedInputType, setSelectedInputType] = useState<InputType | null>(null);
@@ -60,42 +96,6 @@ const FarmerPage: React.FunctionComponent = () => {
   // Hook gọi API lấy cấu hình hệ thống
   const { data: cauHinhHeThong, isLoading, refetch } = useGetCauHinhHeThong();
   const { mutateAsync: updateCauHinh } = useUpdateCauHinhHeThong();
-
-  // Cấu hình các loại nhập liệu
-  const inputConfigs: InputConfig[] = [
-    {
-      id: InputType.TWO_DIGITS,
-      name: "Nhập 2 chữ số",
-      title: "Nhập 2 chữ số",
-      example: "Ví dụ: 75",
-      result: "75 kg",
-      description: "Nhập trọng lượng đơn giản"
-    },
-    {
-      id: InputType.THREE_DIGITS_REMAINDER,
-      name: "Nhập 3 chữ số có phần dư",
-      title: "Nhập 3 chữ số có phần dư",
-      example: "Ví dụ: 755",
-      result: "75.5 kg",
-      description: "Chữ số cuối làm phần thập phân"
-    },
-    {
-      id: InputType.THREE_DIGITS,
-      name: "Nhập 3 chữ số",
-      title: "Nhập 3 chữ số",
-      example: "Ví dụ: nhập 150",
-      result: "155 kg",
-      description: "Nhập trọng lượng 3 số"
-    },
-    {
-      id: InputType.FOUR_DIGITS_REMAINDER,
-      name: "Nhập 4 chữ số có số dư",
-      title: "Nhập 4 chữ số có số dư",
-      example: "Ví dụ: nhập 1505",
-      result: "150.5 kg",
-      description: "Chữ số cuối làm phần thập phân"
-    }
-  ];
 
   // Function map InputType sang API config
   const mapInputTypeToApiConfig = useCallback((inputType: InputType): ApiConfig => {

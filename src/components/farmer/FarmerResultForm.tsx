@@ -259,7 +259,7 @@ const FarmerResultForm: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-12 gap-x-0 bg-white rounded-lg overflow-hidden shadow-md">
+                <div className="grid grid-cols-12 gap-1 p-1 bg-white rounded-lg overflow-hidden shadow-md">
                     <InfoBox label="Tổng khối lượng" value={`${tongKhoiLuong.toFixed(1)}`} colorClass="text-primary-color" fw='bold' />
                     <InfoBox label="Số lần cân (bao)" value={soLanCan} colorClass="text-primary-color" fw='bold' />
                     <InfoBox label="Khối lượng còn lại" value={khoiLuongConLai} note='(Trừ tạp chất và bao bì)' noteFs={12} colorClass='text-primary-color' fw='bold' />
@@ -278,7 +278,7 @@ const FarmerResultForm: React.FC = () => {
                         value={tongTienConLai}
                         formatNumber
                         colorClass="text-primary-color"
-                        fs={30}
+                        fs={34}
                         fw='bold'
                         span={12}
                         note="(Đã trừ tiền cọc và tiền đã trả)"
@@ -318,6 +318,7 @@ const FarmerResultForm: React.FC = () => {
                                             bao / 1 kg
                                         </Box>
                                     }
+                                    onFocus={(e) => e.target.select()}
                                 />
                             )}
                         />

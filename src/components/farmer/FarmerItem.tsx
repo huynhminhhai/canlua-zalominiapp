@@ -27,7 +27,7 @@ const InfoItem: React.FC<InfoItemProps> = ({
     icon
 }) => {
     return (
-        <div className="flex items-center justify-between py-3 px-4 hover:bg-gray-100 transition-colors duration-200 group">
+        <div className="flex items-center justify-between py-3 px-3 hover:bg-gray-100 transition-colors duration-200 group">
             <div className="flex items-center gap-3">
                 {icon && (
                     <div className="w-9 h-9 bg-blue-50 rounded-full flex items-center justify-center group-hover:bg-blue-100 transition-colors duration-200">
@@ -72,7 +72,7 @@ const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
                         <FarmerDropdown data={data} />
                         <div className="flex flex-col gap-1">
                             <h3 className="text-xl font-bold text-white">{data?.tenHoDan}</h3>
-                            <div className="flex items-center gap-4 text-blue-100">
+                            <div className="flex items-center gap-4 text-white">
                                 <div className="flex items-center gap-1.5">
                                     <Icon icon="mdi:clock-outline" className="w-4 h-4" />
                                     <span className="text-sm font-semibold">
@@ -113,14 +113,14 @@ const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
                     title="Đơn giá"
                     value={`${formatCurrencyVN(data?.donGia)} đ/kg`}
                     icon="mdi:cash"
-                    colorClass="text-gray-700"
+                    colorClass="text-gray-600"
                 />
 
                 <InfoItem
                     title="Thành tiền"
                     value={`${formatCurrencyVN(thanhTien)} đ`}
                     icon="mdi:calculator"
-                    colorClass="text-purple-600"
+                    colorClass="text-indigo-600"
                 />
 
                 <InfoItem

@@ -33,7 +33,7 @@ const InfoBox = ({
 
     return (
         <div className={`col-span-${span} h-full`}>
-            <div className='flex flex-col items-center gap-1 px-2 py-4 border-[1px] h-full'>
+            <div className='flex flex-col items-center gap-1 px-2 py-4 border-[1px] h-full rounded-md'>
                 <div className={`text-[${labelFs}px] text-gray-600 leading-[22px] font-medium`}>{label}</div>
                 <div
                     style={{
