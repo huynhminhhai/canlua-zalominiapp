@@ -58,6 +58,7 @@ const InputGuide: React.FC<Props> = ({ phienCan }) => {
                 {choPhepNhapSoLe && <span> có số dư</span>}
             </p>
             {renderHuongDan()}
+            {/* <p>Để nhập số cân, hãy nhấn nút 'Bắt đầu nhập số cân'. Khi hoàn tất và muốn quay lại chế độ xem, nhấn nút 'Chuyển sang chế độ xem'.</p> */}
         </div>
     );
 };

@@ -26,7 +26,7 @@ const LoginModal = () => {
                         setIsShowModalIsLogin(false)
                     }}
                     title="Liên kết số điện thoại"
-                    prefix={<img src={images.zalo} width={30} />}
+                    prefix={<div className="bg-blue-600 rounded-lg pt-[1px] pr-[2px]"><img src={images.zalo} width={30}/></div>}
                     suffix={<Icon fontSize={20} icon="formkit:right" />}
                     className='!px-0'
                     subTitle={'Yêu cầu truy cập số điện thoại'}

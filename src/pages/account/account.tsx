@@ -41,8 +41,7 @@ const AccountPage: React.FC = () => {
                         accessToken &&
                         <Box m={4}>
                             <div
-                                onClick={() => navigate('/profile-account')}
-                                className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 active:scale-[0.98] transition-all duration-200 cursor-pointer hover:shadow-xl"
+                                className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100"
                             >
                                 <div className="flex items-center gap-4">
                                     {/* Avatar Section */}
@@ -65,7 +64,7 @@ const AccountPage: React.FC = () => {
                                         {/* Phone Number */}
                                         <div className="flex items-center gap-2 mb-1">
                                             <h3 className="text-lg font-bold text-gray-800 tracking-wider">
-                                                {account?.phoneNumber || 'Chưa có số điện thoại'}
+                                                {account?.phoneNumber || ''}
                                             </h3>
                                         </div>
 
