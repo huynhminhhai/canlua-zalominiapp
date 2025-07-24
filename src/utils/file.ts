@@ -130,3 +130,23 @@ export const isVideo = (fileName: string) => {
 export const isPDF = (fileName: string) => {
   return /\.pdf$/i.test(fileName);
 };
+
+export const base64ToBlob = (base64: string, mimeType = 'application/octet-stream'): Blob => {
+  const base64Data = base64.includes(',') ? base64.split(',')[1] : base64;
+  const byteCharacters = atob(base64Data);
+  const byteArrays: Uint8Array[] = []; // 👈 Khai báo rõ ràng
+
+  for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+    const slice = byteCharacters.slice(offset, offset + 512);
+    const byteNumbers = new Array(slice.length);
+
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray); // ✅ không lỗi nữa
+  }
+
+  return new Blob(byteArrays, { type: mimeType });
+};

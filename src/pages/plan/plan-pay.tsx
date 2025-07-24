@@ -11,6 +11,7 @@ import { useStoreApp } from "store/store"
 import { saveImageFromZalo } from "services/zalo"
 import { useCustomSnackbar } from "utils/useCustomSnackbar"
 import Skeleton from "react-loading-skeleton"
+import { saveImageToGallery } from "zmp-sdk/apis"
 
 const getStatusInfo = (status) => {
     switch (status) {
@@ -72,19 +73,23 @@ const InvoiceDetailPage: React.FC = () => {
 
     const handleDownloadQrCode = async (fileUrl: string) => {
 
-        console.log(fileUrl);
-
         setIsLoadingFullScreen(true);
 
         try {
-            await saveImageFromZalo(fileUrl);
-            showSuccess('Tải tập tin thành công!');
+            await saveImageToGallery({
+                imageBase64Data: fileUrl
+            });
+
+            showSuccess('Lưu ảnh QR Code thành công')
         } catch (error) {
-            showWarning('Tải tập tin thất bại!');
+            console.error(error);
+            showWarning('Lưu mã qr thất bại')
         } finally {
             setIsLoadingFullScreen(false);
         }
     };
+
+    console.log(qrCodeData?.qrcodeImage);
 
     return (
         <Page className="relative flex-1 flex flex-col pb-[66px]">
@@ -201,7 +206,7 @@ const InvoiceDetailPage: React.FC = () => {
                     qrCodeData?.qrcodeImage
                     &&
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3 px-3 pt-3">
-                        <Button variant="secondary" onClick={() => handleDownloadQrCode(`data:image/jpeg;base64,${qrCodeData.qrcodeImage}`)} size="large" fullWidth>
+                        <Button variant="secondary" onClick={() => handleDownloadQrCode(`data:image/png;base64,${qrCodeData.qrcodeImage}`)} size="large" fullWidth>
                             <div className="flex items-center gap-2 justify-center">
                                 <Icon className="mt-1" fontSize={16} icon='line-md:download' />
                                 <span className="font-semibold">Lưu mã QR Code</span>

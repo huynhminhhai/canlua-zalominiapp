@@ -192,8 +192,12 @@ export const downloadFileHelper = async (url: string) => {
 export const saveImageFromZalo = async (url: string) => {
     try {
         await saveImageToGallery({
-            imageUrl: url,
+            imageBase64Data: url,
+            onProgress: (progress) => {
+                console.log(`Đã lưu được ${progress}%...`);
+            },
         });
+
     } catch (error) {
         console.error(error);
     }

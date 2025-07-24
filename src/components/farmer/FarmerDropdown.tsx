@@ -2,7 +2,6 @@ import { Icon } from "@iconify/react";
 import React, { useEffect, useRef, useState } from "react";
 import { ConfirmModal } from "components/modal";
 import FarmerUpdateForm from "./FarmerUpdateForm";
-import { openShareSheet } from "zmp-sdk/apis";
 import { PhienCan } from "./type";
 import { useDeletePhienCan } from "apiRequest/phienCan";
 
@@ -144,7 +143,7 @@ const FarmerDropdown: React.FC<FarmerDropdownProps> = ({
 
             {/* Dropdown Menu */}
             {open && (
-                <div className="absolute left-0 mt-2 w-72 bg-white border border-gray-200 rounded-2xl shadow-2xl z-30 overflow-hidden animate-in slide-in-from-top-2 duration-200">
+                <div className="absolute left-0 mt-2 w-80 bg-white border border-gray-200 rounded-2xl shadow-2xl z-30 overflow-hidden animate-in slide-in-from-top-2 duration-200">
                     <div className="py-2">
                         {/* Send Invoice Option */}
                         {/* <button
@@ -170,6 +169,27 @@ const FarmerDropdown: React.FC<FarmerDropdownProps> = ({
                             <div className="flex-1 min-w-0">
                                 <div className="text-[16px] font-semibold">Gửi hóa đơn</div>
                                 <div className="text-sm font-medium text-gray-500 truncate">Chia sẻ hóa đơn cân lúa</div>
+                            </div>
+                        </button> */}
+
+                        {/* <button
+                            className="w-full px-4 py-3 flex items-center gap-3 text-left text-gray-700 hover:bg-green-50 transition-colors duration-150 group"
+                            onClick={async (e) => {
+                                e.stopPropagation();
+                                setOpen(false);
+
+                            }}
+                        >
+                            <div className="w-9 h-9 rounded-xl bg-green-100 flex items-center justify-center group-hover:bg-green-200 transition-colors flex-shrink-0">
+                                <Icon
+                                    icon="file-icons:microsoft-excel"
+                                    fontSize={18}
+                                    className="text-green-600"
+                                />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <div className="text-[16px] font-semibold">Xuất Excel</div>
+                                <div className="text-sm font-medium text-gray-500 truncate">Tải về dữ liệu dưới dạng Excel</div>
                             </div>
                         </button> */}
 
