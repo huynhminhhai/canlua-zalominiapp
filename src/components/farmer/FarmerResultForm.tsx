@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Box, Button, Input, Modal } from 'zmp-ui'
+import { Box, Button, Input, Modal, useNavigate } from 'zmp-ui'
 import { FormDataFarmerResult, PhienCan, schemaFarmerResult } from './type'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Controller, useForm } from 'react-hook-form'
@@ -13,8 +13,11 @@ import { WeightTable } from '.'
 import { useStoreApp } from 'store/store'
 import { getDataFromStorage } from 'services/zalo'
 import { useUpdatePhienCanOnChange } from 'apiRequest/phienCan'
+import { EmptyData } from 'components/data'
 
 const FarmerResultForm: React.FC = () => {
+
+    const navigate = useNavigate();
 
     const [visibleTruBiModal, setVisibleTruBiModal] = useState(false);
     const [phienCanData, setPhienCanData] = useState<PhienCan | null>(null);
@@ -176,7 +179,12 @@ const FarmerResultForm: React.FC = () => {
     }, [watchedFields]);
 
     // CHỈ SAU KHI TẤT CẢ HOOKS ĐÃ ĐƯỢC GỌI MỚI RETURN SỚM
-    if (!phienCanData) return <Box>not found</Box>;
+    if (!phienCanData) return <Box px={2}>
+        <HeaderDetail title={"Chi tiết phiên cân"} weight={'0.0'} count={'0'} />
+        <EmptyData
+            title="Không tìm thấy dữ liệu"
+        />
+    </Box>;
 
     return (
         <Box>
