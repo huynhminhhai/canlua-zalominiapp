@@ -127,6 +127,12 @@ const AccountPage: React.FC = () => {
                                             suffix={<Icon fontSize={20} icon="formkit:right" />}
                                         />
                                         <Item
+                                            onClick={() => navigate('/plan-history')}
+                                            title="Lịch sử nâng cấp"
+                                            prefix={<img src={images.garbageFee} width={28} />}
+                                            suffix={<Icon fontSize={20} icon="formkit:right" />}
+                                        />
+                                        <Item
                                             onClick={logout}
                                             title="Đăng xuất"
                                             prefix={<img src={images.logout} width={28} />}

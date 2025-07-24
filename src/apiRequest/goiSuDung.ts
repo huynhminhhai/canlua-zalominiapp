@@ -31,6 +31,21 @@ const goiSuDungApiRequest = {
     dangKyGoiSuDung: async (param: DangKyGoiSuDungType) => {
         return await http.post<any>(`/services/app/DangKyGoiSuDung/Create`, param);
     },
+    getLichSuThanhToan: async () => {
+        return await http.get<any>(`/services/app/LichSuThanhToan/GetAllLichSuThanhToan`);
+    }
+}
+
+export const useGetLichSuThanhToan = () => {
+    return useQuery({
+        queryKey: ['lichSuThanhToan'],
+        queryFn: async () => {
+            const res = await goiSuDungApiRequest.getLichSuThanhToan();
+            return res
+        },
+        staleTime: 0,
+        retry: 1,
+    });
 }
 
 export const useGetGoiSuDungList = (param: GoiSuDungQueryParams) => {

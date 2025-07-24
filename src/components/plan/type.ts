@@ -14,6 +14,19 @@ export interface DangKyGoiSuDungDto {
     goiSuDungId: number;
 }
 
+export type ThanhToan = {
+    tenantId: number;
+    soTien: number;
+    phuongThucThanhToan: "ChuyenKhoan" | "TienMat" | "ViDienTu" | string;
+    maGiaoDich: string;
+    trangThai: number;
+    ngayBatDau: string;
+    ngayKetThuc: string;
+    ngayThanhToan: string;
+    ghiChu: string | null;
+    dangKyGoiSuDungId: number;
+};
+
 export interface QrCodeResponseDto {
     responseCode: string;
     description: string;
