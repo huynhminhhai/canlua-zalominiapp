@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Box, Button, Input, Modal, useNavigate } from 'zmp-ui'
-import { FormDataFarmerResult, PhienCan, schemaFarmerResult } from './type'
+import { Box, Button, Input, Modal, Switch, useSnackbar } from 'zmp-ui'
+import { FormDataFarmerResult, PhienCan, schemaFarmerResult, tinhKhoiLuongThucTe } from './type'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Controller, useForm } from 'react-hook-form'
 import { FormInputField, FormInputNumbericField } from 'components/form'
 import { Icon } from '@iconify/react'
-import { debounce, isEqual } from 'lodash'
+import { debounce, get, isEqual } from 'lodash'
 import { parseNumber, roundWeight } from 'utils/number'
 import HeaderDetail from 'components/header-detail'
 import InfoBox from './InfoBox'
@@ -14,13 +14,15 @@ import { useStoreApp } from 'store/store'
 import { getDataFromStorage } from 'services/zalo'
 import { useUpdatePhienCanOnChange } from 'apiRequest/phienCan'
 import { EmptyData } from 'components/data'
+import { useCustomSnackbar } from 'utils/useCustomSnackbar'
 
 const FarmerResultForm: React.FC = () => {
 
-    const navigate = useNavigate();
+    const { showSuccess } = useCustomSnackbar();
 
     const [visibleTruBiModal, setVisibleTruBiModal] = useState(false);
     const [phienCanData, setPhienCanData] = useState<PhienCan | null>(null);
+    const [isDone, setIsDone] = useState(true);
     const { phienCan } = useStoreApp();
 
     const { mutateAsync: updatePhienCan } = useUpdatePhienCanOnChange();
@@ -95,13 +97,21 @@ const FarmerResultForm: React.FC = () => {
     const truTapChat = watch('truTapChat');
 
     const khoiLuongConLai = useMemo(() => {
-        const _truBaoBi = parseNumber(quyCachTruBi);
-        const _truTapChat = parseNumber(truTapChat);
-        const khoiLuongTruBaoBi = _truBaoBi === 0 ? 0 : roundWeight(soLanCan / _truBaoBi, 'nearest', 1);
+        // const _truBaoBi = parseNumber(quyCachTruBi);
+        // const _truTapChat = parseNumber(truTapChat);
+        // const khoiLuongTruBaoBi = _truBaoBi === 0 ? 0 : roundWeight(soLanCan / _truBaoBi, 'nearest', 1);
 
-        const result = Number((tongKhoiLuong - khoiLuongTruBaoBi - _truTapChat).toFixed(1));
+        // const result = Number((tongKhoiLuong - khoiLuongTruBaoBi - _truTapChat).toFixed(1));
 
-        return result;
+        // return result;
+        return tinhKhoiLuongThucTe({
+            tongKhoiLuong,
+            soLanCan,
+            quyCachTruBi,
+            truTapChat,
+            roundWeight,
+            parseNumber
+        });
     }, [quyCachTruBi, truTapChat, tongKhoiLuong, soLanCan]);
 
     const tongTien = useMemo(() => {
@@ -113,6 +123,20 @@ const FarmerResultForm: React.FC = () => {
     }, [tongTien, tienCoc, tienDaTra]);
 
     const updateFarmerResult = async (data: FormDataFarmerResult) => {
+
+        console.log('tien da tra', data.tienDaTra);
+
+        const tongKhoiLuongThucTe = tinhKhoiLuongThucTe({
+            tongKhoiLuong: phienCanData?.tongTrongLuong || 0,
+            soLanCan: phienCanData?.soLanCan || soLanCan,
+            quyCachTruBi: data.quyCachTruBi,
+            truTapChat: data.truTapChat,
+            roundWeight,
+            parseNumber,
+        });
+
+        const tongTienToiDa = Math.round(tongKhoiLuongThucTe * parseNumber(data.donGia)) - parseNumber(data.tienCoc);
+
         try {
             const normalizedData: FormDataFarmerResult = {
                 tenHoDan: (data.tenHoDan || '').trim(),
@@ -124,7 +148,7 @@ const FarmerResultForm: React.FC = () => {
                         : parseFloat(data.truTapChat as string)
                     : parseNumber(data.truTapChat) || 0,
                 tienCoc: parseNumber(data.tienCoc) || 0,
-                tienDaTra: parseNumber(data.tienDaTra) || 0
+                tienDaTra: (parseNumber(data.tienDaTra) > tongTienToiDa && tongTienToiDa > 0) ? tongTienToiDa : parseNumber(data.tienDaTra) || 0
             };
 
             const dataSubmit = { ...phienCanData, ...normalizedData };
@@ -149,7 +173,7 @@ const FarmerResultForm: React.FC = () => {
     const debouncedUpdate = useCallback(
         debounce((data: FormDataFarmerResult) => {
             updateFarmerResult(data);
-        }, 1000),
+        }, 1500),
         [phienCanData]
     );
 
@@ -177,6 +201,15 @@ const FarmerResultForm: React.FC = () => {
             debouncedUpdate(watchedFields);
         }
     }, [watchedFields]);
+
+    useEffect(() => {
+
+        if ((tongTien - parseNumber(tienCoc) === tienDaTra)) {
+            setIsDone(true);
+        } else {
+            setIsDone(false);
+        }
+    }, [tongTien, tienDaTra, tienCoc]);
 
     // CHỈ SAU KHI TẤT CẢ HOOKS ĐÃ ĐƯỢC GỌI MỚI RETURN SỚM
     if (!phienCanData) return <Box px={2}>
@@ -291,6 +324,32 @@ const FarmerResultForm: React.FC = () => {
                         span={12}
                         note="(Đã trừ tiền cọc và tiền đã trả)"
                     />
+                    <div className='col-span-12 p-2 text-center'>
+                        <div className='flex flex-col gap-2 items-center'>
+                            <Switch
+                                checked={isDone}
+                                size='medium'
+                                onClick={ async () => {
+
+                                    const newIsDone = !isDone;
+                                    setIsDone(newIsDone);
+
+
+                                    const newTienDaTra = newIsDone ? tongTien - parseNumber(tienCoc) : 0;
+
+                                    await updateFarmerResult({
+                                        ...getValues(),
+                                        tienDaTra: newTienDaTra,
+                                    })
+
+                                    if (newIsDone) {
+                                        showSuccess('Đã trả đủ tiền');
+                                    }
+                                }}
+                            />
+                            <span className='text-[14px] font-medium text-gray-600'>Đã trả đủ tiền</span>
+                        </div>
+                    </div>
                 </div>
             </Box>
 

@@ -593,7 +593,7 @@ const RiceWeightInput: React.FC = () => {
         <div className="space-y-6 mb-6">
           {[1, 2, 3].map((tableNum) => (
             <div key={tableNum} className={`bg-white border rounded-lg overflow-hidden transition-all duration-300 shadow-md`}>
-              <div className={`px-4 py-3 text-lg text-center font-semibold text-white bg-gradient-to-r from-blue-500 to-primary-color`}>
+              <div className={`px-4 py-3 text-lg text-center font-semibold text-white bg-gradient-to-r from-primary-color to-primary-color`}>
                 Bảng {tableNum} - Trang {currentPage}
               </div>
 
@@ -665,7 +665,7 @@ const RiceWeightInput: React.FC = () => {
 
                 <div className="grid grid-cols-5 gap-1 mt-2">
                   {[0, 1, 2, 3, 4].map((colIndex) => (
-                    <div key={colIndex} className={`text-white text-center py-2 rounded text-lg font-semibold bg-gradient-to-r from-blue-500 to-primary-color`}>
+                    <div key={colIndex} className={`text-white text-center py-2 rounded text-lg font-semibold bg-gradient-to-r from-primary-color to-primary-color`}>
                       {getColumnSum(tableNum, colIndex).toFixed(1)}
                     </div>
                   ))}

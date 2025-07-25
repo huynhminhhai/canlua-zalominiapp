@@ -51,3 +51,31 @@ export type PhienCan = {
     trongLuong: number;
     truTapChat: number;
 };
+
+export function tinhKhoiLuongThucTe({
+    tongKhoiLuong,
+    soLanCan,
+    quyCachTruBi,
+    truTapChat,
+    roundWeight,
+    parseNumber,
+}: {
+    tongKhoiLuong: number;
+    soLanCan: number;
+    quyCachTruBi: any; 
+    truTapChat: any;  
+    roundWeight: (value: number, mode: 'nearest', precision: number) => number;
+    parseNumber: (value: any) => number;
+}): number {
+    const _truBaoBi = parseNumber(quyCachTruBi);
+    const _truTapChat = parseNumber(truTapChat);
+
+    const khoiLuongTruBaoBi =
+        _truBaoBi === 0 ? 0 : roundWeight(soLanCan / _truBaoBi, 'nearest', 1);
+
+    const result = Number(
+        (tongKhoiLuong - khoiLuongTruBaoBi - _truTapChat).toFixed(1)
+    );
+
+    return result;
+}

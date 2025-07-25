@@ -31,7 +31,7 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
                     {/* Thông tin chính */}
                     <div className="flex items-center gap-2 mb-4">
                         {/* Date card */}
-                        <div className="flex-shrink-0 w-[102px] h-20 bg-gradient-to-br from-blue-500 to-primary-color rounded-xl flex flex-col items-center justify-center text-white shadow-sm">
+                        <div className="flex-shrink-0 w-[102px] h-20 bg-gradient-to-br from-primary-color to-primary-color rounded-xl flex flex-col items-center justify-center text-white shadow-sm">
                             <div className="text-sm font-semibold mb-1">
                                 {data?.ngayTao && renderDayOfWeek(formatDate(data.ngayTao))}
                             </div>

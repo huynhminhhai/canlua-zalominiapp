@@ -37,7 +37,7 @@ const InfoItem: React.FC<InfoItemProps> = ({
                 <div className="flex flex-col">
                     <span className="text-[16px] font-medium text-gray-800">{title}</span>
                     {note && (
-                        <span className="text-[16px] font-medium text-gray-500 mt-0.5">{note}</span>
+                        <span className="text-[16px] font-bold text-gray-600 mt-0.5">{note}</span>
                     )}
                 </div>
             </div>
@@ -66,7 +66,7 @@ const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
     return (
         <Box mb={4} className="bg-white shadow-md rounded-2xl overflow-hidden group">
             {/* Header Section */}
-            <div className="bg-gradient-to-r from-blue-500 to-primary-color px-2 py-3">
+            <div className="bg-gradient-to-r from-primary-color to-primary-color px-2 py-3">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <FarmerDropdown data={data} />
@@ -106,7 +106,7 @@ const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
                     value={`${khoiLuongConLai} kg`}
                     note={`${data?.soLanCan} lần cân`}
                     icon="mdi:scale"
-                    colorClass="text-blue-600"
+                    colorClass="text-gray-600"
                 />
 
                 <InfoItem
@@ -120,7 +120,7 @@ const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
                     title="Thành tiền"
                     value={`${formatCurrencyVN(thanhTien)} đ`}
                     icon="mdi:calculator"
-                    colorClass="text-indigo-600"
+                    colorClass="text-blue-600"
                 />
 
                 <InfoItem
@@ -137,25 +137,30 @@ const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
                     colorClass="text-green-600"
                 />
 
-                <div className="bg-gradient-to-r from-red-100 to-pink-100 border-l-4 !border-l-red-600">
+                <div
+                    className={`border-l-4 ${conLai <= 0
+                            ? 'bg-green-100 to-green-50 from-green-100 !border-l-green-600'
+                            : 'bg-gradient-to-r from-red-100 to-pink-100 !border-l-red-600'
+                        }`}
+                >
                     <InfoItem
                         title="Còn lại"
                         value={`${formatCurrencyVN(conLai)} đ`}
                         icon="mdi:alert-circle"
-                        colorClass="text-red-600 text-lg"
+                        colorClass={conLai <= 0 ? 'text-green-600 text-lg' : 'text-red-600 text-lg'}
                     />
                 </div>
             </div>
 
             {/* Status Bar */}
-            <div className="bg-gray-50 px-4 py-3 flex items-center justify-between">
-                <div className="flex items-center gap-2">
+            <div className="bg-gray-50 px-4 py-2 flex items-center justify-between">
+                {/* <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                     <span className="text-xs text-gray-600 font-medium">Hoạt động</span>
                 </div>
                 <div className="text-xs text-gray-500">
                     ID: {data?.id}
-                </div>
+                </div> */}
             </div>
         </Box>
     )
