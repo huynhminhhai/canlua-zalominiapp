@@ -89,8 +89,6 @@ const InvoiceDetailPage: React.FC = () => {
         }
     };
 
-    console.log(qrCodeData?.qrcodeImage);
-
     return (
         <Page className="relative flex-1 flex flex-col pb-[66px]">
             <HeaderSub title="Thanh toán gói nâng cấp" />

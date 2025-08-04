@@ -31,7 +31,7 @@ const RiceWeightInput: React.FC = () => {
   const [currentRow, setCurrentRow] = useState(0);
   const [currentCol, setCurrentCol] = useState(0);
   const limitInput = phienCan?.quyCachNhap || 2;
-  const numberOfTables = 3;
+  const numberOfTables = phienCan?.soLuongMoiTrang === 75 ? 3 : 4;
 
   const [searchParams] = useSearchParams();
   const phienCanId = searchParams.get("id");
@@ -84,7 +84,7 @@ const RiceWeightInput: React.FC = () => {
       const newPagesData = [...pagesData];
       const newPage: CellData[][][] = [];
 
-      for (let table = 0; table < 3; table++) {
+      for (let table = 0; table < numberOfTables; table++) {
         const tableRows: CellData[][] = [];
         for (let row = 0; row < 5; row++) {
           const tableCols: CellData[] = [];
@@ -559,17 +559,8 @@ const RiceWeightInput: React.FC = () => {
           className="absolute opacity-0 w-0 h-0"
           type="text"
         />
-        <div className='flex items-center justify-center mb-3'>
-          <button
-            onClick={handleFocusTrick}
-            className="px-6 py-3 bg-primary-color text-[16px] text-white border-primary-color border rounded-full font-semibold mx-auto mb-3 flex items-center gap-2 shadow-md"
-          >
-            <span>
-              {isEditable ? 'Chuyển sang chế độ xem' : 'Bắt đầu nhập số cân'}
-            </span>
-            <Icon icon={isEditable ? 'mdi:lock-outline' : 'mdi:lock-open-outline'} fontSize={18} />
-          </button>
-        </div>
+
+        <InputGuide phienCan={phienCan} />
 
         {/* Page Navigation */}
         <div className="flex items-center gap-2 mb-6 flex-wrap">
@@ -588,10 +579,20 @@ const RiceWeightInput: React.FC = () => {
           ))}
         </div>
 
-        <InputGuide phienCan={phienCan} />
+        <div className='flex items-center justify-center mb-2 mt-4'>
+          <button
+            onClick={handleFocusTrick}
+            className="px-6 py-3 bg-primary-color text-[16px] text-white border-primary-color border rounded-full font-semibold mx-auto mb-3 flex items-center gap-2 shadow-md"
+          >
+            <span>
+              {isEditable ? 'Chuyển sang chế độ xem' : 'Bắt đầu nhập số cân'}
+            </span>
+            <Icon icon={isEditable ? 'mdi:lock-outline' : 'mdi:lock-open-outline'} fontSize={18} />
+          </button>
+        </div>
 
         <div className="space-y-6 mb-6">
-          {[1, 2, 3].map((tableNum) => (
+          {(phienCan?.soLuongMoiTrang === 75 ? [1, 2, 3] : [1, 2, 3, 4]).map((tableNum) => (
             <div key={tableNum} className={`bg-white border rounded-lg overflow-hidden transition-all duration-300 shadow-md`}>
               <div className={`px-4 py-3 text-lg text-center font-semibold text-white bg-gradient-to-r from-primary-color to-primary-color`}>
                 Bảng {tableNum} - Trang {currentPage}

@@ -73,12 +73,12 @@ const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
                         <div className="flex flex-col gap-1">
                             <h3 className="text-xl font-bold text-white">{data?.tenHoDan}</h3>
                             <div className="flex items-center gap-4 text-white">
-                                <div className="flex items-center gap-1.5">
+                                {/* <div className="flex items-center gap-1.5">
                                     <Icon icon="mdi:clock-outline" className="w-4 h-4" />
                                     <span className="text-sm font-semibold">
                                         {data?.ngayTao && getHourFromDate(data?.ngayTao)}
                                     </span>
-                                </div>
+                                </div> */}
                                 <div className="flex items-center gap-1.5">
                                     <Icon icon="mdi:calendar-outline" className="w-4 h-4" />
                                     <span className="text-sm font-semibold">
@@ -147,7 +147,7 @@ const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
                         title="Còn lại"
                         value={`${formatCurrencyVN(conLai)} đ`}
                         icon="mdi:alert-circle"
-                        colorClass={conLai <= 0 ? 'text-green-600 text-lg' : 'text-red-600 text-lg'}
+                        colorClass={conLai <= 0 ? 'text-green-600' : 'text-red-600'}
                     />
                 </div>
             </div>
