@@ -60,7 +60,7 @@ export const useLoginZalo = () => {
         },
         onSuccess: async (res: any) => {
 
-            showSuccess('Đăng nhập bằng Zalo thành công');
+            showSuccess('Đăng nhập thành công');
 
             setToken({ accessToken: res?.result?.accessToken });
             setAccount(res?.result);

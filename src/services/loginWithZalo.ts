@@ -47,7 +47,7 @@ export const useLoginWithZalo = () => {
 
         } catch (error: any) {
             if (error.code === -201) {
-                showWarning('Bạn đã từ chối đăng nhập bằng Zalo')
+                showWarning('Đăng nhập thất bại')
             } else {
                 console.error(`Lỗi: ${error}`)
                 showError(error)
