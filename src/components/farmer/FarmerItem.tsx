@@ -4,7 +4,7 @@ import { Box, useNavigate } from "zmp-ui"
 import FarmerDropdown from "./FarmerDropdown"
 import { PhienCan } from "./type"
 import { formatDate, getHourFromDate } from "utils/date"
-import { formatCurrencyVN, parseNumber, roundWeight } from "utils/number"
+import { formatCurrencyVN, parseNumber, replaceDotToComma, roundWeight } from "utils/number"
 import { useStoreApp } from "store/store"
 
 type InfoItemProps = {
@@ -103,7 +103,7 @@ const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
             <div className="divide-y divide-gray-100">
                 <InfoItem
                     title="Khối lượng"
-                    value={`${khoiLuongConLai} kg`}
+                    value={`${replaceDotToComma(khoiLuongConLai)} kg`}
                     note={`${data?.soLanCan} lần cân`}
                     icon="mdi:scale"
                     colorClass="text-gray-600"

@@ -27,7 +27,7 @@ const InputGuide: React.FC<Props> = ({ phienCan }) => {
         if (quyCachNhap === 3 && choPhepNhapSoLe) {
             return (
                 <div className="mt-2">
-                    <p className="text-[16px] text-gray-700">Ví dụ: <span className="font-semibold">755</span> ⟹ <span className="font-semibold">75.5 kg</span></p>
+                    <p className="text-[16px] text-gray-700">Ví dụ: <span className="font-semibold">755</span> ⟹ <span className="font-semibold">75,5 kg</span></p>
                 </div>
             );
         }
@@ -43,7 +43,7 @@ const InputGuide: React.FC<Props> = ({ phienCan }) => {
         if (quyCachNhap === 4) {
             return (
                 <div className="mt-2">
-                    <p className="text-[16px] text-gray-700">Ví dụ: <span className="font-semibold">1505</span> ⟹ <span className="font-semibold">150.5 kg</span></p>
+                    <p className="text-[16px] text-gray-700">Ví dụ: <span className="font-semibold">1505</span> ⟹ <span className="font-semibold">150,5 kg</span></p>
                 </div>
             );
         }

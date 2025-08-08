@@ -1,6 +1,7 @@
 import { Icon } from '@iconify/react';
 import { useGetCauHinhHeThong, useUpdateCauHinhHeThong } from 'apiRequest/cauHinhHeThong';
 import React, { useCallback, useEffect, useState } from 'react'
+import { replaceDotToComma } from 'utils/number';
 import { Box } from 'zmp-ui';
 
 // Enum cho các loại nhập liệu
@@ -50,7 +51,7 @@ export const inputConfigs: InputConfig[] = [
         name: "Nhập 3 chữ số có số dư",
         title: "Nhập 3 chữ số có số dư",
         example: "Ví dụ: 755",
-        result: "75.5 kg",
+        result: "75,5 kg",
         description: "Chữ số cuối làm phần thập phân"
     },
     {
@@ -66,7 +67,7 @@ export const inputConfigs: InputConfig[] = [
         name: "Nhập 4 chữ số có số dư",
         title: "Nhập 4 chữ số có số dư",
         example: "Ví dụ: nhập 1505",
-        result: "150.5 kg",
+        result: "150,5 kg",
         description: "Chữ số cuối làm phần thập phân"
     }
 ];
@@ -364,7 +365,7 @@ const QuyCachNhap: React.FC<QuyCachNhapProps> = ({ cauHinhHeThong }) => {
                             {calculationResult && (
                                 <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-md">
                                     <div className="text-[16px] font-medium text-green-800">
-                                        <strong>Kết quả:</strong> {calculationResult.input} ⟹ {calculationResult.output} {calculationResult.unit}
+                                        <strong>Kết quả:</strong> {calculationResult.input} ⟹ {replaceDotToComma(calculationResult.output)} {calculationResult.unit}
                                     </div>
                                 </div>
                             )}

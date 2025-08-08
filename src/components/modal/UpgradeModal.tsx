@@ -41,7 +41,11 @@ const UpgradeModal = () => {
                 <ul className="space-y-2 text-sm text-gray-600 pl-6">
                     <li className="flex items-center gap-2 text-[16px] leading-[24px] font-medium">
                         <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
-                        Truy cập không giới hạn
+                        Tạo nhóm không giới hạn
+                    </li>
+                    <li className="flex items-center gap-2 text-[16px] leading-[24px] font-medium">
+                        <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
+                        Tạo hộ bán lúa không giới hạn
                     </li>
                 </ul>
             </div>

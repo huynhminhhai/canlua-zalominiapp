@@ -145,12 +145,12 @@ const AccountPage: React.FC = () => {
                             <Box m={4}>
                                 <List className="bg-white rounded-lg shadow-sm">
                                     <ManagementTitle title="Đăng nhập" />
-                                    {/* <Item
+                                    <Item
                                         onClick={() => navigate('/login')}
                                         title="Bằng tài khoản"
                                         prefix={<img src={images.login} width={30} />}
                                         suffix={<Icon fontSize={20} icon="formkit:right" />}
-                                    /> */}
+                                    />
                                     <Item
                                         onClick={() => loginWithZalo()}
                                         title="Liên kết số điện thoại"

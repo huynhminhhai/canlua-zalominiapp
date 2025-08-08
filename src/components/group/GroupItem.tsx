@@ -5,6 +5,7 @@ import { formatDate, renderDayOfWeek } from "utils/date"
 import { Box, useNavigate } from "zmp-ui"
 import GroupDropdown from "./GroupDropdown"
 import { GroupItemType } from "./type"
+import { replaceDotToComma } from "utils/number"
 
 type GroupItemProps = {
     data: GroupItemType
@@ -44,7 +45,7 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
                         <div className="flex-1 grid grid-cols-2 gap-2">
                             <div className="bg-blue-50 rounded-lg px-3 py-4 border border-blue-400 shadow-sm flex flex-col justify-center">
                                 <div className="text-[20px] font-bold text-primary-color mb-1">
-                                    {data.tongTrongLuong?.toFixed(1) || '0.0'}
+                                    {replaceDotToComma(data.tongTrongLuong?.toFixed(1)) || '0.0'}
                                 </div>
                                 <div className="text-[14px] text-primary-color font-semibold">kg</div>
                             </div>

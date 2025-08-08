@@ -6,7 +6,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { FormInputField, FormInputNumbericField } from 'components/form'
 import { Icon } from '@iconify/react'
 import { debounce, get, isEqual } from 'lodash'
-import { parseNumber, roundWeight } from 'utils/number'
+import { parseNumber, replaceDotToComma, roundWeight } from 'utils/number'
 import HeaderDetail from 'components/header-detail'
 import InfoBox from './InfoBox'
 import { WeightTable } from '.'
@@ -221,14 +221,14 @@ const FarmerResultForm: React.FC = () => {
 
     return (
         <Box>
-            <HeaderDetail title={phienCanData?.tenHoDan || "Chi tiết phiên cân"} weight={tongKhoiLuong.toFixed(1).toString()} count={soLanCan.toString()} />
+            <HeaderDetail title={phienCanData?.tenHoDan || "Chi tiết phiên cân"} weight={replaceDotToComma(tongKhoiLuong.toFixed(1)).toString()} count={soLanCan.toString()} />
             <Box px={2} pt={6} pb={3}>
                 <div className="grid grid-cols-12 gap-x-3 shadow-md bg-white px-3 pb-2 pt-4 rounded-lg mb-4">
                     <div className="col-span-12">
                         <FormInputField
                             name="tenHoDan"
-                            label="Tên nông dân"
-                            placeholder="Nhập tên nông dân"
+                            label="Tên hộ bán lúa"
+                            placeholder="Nhập tên hộ bán lúa"
                             control={control}
                             error={errors.tenHoDan?.message}
                             required
@@ -247,7 +247,7 @@ const FarmerResultForm: React.FC = () => {
                     <div className="col-span-12 mb-3">
                         <Input
                             label="Trừ bao bì (kg)"
-                            value={getValues('quyCachTruBi') === 0 ? "0" : `${roundWeight(soLanCan / (Number(getValues('quyCachTruBi'))), 'nearest', 1)}`}
+                            value={getValues('quyCachTruBi') === 0 ? "0" : `${replaceDotToComma(roundWeight(soLanCan / (Number(getValues('quyCachTruBi'))), 'nearest', 1))}`}
                             suffix={
                                 <Box className='bg-primary-color rounded-lg' p={3} onClick={() => setVisibleTruBiModal(true)}>
                                     <Icon icon="solar:settings-linear" fontSize={20} color='#ffffff' />
@@ -269,8 +269,13 @@ const FarmerResultForm: React.FC = () => {
                                         inputMode="decimal"
                                         maxLength={4}
                                         label="Trừ tạp chất (kg)"
-                                        value={field.value?.toString() || "0"}
+                                        // value={field.value?.toString() || "0"}
+                                        value={field.value?.toString().replace('.', ',') || "0"}
                                         onFocus={(e) => e.target.select()}
+                                        // onChange={(e) => {
+                                        //     const input = e.target.value.replace(',', '.');
+                                        //     field.onChange(input);
+                                        // }}
                                         onChange={(e) => {
                                             const input = e.target.value.replace(',', '.');
                                             field.onChange(input);
@@ -301,9 +306,9 @@ const FarmerResultForm: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-12 gap-1 p-1 bg-white rounded-lg overflow-hidden shadow-md">
-                    <InfoBox label="Tổng khối lượng" value={`${tongKhoiLuong.toFixed(1)}`} colorClass="text-primary-color" fw='bold' />
+                    <InfoBox label="Tổng khối lượng" value={`${replaceDotToComma(tongKhoiLuong.toFixed(1))}`} colorClass="text-primary-color" fw='bold' />
                     <InfoBox label="Số lần cân (bao)" value={soLanCan} colorClass="text-primary-color" fw='bold' />
-                    <InfoBox label="Khối lượng còn lại" value={khoiLuongConLai} note='(Trừ tạp chất và bao bì)' noteFs={12} colorClass='text-primary-color' fw='bold' />
+                    <InfoBox label="Khối lượng còn lại" value={replaceDotToComma(khoiLuongConLai)} note='(Trừ tạp chất và bao bì)' noteFs={12} colorClass='text-primary-color' fw='bold' />
                     <InfoBox
                         label="Tổng tiền"
                         value={tongTien}
@@ -329,7 +334,7 @@ const FarmerResultForm: React.FC = () => {
                             <Switch
                                 checked={isDone}
                                 size='medium'
-                                onClick={ async () => {
+                                onClick={async () => {
 
                                     const newIsDone = !isDone;
                                     setIsDone(newIsDone);

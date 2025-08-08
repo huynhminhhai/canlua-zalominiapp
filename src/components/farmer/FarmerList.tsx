@@ -63,7 +63,7 @@ const FarmerList: React.FC<any> = () => {
             return (
                 <Box px={2}>
                     <EmptyData
-                        title="Hiện chưa có nông dân nào!"
+                        title="Hiện chưa có hộ bán lúa nào!"
                         desc="Nhấn vào nút Thêm mới để bắt đầu!"
                         handleClick={() => handleToggleCreate()}
                         textBtn="Thêm mới"
@@ -90,7 +90,7 @@ const FarmerList: React.FC<any> = () => {
             >
                 <div className="col-span-12">
                     <Input
-                        placeholder="Tìm kiếm nông dân"
+                        placeholder="Tìm kiếm hộ bán lúa"
                         value={filters.search}
                         onChange={(e) => updateFilter('search', e.target.value)}
                     />

@@ -65,7 +65,7 @@ const FarmerUpdateForm: React.FC<FarmerUpdateFormProps> = ({ visible, onClose, d
         <Sheet
             visible={visible}
             onClose={onCloseForm}
-            title="Chỉnh sửa nông dân"
+            title="Chỉnh sửa hộ bán lúa"
             className="rounded-t-2xl"
         >
             <Box mt={2} px={4} pb={6} mb={10}>
@@ -73,8 +73,8 @@ const FarmerUpdateForm: React.FC<FarmerUpdateFormProps> = ({ visible, onClose, d
                     <div className="col-span-12">
                         <FormInputField
                             name="tenHoDan"
-                            label="Tên nông dân"
-                            placeholder="Nhập tên nông dân"
+                            label="Tên hộ bán lúa"
+                            placeholder="Nhập tên hộ bán lúa"
                             control={control}
                             error={errors.tenHoDan?.message}
                             required

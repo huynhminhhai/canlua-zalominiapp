@@ -60,3 +60,8 @@ export const parseNumber = (value: any, fallback = 0) => {
     const n = parseFloat(String(value).replace(',', '.'));
     return isNaN(n) ? fallback : n;
 };
+
+export function replaceDotToComma(value) {
+    if (value == null) return '';
+    return String(value).replace('.', ',');
+}

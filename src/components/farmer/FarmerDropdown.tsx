@@ -65,7 +65,7 @@ const FarmerDropdown: React.FC<FarmerDropdownProps> = ({
 
         openConfirmModal(() => {
             deletePhienCan(data.id);
-        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa hộ nông dân này?')
+        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa hộ hộ bán lúa này?')
     };
 
     return (
@@ -210,7 +210,7 @@ const FarmerDropdown: React.FC<FarmerDropdownProps> = ({
                             </div>
                             <div className="flex-1 min-w-0">
                                 <div className="text-[16px] font-semibold">Chỉnh sửa</div>
-                                <div className="text-sm font-medium text-gray-500 truncate">Cập nhật thông tin nông dân</div>
+                                <div className="text-sm font-medium text-gray-500 truncate">Cập nhật thông tin hộ bán lúa</div>
                             </div>
                         </button>
 
@@ -230,7 +230,7 @@ const FarmerDropdown: React.FC<FarmerDropdownProps> = ({
                                 />
                             </div>
                             <div className="flex-1 min-w-0">
-                                <div className="text-[16px] font-semibold">Xóa nông dân</div>
+                                <div className="text-[16px] font-semibold">Xóa hộ bán lúa</div>
                                 <div className="text-sm font-medium text-gray-500 truncate">Không thể hoàn tác</div>
                             </div>
                         </button>

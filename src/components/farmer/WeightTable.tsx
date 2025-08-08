@@ -6,6 +6,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useStoreApp } from 'store/store';
 import useClickOutside from 'utils/useClickOutSide';
 import InputGuide from './InputGuide';
+import { replaceDotToComma } from 'utils/number';
 
 interface WeightData {
   phienCanId?: number; // Optional cho lần đầu tạo mới
@@ -615,11 +616,6 @@ const RiceWeightInput: React.FC = () => {
                           <input
                             inputMode='numeric'
                             pattern="[0-9]*"
-                            // ref={(el) => {
-                            //   if (inputRefs.current[tableNum - 1]) {
-                            //     inputRefs.current[tableNum - 1][rowIndex][colIndex] = el;
-                            //   }
-                            // }}
                             ref={(el) => {
                               if (inputRefs.current[tableNum - 1]) {
                                 inputRefs.current[tableNum - 1][rowIndex][colIndex] = el;
@@ -635,8 +631,14 @@ const RiceWeightInput: React.FC = () => {
                             onClick={() => handleInputFocus(currentPage, tableNum, rowIndex, colIndex)}
                             onFocus={(e) => e.target.select()}
                             type="text"
-                            value={cell.value}
-                            onInput={(e) => handleInputChange((e.target as HTMLInputElement).value, tableNum, rowIndex, colIndex)}
+                            // value={cell.value}
+                            value={cell.value?.toString().replace('.', ',')}
+                            // onInput={(e) => handleInputChange((e.target as HTMLInputElement).value, tableNum, rowIndex, colIndex)}
+                            onInput={(e) => {
+                              const rawValue = (e.target as HTMLInputElement).value;
+                              // LƯU: đổi dấu , -> .
+                              handleInputChange(rawValue.replace(',', '.'), tableNum, rowIndex, colIndex);
+                            }}
                             maxLength={limitInput}
                             className={`w-full h-12 text-center border rounded text-lg font-semibold text-primary-color disabled:opacity-100 disabled:bg-gray-100 disabled:text-gray-600 ${isEditable && tableNum === currentTable && rowIndex === currentRow && colIndex === currentCol
                               ? 'border-primary-color bg-blue-50 ring-2 ring-blue-200'
@@ -667,12 +669,12 @@ const RiceWeightInput: React.FC = () => {
                 <div className="grid grid-cols-5 gap-1 mt-2">
                   {[0, 1, 2, 3, 4].map((colIndex) => (
                     <div key={colIndex} className={`text-white text-center py-2 rounded text-lg font-semibold bg-gradient-to-r from-primary-color to-primary-color`}>
-                      {getColumnSum(tableNum, colIndex).toFixed(1)}
+                      {replaceDotToComma(getColumnSum(tableNum, colIndex).toFixed(1))}
                     </div>
                   ))}
                 </div>
                 <div className='pt-4 pb-2 text-4xl font-bold text-primary-color text-center'>
-                  {[0, 1, 2, 3, 4].reduce((acc, i) => acc + getColumnSum(tableNum, i), 0).toFixed(1)}
+                  {replaceDotToComma([0, 1, 2, 3, 4].reduce((acc, i) => acc + getColumnSum(tableNum, i), 0).toFixed(1))}
                 </div>
               </div>
             </div>
