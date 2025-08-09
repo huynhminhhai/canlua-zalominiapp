@@ -5,11 +5,11 @@ import images from "assets/images";
 import { HeaderSub } from "components/header-sub"
 import React from "react"
 import { useLoginWithZalo } from "services/loginWithZalo";
-import { createMiniAppShortcut } from "services/zalo";
+import { createMiniAppShortcut, openUrlInWebview } from "services/zalo";
 import { useStoreApp } from "store/store";
 import { formatDate } from "utils/date";
 import { getFullImageUrl } from "utils/file";
-import { openShareSheet } from "zmp-sdk/apis";
+import { openChat, openShareSheet } from "zmp-sdk/apis";
 import { Avatar, Box, List, Page, useNavigate } from "zmp-ui"
 
 export const ManagementTitle = ({ title }: any) => {
@@ -47,6 +47,7 @@ const AccountPage: React.FC = () => {
                                     {/* Avatar Section */}
                                     <div className="relative flex-shrink-0">
                                         <Avatar
+                                            online
                                             className="border border-primary-color shadow-md"
                                             src={images.vnpt}
                                             size={80}
@@ -154,7 +155,7 @@ const AccountPage: React.FC = () => {
                                     <Item
                                         onClick={() => loginWithZalo()}
                                         title="Liên kết số điện thoại"
-                                        prefix={<div className="bg-blue-600 rounded-lg pt-[1px] pr-[2px]"><img src={images.zalo} width={30}/></div>}
+                                        prefix={<div className="bg-blue-600 rounded-lg pt-[1px] pr-[2px]"><img src={images.zalo} width={30} /></div>}
                                         suffix={<Icon fontSize={20} icon="formkit:right" />}
                                         subTitle={'Yêu cầu truy cập số điện thoại'}
                                     />
@@ -163,14 +164,19 @@ const AccountPage: React.FC = () => {
                     }
                     <Box m={4}>
                         <List className="bg-white rounded-lg shadow-sm">
-                            <ManagementTitle title="Cài đặt" />
-
+                            <ManagementTitle title="Tiện ích" />
+                            <Item
+                                onClick={() => navigate('/guide')}
+                                title="Hướng dẫn sử dụng"
+                                prefix={<img src={images.guide} width={30} />}
+                                suffix={<Icon fontSize={20} icon="formkit:right" />}
+                            />
                             <Item
                                 onClick={async () => {
                                     await openShareSheet({
                                         type: "link",
                                         data: {
-                                            link: "https://zalo.me/s/3941810339733563958/",
+                                            link: "https://zalo.me/s/3372047773996817418/",
                                             chatOnly: false,
                                         },
                                     });
@@ -184,6 +190,38 @@ const AccountPage: React.FC = () => {
                                 title="Thêm vào màn hình chính"
                                 prefix={<img src={images.shortcut} width={30} />}
                                 suffix={<Icon fontSize={20} icon="formkit:right" />}
+                            />
+                        </List>
+                    </Box>
+                    <Box m={4}>
+                        <List className="bg-white rounded-lg shadow-sm">
+                            <ManagementTitle title="Liên hệ hỗ trợ" />
+
+                            <Item
+                                onClick={async () => {
+                                    try {
+                                        await openUrlInWebview(`https://zalo.me/0853414329`);
+                                    } catch (error) {
+                                        console.error("error: ", error);
+                                    }
+                                }}
+                                prefix={<Avatar online>T</Avatar>}
+                                subTitle="Hữu Trọng"
+                                // suffix={<Icon fontSize={20} icon="mingcute:send-line" />}
+                                title="0853414329"
+                            />
+                            <Item
+                                onClick={async () => {
+                                    try {
+                                        await openUrlInWebview(`https://zalo.me/0848551555`);
+                                    } catch (error) {
+                                        console.error("error: ", error);
+                                    }
+                                }}
+                                prefix={<Avatar online>H</Avatar>}
+                                subTitle="Minh Hải"
+                                // suffix={<Icon fontSize={20} icon="mingcute:send-line" />}
+                                title="0848551555"
                             />
                         </List>
                     </Box>

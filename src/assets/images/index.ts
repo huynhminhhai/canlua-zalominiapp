@@ -57,8 +57,67 @@ import speaker from './speaker.png'
 import share from './share.png'
 import guide from './guide.png'
 import video from './video-content.png'
+import nhapsolieucan1 from './nhapsolieucan-1.png'
+import nhapsolieucan2 from './nhapsolieucan-2.png'
+import nhapsolieucan3 from './nhapsolieucan-3.png'
+import nhapsolieucan4 from './nhapsolieucan-4.png'
+import nhapsolieucan5 from './nhapsolieucan-5.png'
+import nhapsolieucan6 from './nhapsolieucan-6.png'
+import nhapsolieucan7 from './nhapsolieucan-7.png'
+import nhom1 from './nhom1.png'
+import nhom2 from './nhom2.png'
+import nhom3 from './nhom3.png'
+import nhom4 from './nhom4.png'
+import nhom5 from './nhom5.png'
+import nhom6 from './nhom6.png'
+import hobanlua1 from './hobanlua1.png'
+import hobanlua2 from './hobanlua2.png'
+import hobanlua3 from './hobanlua3.png'
+import hobanlua4 from './hobanlua4.png'
+import hobanlua5 from './hobanlua5.png'
+import hobanlua6 from './hobanlua6.png'
+import hobanlua7 from './hobanlua7.png'
+import thanhtoan1 from './thanhtoan1.png'
+import thanhtoan2 from './thanhtoan2.png'
+import thanhtoan3 from './thanhtoan3.png'
+import thanhtoan4 from './thanhtoan4.png'
+import cauhinh1 from './cauhinh1.png'
+import cauhinh2 from './cauhinh2.png'
+import cauhinh3 from './cauhinh3.png'
+import cauhinh4 from './cauhinh4.png'
+import cauhinh5 from './cauhinh5.png'
+
 
 const images = {
+    cauhinh1,
+    cauhinh2,
+    cauhinh3,
+    cauhinh4,
+    cauhinh5,
+    thanhtoan1,
+    thanhtoan2,
+    thanhtoan3,
+    thanhtoan4,
+    hobanlua1,
+    hobanlua2,
+    hobanlua3,
+    hobanlua4,
+    hobanlua5,
+    hobanlua6,
+    hobanlua7,
+    nhom1,
+    nhom2,
+    nhom3,
+    nhom4,
+    nhom5,
+    nhom6,
+    nhapsolieucan1,
+    nhapsolieucan2,
+    nhapsolieucan3,
+    nhapsolieucan4,
+    nhapsolieucan5,
+    nhapsolieucan6,
+    nhapsolieucan7,
     video,
     guide,
     share,
