@@ -11,7 +11,7 @@ const GuidePage: React.FC = () => {
     const { Item } = List;
 
     return (
-        <Page className="relative flex-1 flex flex-col bg-white pb-[72px]">
+        <Page className="relative flex-1 flex flex-col bg-white pb-[72px] guide">
             <Box>
                 <HeaderSub title="Hướng dẫn sử dụng" />
                 <Box>

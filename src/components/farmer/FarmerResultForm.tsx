@@ -267,7 +267,7 @@ const FarmerResultForm: React.FC = () => {
                                         {...field}
                                         type="text"
                                         inputMode="decimal"
-                                        maxLength={4}
+                                        maxLength={6}
                                         label="Trừ tạp chất (kg)"
                                         // value={field.value?.toString() || "0"}
                                         value={field.value?.toString().replace('.', ',') || "0"}
