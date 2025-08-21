@@ -17,38 +17,60 @@ import { FarmerDetailPage, FarmerListPage } from "pages/farmer";
 import { SettingsPage } from "pages/settings";
 import { CalcPage } from "pages/calc";
 import { PlanHistoryPage, PlanPage, PlanPayPage } from "pages/plan";
+import { authApiRequest } from "apiRequest/auth";
+import { getExpiresAt } from "utils/date";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const AuthWrapper = ({ children }) => {
-  const { setToken, setAccount, accessToken } = useStoreApp();
+  const { setAccount } = useStoreApp();
   const navigate = useNavigate();
 
   const loadAuthData = async () => {
 
     try {
-      const storedData = await getDataFromStorage(["account", "accessToken"]);
+      const storedData = await getDataFromStorage(["account"]);
 
-      if (!storedData || !storedData.accessToken) {
-        setToken({ accessToken: null });
+      if (!storedData || !storedData.account) {
         setAccount(null);
         navigate("/");
         return;
       }
 
-      const storedAccount = storedData.account ? JSON.parse(storedData.account) : null;
-      const storedAccessToken = storedData.accessToken || null;
+      const storedAccount = JSON.parse(storedData.account);
+      const { accessToken, refreshToken, expiresAt } = storedAccount;
 
-      console.log('Thông tin account:', storedAccount);
-      console.log('Hạn sử dụng token:', storedAccount?.expireInSeconds);
+      const now = Date.now();
 
-      setToken({
-        accessToken: storedAccessToken,
-      });
+      console.log('Thông tin tài khoản: ', storedAccount);
+      console.log('Tài khoản hết hạn: ', now > expiresAt)
+
+      // if (!accessToken || now > expiresAt) {
+      //   try {
+      //     const newTokens = await authApiRequest.refreshToken(refreshToken);
+
+      //     console.log('new token', newTokens);
+
+      //     const updatedAccount = {
+      //       ...storedAccount,
+      //       ...newTokens,
+      //       expiresAt: getExpiresAt(newTokens?.expireInSeconds)
+      //     };
+
+      //     setAccount(updatedAccount);
+      //   } catch (err) {
+      //     console.error("Refresh token failed:", err);
+      //     setAccount(null);
+      //     navigate("/");
+      //   }
+      // } else {
+      //   setAccount(storedAccount);
+      // }
+
       setAccount(storedAccount);
+      
     } catch (error) {
       console.error("Lỗi khi load dữ liệu từ storage:", error);
-      setToken({ accessToken: null });
       setAccount(null);
       navigate("/");
     }
@@ -56,7 +78,7 @@ const AuthWrapper = ({ children }) => {
 
   useEffect(() => {
     loadAuthData();
-  }, [accessToken]);
+  }, []);
 
   // If accessToken is null, we'll redirect to login; otherwise, render children
   return children;

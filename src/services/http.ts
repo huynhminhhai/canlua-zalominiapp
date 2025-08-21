@@ -1,5 +1,5 @@
 import envConfig from "envConfig";
-import { getDataFromStorage } from "./zalo";
+import { getDataFromStorage, removeDataFromStorage } from "./zalo";
 
 const request = async <T>(
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
@@ -8,11 +8,16 @@ const request = async <T>(
     isFormData: boolean = false
 ): Promise<T> => {
 
-    // const fullUrl = `/api${url}`;
     const fullUrl = `${envConfig.API_ENDPOINT}${url}`;
 
-    const storedData = await getDataFromStorage(["accessToken"]);
-    const accessToken = storedData?.accessToken || null;
+    const storedData = await getDataFromStorage(["account"]);
+    const storedAccount = storedData?.account ? JSON.parse(storedData.account) : null;
+    const accessToken = storedAccount?.accessToken || null;
+    const refreshToken = storedAccount?.refreshToken || null;
+
+    // if (!accessToken && !fullUrl.includes("TokenAuth")) {
+    //     return null as any;
+    // }
 
     const headers: HeadersInit = isFormData
         ? (accessToken ? { Authorization: `Bearer ${accessToken}` } : {})
@@ -36,8 +41,7 @@ const request = async <T>(
             const errorMessage = (data as any)?.message || 'Lỗi không xác định (request)';
 
             if (response.status === 401) {
-                // removeDataFromStorage(['account', 'accessToken', 'refreshToken']);
-                // window.location.href = '/login';
+                
                 throw new Error('Bạn không có quyền truy cập (request)');
             }
 

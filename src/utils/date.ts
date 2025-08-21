@@ -105,3 +105,18 @@ export function formatDateYYYYMMDD(date: Date): string {
 
     return `${year}-${month}-${day}`;
 }
+
+/**
+ * Tính toán thời gian hết hạn từ expireInSeconds (giây).
+ */
+export function getExpiresAt(expireInSeconds: number): number {
+    const now = Date.now();
+    return now + expireInSeconds * 1000;
+}
+
+/**
+ * Kiểm tra token đã hết hạn hay chưa.
+ */
+export function isTokenExpired(expiresAt: number): boolean {
+    return Date.now() >= expiresAt;
+}

@@ -10,8 +10,8 @@ import { Box, Page, useNavigate } from "zmp-ui"
 const LoginPage: React.FC = () => {
 
     const navigate = useNavigate();
-    const { showSuccess, showError } = useCustomSnackbar();
-    const { account, setAccount, setToken } = useStoreApp();
+    const { showSuccess } = useCustomSnackbar();
+    const { account, setAccount } = useStoreApp();
 
     useEffect(() => {
         const checkLogin = async () => {
@@ -21,13 +21,12 @@ const LoginPage: React.FC = () => {
                 return;
             }
 
-            const storedData = await getDataFromStorage(["account", "accessToken"]);
+            const storedData = await getDataFromStorage(["account"]);
 
-            if (storedData?.account && storedData?.accessToken && storedData?.refreshToken) {
+            if (storedData?.account) {
                 try {
                     const parsedAccount = JSON.parse(storedData.account);
                     setAccount(parsedAccount);
-                    setToken({ accessToken: storedData.accessToken });
                 } catch (error) {
                     console.error("Lỗi parse account:", error);
                 }
@@ -35,7 +34,7 @@ const LoginPage: React.FC = () => {
         };
 
         checkLogin();
-    }, [account, setAccount, setToken]);
+    }, [account, setAccount]);
 
 
     return (

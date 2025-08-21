@@ -1,11 +1,12 @@
 import http from 'services/http';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useStoreApp } from 'store/store';
 import { useNavigate } from 'zmp-ui';
 import envConfig from 'envConfig';
 import { useCustomSnackbar } from 'utils/useCustomSnackbar';
+import { getExpiresAt } from 'utils/date';
 
-const authApiRequest = {
+export const authApiRequest = {
     login: async (username: string, password: string) => {
         const response = await http.post('/TokenAuth/Authenticate', { userNameOrEmailAddress: username, password: password });
 
@@ -20,6 +21,11 @@ const authApiRequest = {
 
         return response;
     },
+    refreshToken: async (refreshToken: string) => {
+        const response = await http.post(`/TokenAuth/RefreshToken`, {refreshToken});
+
+        return (response as any)?.result;
+    },
     logout: async () => {
         const response = await http.get('/TokenAuth/LogOut');
 
@@ -28,8 +34,7 @@ const authApiRequest = {
 }
 
 export const useLogin = () => {
-    const navigate = useNavigate();
-    const { setToken, setAccount } = useStoreApp();
+    const { setAccount } = useStoreApp();
     const { showSuccess, showError } = useCustomSnackbar();
 
     return useMutation({
@@ -40,8 +45,7 @@ export const useLogin = () => {
 
             showSuccess('Đăng nhập thành công');
 
-            setToken({ accessToken: res?.result?.accessToken });
-            setAccount(res?.result);
+            setAccount({...res?.result, expiresAt: getExpiresAt(res?.result?.expireInSeconds)});
         },
         onError: (error: any) => {
             console.error('Lỗi:', error);
@@ -52,7 +56,7 @@ export const useLogin = () => {
 
 export const useLoginZalo = () => {
     const { showSuccess, showError } = useCustomSnackbar();
-    const { setToken, setAccount } = useStoreApp();
+    const { setAccount } = useStoreApp();
 
     return useMutation({
         mutationFn: async (credentials: { token: string, userAccessToken: string }) => {
@@ -62,9 +66,7 @@ export const useLoginZalo = () => {
 
             showSuccess('Đăng nhập thành công');
 
-            setToken({ accessToken: res?.result?.accessToken });
-            setAccount(res?.result);
-
+            setAccount({...res?.result, expiresAt: getExpiresAt(res?.result?.expireInSeconds)});
         },
         onError: (error: string) => {
             console.error('Lỗi:', error);
