@@ -11,7 +11,7 @@ import { useStoreApp } from "store/store";
 
 const FarmerList: React.FC<any> = () => {
 
-    const { accessToken, setIsShowModalIsLogin } = useStoreApp();
+    const { account, setIsShowModalIsLogin } = useStoreApp();
     
     const [showCreateForm, setShowCreateForm] = useState(false);
     const [filters, setFilters] = useState({
@@ -47,7 +47,7 @@ const FarmerList: React.FC<any> = () => {
     useDebouncedParam(filters.search, 'search');
 
     const handleToggleCreate = () => {
-        if (!accessToken) {
+        if (!account) {
             setIsShowModalIsLogin(true);
         } else {
             setShowCreateForm(true);

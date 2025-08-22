@@ -24,7 +24,7 @@ interface CellData {
 
 const RiceWeightInput: React.FC = () => {
 
-  const { setPhienCan, phienCan } = useStoreApp();
+  const { setPhienCan, phienCan, account, setIsShowModalIsLogin } = useStoreApp();
 
   const [isEditable, setIsEditable] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -189,6 +189,11 @@ const RiceWeightInput: React.FC = () => {
           viTriCot: col + 1,
           viTriDong: row + 1
         };
+
+        if (!account) {
+          setIsShowModalIsLogin(true);
+          return
+        }
 
         saveWeightData(weightData);
         moveToNextCell();

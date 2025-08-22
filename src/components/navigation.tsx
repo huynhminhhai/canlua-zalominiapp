@@ -9,7 +9,7 @@ const Navigation: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { account, isTrigger, setIsTrigger, accessToken, setIsShowModalIsLogin } = useStoreApp();
+  const { account, isTrigger, setIsTrigger, setIsShowModalIsLogin } = useStoreApp();
 
   const tabs: Record<string, MenuItem & { requiresLogin?: boolean; requiredRole?: string }> = {
     "/": {
@@ -60,7 +60,7 @@ const Navigation: FC = () => {
           activeIcon={tabs[path].activeIcon}
           onClick={() => {
 
-            if (path === "/settings" && !accessToken) {
+            if (path === "/settings" && !account) {
               setIsShowModalIsLogin(true);
               return;
             }      

@@ -3,7 +3,9 @@ import { useStoreApp } from "./store";
 
 type Account = {
     accessToken?: string;
+    refreshToken?: string;
     expireInSeconds?: number;
+    expiresAt?: number;
     name?: string;
     phoneNumber?: string;
     userId?: number;
@@ -13,15 +15,15 @@ type Account = {
 
 export interface AuthSliceType {
     account: Account | null;
-    accessToken: string | null;
+    // accessToken: string | null;
     setAccount: (account: Account | null) => void;
-    setToken: (tokens: { accessToken: string | null }) => void;
+    // setToken: (tokens: { accessToken: string | null }) => void;
     clearAuth: () => void;
 }
 
 export const createAuthSlice = (set: any, get: any): AuthSliceType => ({
     account: null,
-    accessToken: null,
+    // accessToken: null,
 
     setAccount: (account) => {
         set({ account });
@@ -32,18 +34,18 @@ export const createAuthSlice = (set: any, get: any): AuthSliceType => ({
         }
     },
 
-    setToken: ({ accessToken }) => {
-        set({ accessToken });
-        if (accessToken) {
-            setDataToStorage({ accessToken });
-        } else {
-            removeDataFromStorage(["accessToken"]);
-        }
-    },
+    // setToken: ({ accessToken }) => {
+    //     set({ accessToken });
+    //     if (accessToken) {
+    //         setDataToStorage({ accessToken });
+    //     } else {
+    //         removeDataFromStorage(["accessToken"]);
+    //     }
+    // },
 
     clearAuth: () => {
-        set({ account: null, accessToken: null });
-        removeDataFromStorage(["account", "accessToken"]);
+        set({ account: null });
+        removeDataFromStorage(["account"]);
     },
 });
 

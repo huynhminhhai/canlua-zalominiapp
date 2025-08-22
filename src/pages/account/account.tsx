@@ -26,7 +26,7 @@ const AccountPage: React.FC = () => {
 
     const navigate = useNavigate()
     const { loginWithZalo } = useLoginWithZalo();
-    const { account, accessToken } = useStoreApp();
+    const { account } = useStoreApp();
     const logout = useLogout();
 
     const { data, isLoading } = useGetGoiDangKyMoiNhat();
@@ -38,7 +38,7 @@ const AccountPage: React.FC = () => {
                 <Box>
 
                     {
-                        accessToken &&
+                        account &&
                         <Box m={4}>
                             <div
                                 className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100"
@@ -113,7 +113,7 @@ const AccountPage: React.FC = () => {
                     }
 
                     {
-                        accessToken ?
+                        account ?
                             <>
 
                                 <Box m={4}>
@@ -150,6 +150,12 @@ const AccountPage: React.FC = () => {
                                         onClick={() => navigate('/login')}
                                         title="Bằng tài khoản"
                                         prefix={<img src={images.login} width={30} />}
+                                        suffix={<Icon fontSize={20} icon="formkit:right" />}
+                                    />
+                                    <Item
+                                        onClick={logout}
+                                        title="Đăng xuất"
+                                        prefix={<img src={images.logout} width={28} />}
                                         suffix={<Icon fontSize={20} icon="formkit:right" />}
                                     /> */}
                                     <Item

@@ -1,18 +1,22 @@
 import envConfig from "envConfig";
-import { getDataFromStorage } from "./zalo";
+import { getDataFromStorage, removeDataFromStorage, setDataToStorage } from "./zalo";
+import { logoutDirectly } from "apiRequest/auth";
+import { getExpiresAt } from "utils/date";
 
 const request = async <T>(
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
     url: string,
     body?: any,
-    isFormData: boolean = false
+    isFormData: boolean = false,
+    retry: boolean = true // flag để tránh lặp vô hạn
 ): Promise<T> => {
 
-    // const fullUrl = `/api${url}`;
     const fullUrl = `${envConfig.API_ENDPOINT}${url}`;
 
-    const storedData = await getDataFromStorage(["accessToken"]);
-    const accessToken = storedData?.accessToken || null;
+    const storedData = await getDataFromStorage(["account"]);
+    let storedAccount = storedData?.account ? JSON.parse(storedData.account) : null;
+    let accessToken = storedAccount?.accessToken || null;
+    let refreshToken = storedAccount?.refreshToken || null;
 
     const headers: HeadersInit = isFormData
         ? (accessToken ? { Authorization: `Bearer ${accessToken}` } : {})
@@ -25,7 +29,7 @@ const request = async <T>(
     const options: RequestInit = {
         method,
         headers,
-        body: isFormData ? body : JSON.stringify(body),
+        body: isFormData ? body : (body ? JSON.stringify(body) : undefined),
     };
 
     try {
@@ -33,24 +37,46 @@ const request = async <T>(
         const data: T = await response.json();
 
         if (!response.ok) {
-            const errorMessage = (data as any)?.message || 'Lỗi không xác định (request)';
-
             if (response.status === 401) {
-                // removeDataFromStorage(['account', 'accessToken', 'refreshToken']);
-                // window.location.href = '/login';
-                throw new Error('Bạn không có quyền truy cập (request)');
+
+                if (refreshToken && retry) {
+                    try {
+                        const refreshResponse = await fetch(`${envConfig.API_ENDPOINT}/TokenAuth/RefreshToken`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ refreshToken }),
+                        });
+
+                        if (!refreshResponse.ok) {
+                            throw new Error("Refresh token failed");
+                        }
+
+                        const refreshData = await refreshResponse.json();
+
+                        await setDataToStorage({ account: JSON.stringify({...refreshData?.result, expiresAt: getExpiresAt(refreshData?.result?.expireInSeconds)}) });
+
+                        // Retry request cũ với accessToken mới
+                        return await request<T>(method, url, body, isFormData, false);
+                    } catch (refreshError) {
+                        logoutDirectly();
+                        throw new Error("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.");
+                    }
+                } else {
+                    // 🚀 Nếu không có refreshToken => logout ngay
+                    logoutDirectly();
+                    throw new Error("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.");
+                }
             }
 
-            if (response.status === 500) {
-                throw new Error(errorMessage);
-            }
-
+            const errorMessage = (data as any)?.message || 'Lỗi không xác định (request)';
             throw new Error(errorMessage);
         }
 
+
         return data;
     } catch (error: any) {
-        // Nếu error là object có .message thì hiển thị, nếu không thì stringify
         const message = error?.message || JSON.stringify(error);
         throw new Error(message);
     }
