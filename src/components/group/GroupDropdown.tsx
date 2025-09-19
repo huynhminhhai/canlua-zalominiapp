@@ -72,16 +72,16 @@ const GroupDropdown: React.FC<GroupDropdownProps> = ({
         <div className="relative" ref={dropdownRef} onClick={(e) => e.stopPropagation()}>
             {/* Trigger Button */}
             <button
-                className="w-12 h-12 rounded-full border flex items-center justify-center shadow-sm"
+                className="w-12 h-12 border border-gray-100 rounded-full flex items-center justify-center"
                 onClick={(e) => {
                     e.stopPropagation();
                     setOpen((prev) => !prev);
                 }}
             >
                 <Icon
-                    icon="solar:menu-dots-bold"
-                    fontSize={20}
-                    className={`text-gray-600 transition-transform duration-200 ${open ? 'rotate-90' : ''}`}
+                    icon="solar:menu-dots-linear"
+                    fontSize={24}
+                    className={`text-heading-color transition-transform duration-200 ${open ? 'rotate-90' : ''}`}
                 />
             </button>
 

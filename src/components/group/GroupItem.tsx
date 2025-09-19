@@ -1,5 +1,4 @@
 import { Icon } from "@iconify/react"
-import images from "assets/images"
 import React from "react"
 import { formatDate, renderDayOfWeek } from "utils/date"
 import { Box, useNavigate } from "zmp-ui"
@@ -16,42 +15,59 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
 
     return (
         <Box mb={4} className="group-item">
-            <div 
-                className="bg-white rounded-lg shadow-md border overflow-hidden"
+            <div
+                className="bg-white rounded-2xl overflow-hidden"
+                style={{
+                    boxShadow: 'rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px'
+                }}
                 onClick={() => navigate(`/farmer-list?id=${data.id}&tenNhom=${data.tenNhom}`)}
             >
                 {/* Header với tên nhóm và dropdown */}
-                <div className="flex items-center justify-between p-3 pb-3">
-                    <h3 className="text-xl font-bold line-clamp-1 flex-1 mr-3 border-l-4 border-primary-color pl-3">
+                <div className="flex items-center justify-between p-3 pl-4 pb-3">
+                    <h3 className="text-xl text-heading-color font-semibold line-clamp-2 flex-1 mr-3 ">
                         {data.tenNhom}
                     </h3>
                     <GroupDropdown data={data} />
                 </div>
 
-                <div className="px-3 pb-3">
+                <div className="px-3 pb-3.5">
                     {/* Thông tin chính */}
                     <div className="flex items-center gap-2 mb-4">
                         {/* Date card */}
-                        <div className="flex-shrink-0 w-[102px] h-20 bg-gradient-to-br from-primary-color to-primary-color rounded-xl flex flex-col items-center justify-center text-white shadow-sm">
+                        {/* <div className="flex-shrink-0 w-[102px] h-20 bg-gradient-to-br from-primary-color to-blue-600 rounded-xl flex flex-col items-center justify-center text-white shadow-sm">
                             <div className="text-sm font-semibold mb-1">
                                 {data?.ngayTao && renderDayOfWeek(formatDate(data.ngayTao))}
                             </div>
                             <div className="text-sm font-semibold leading-tight text-center">
                                 {data?.ngayTao && formatDate(data.ngayTao)}
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* Stats */}
                         <div className="flex-1 grid grid-cols-2 gap-2">
-                            <div className="bg-blue-50 rounded-lg px-3 py-4 border border-blue-400 shadow-sm flex flex-col justify-center">
-                                <div className="text-[20px] font-bold text-primary-color mb-1">
+                            <div className="bg-gradient-to-r from-bg-color to-blue-50/30 rounded-lg px-3 py-1.5 border border-primary-color shadow-sm
+                            flex flex-col justify-center">
+                                <div className="text-[18px] font-bold text-primary-color">
+                                    0
+                                </div>
+                                <div className="text-[14px] text-primary-color font-semibold">hộ bán lúa</div>
+                            </div>
+                            <div className="bg-gradient-to-r from-bg-color to-blue-50/30 rounded-lg px-3 py-1.5 border border-primary-color shadow-sm
+                            flex flex-col justify-center">
+                                <div className="text-[18px] font-bold text-primary-color">
+                                    0.0
+                                </div>
+                                <div className="text-[14px] text-primary-color font-semibold">tổng thành tiền</div>
+                            </div>
+                            <div className="bg-gradient-to-r from-bg-color to-blue-50/30 rounded-lg px-3 py-1.5 border border-primary-color shadow-sm flex flex-col justify-center">
+                                <div className="text-[18px] font-bold text-primary-color">
                                     {replaceDotToComma(data.tongTrongLuong?.toFixed(1)) || '0.0'}
                                 </div>
                                 <div className="text-[14px] text-primary-color font-semibold">kg</div>
                             </div>
-                            <div className="bg-blue-50 rounded-lg px-3 py-4 border border-blue-400 shadow-sm
+                            <div className="bg-gradient-to-r from-bg-color to-blue-50/30 rounded-lg px-3 py-1.5 border border-primary-color shadow-sm
                             flex flex-col justify-center">
-                                <div className="text-[20px] font-bold text-primary-color mb-1">
+                                <div className="text-[18px] font-bold text-primary-color">
                                     {data.soLanCan || 0}
                                 </div>
                                 <div className="text-[14px] text-primary-color font-semibold">lần cân</div>
@@ -59,10 +75,16 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
                         </div>
                     </div>
 
+                    <div className="flex items-center gap-2 py-2 px-3 bg-gradient-to-r from-bg-color to-blue-50/30 rounded-lg border-l-4 border-blue-900/70 mb-2">
+                        <Icon icon='solar:calendar-outline' className="text-gray-800" fontSize={16} />
+                        <span className="text-sm text-gray-600 font-semibold tracking-wide">
+                            {data?.ngayTao && renderDayOfWeek(formatDate(data.ngayTao))} - {data?.ngayTao && formatDate(data.ngayTao)}
+                        </span>
+                    </div>
                     {/* Contact info */}
-                    <div className="flex items-center gap-1 py-2 px-3 bg-gray-100 rounded-lg border-l-4 ">
-                        <Icon icon='mingcute:phone-line' className="text-gray-600" fontSize={16} />
-                        <span className="text-sm text-gray-700 font-semibold tracking-wide">
+                    <div className="flex items-center gap-2 py-2 px-3 bg-gradient-to-r from-bg-color to-blue-50/30 rounded-lg border-l-4 border-blue-900/70">
+                        <Icon icon='mingcute:phone-line' className="text-gray-800" fontSize={16} />
+                        <span className="text-sm text-gray-600 font-semibold tracking-wide">
                             {data.moTa || 'Chưa có SĐT'}
                         </span>
                     </div>

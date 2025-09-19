@@ -1,7 +1,7 @@
 {
   "app": {
     "title": "Cân lúa",
-    "headerColor": "#2262c6",
+    "headerColor": "#010822",
     "textColor": "white",
     "leftButton": "back",
     "statusBar": "normal",

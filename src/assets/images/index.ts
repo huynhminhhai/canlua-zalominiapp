@@ -86,9 +86,11 @@ import cauhinh2 from './cauhinh2.png'
 import cauhinh3 from './cauhinh3.png'
 import cauhinh4 from './cauhinh4.png'
 import cauhinh5 from './cauhinh5.png'
+import bg from './bg.jpg'
 
 
 const images = {
+    bg,
     cauhinh1,
     cauhinh2,
     cauhinh3,

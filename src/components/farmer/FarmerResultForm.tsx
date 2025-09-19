@@ -249,7 +249,7 @@ const FarmerResultForm: React.FC = () => {
                             label="Trừ bao bì (kg)"
                             value={getValues('quyCachTruBi') === 0 ? "0" : `${replaceDotToComma(roundWeight(soLanCan / (Number(getValues('quyCachTruBi'))), 'nearest', 1))}`}
                             suffix={
-                                <Box className='bg-primary-color rounded-lg' p={3} onClick={() => setVisibleTruBiModal(true)}>
+                                <Box className='bg-gradient-to-br from-heading-color to-primary-color rounded-lg' p={3} onClick={() => setVisibleTruBiModal(true)}>
                                     <Icon icon="solar:settings-linear" fontSize={20} color='#ffffff' />
                                 </Box>
                             }
@@ -408,7 +408,7 @@ const FarmerResultForm: React.FC = () => {
                             </div>
                             <div className="col-span-7">
                                 <Button
-                                    fullWidth variant="primary" size='medium'
+                                    fullWidth variant="primary" size='medium' className='!bg-gradient-to-br from-heading-color to-primary-color'
                                     onClick={() => setVisibleTruBiModal(false)}
                                 >
                                     Lưu lại

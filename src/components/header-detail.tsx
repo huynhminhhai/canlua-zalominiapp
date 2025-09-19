@@ -1,3 +1,4 @@
+import images from 'assets/images'
 import React from 'react'
 import { Box, Header } from 'zmp-ui'
 
@@ -15,6 +16,12 @@ const HeaderDetail: React.FC<HeaderDetailProps> = ({
     return (
         <Header
             className="sub shadow-sm"
+            style={{
+                backgroundImage: `url(${images.bg})`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover",
+                backgroundPosition: "top",
+            }}
             title={
                 (
                     <div className="flex items-center mt-[6px] gap-2">

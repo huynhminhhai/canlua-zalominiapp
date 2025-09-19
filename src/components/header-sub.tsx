@@ -1,4 +1,5 @@
 import { Icon } from "@iconify/react";
+import images from "assets/images";
 import React from "react";
 import { Box, Header } from "zmp-ui";
 
@@ -9,11 +10,17 @@ type HeaderSubProps = {
     showBackIcon?: boolean
 }
 
-export const HeaderSub: React.FC<HeaderSubProps> = ({title, onBackClick, onCreate, showBackIcon = true}) => {
-    
+export const HeaderSub: React.FC<HeaderSubProps> = ({ title, onBackClick, onCreate, showBackIcon = true }) => {
+
     return (
-        <Header 
+        <Header
             className="sub shadow-sm"
+            style={{
+                backgroundImage: `url(${images.bg})`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover",
+                backgroundPosition: "top",
+            }}
             {...(onBackClick ? { onBackClick } : {})}
             title={
                 (

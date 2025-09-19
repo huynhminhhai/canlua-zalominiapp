@@ -10,6 +10,9 @@ module.exports = {
         'secondary-color': "var(--secondary-color)",
         'gray-color': "var(--gray-color)",
         'black-color': "var(--black-color)",
+        'bg-color': "var(--bg-color)",
+        'heading-color': "var(--heading-color)",
+        'dark-color': "var(--dark-color)",
       }
     },
   },

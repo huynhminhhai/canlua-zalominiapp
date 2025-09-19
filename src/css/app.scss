@@ -44,13 +44,15 @@
 }
 
 :root {
-  --primary-color: #2262c6;
+  --primary-color: #2857a4;
+  --heading-color: #20365b;
+  --dark-color: #010822;
   --secondary-color: #7090c9;
   --third-color: #ebebeb;
   --gray-color: #666666;
   --black-color: #222631;
   // --bg-color: #fafafa;
-  --bg-color: #f3f4f8;
+  --bg-color: #f0f3fb;
 }
 
 body {
@@ -67,7 +69,7 @@ body {
 
 .zaui-page {
   background-color: var(--bg-color);
-  min-height: calc(100vh - 56px);
+  min-height: calc(100vh - 66px);
   // margin-top: 104px;
   margin-top: 60px;
 }
@@ -98,8 +100,9 @@ body {
 }
 
 .zaui-header.app-header {
-  padding-block: 24px;
-  background-color: var(--primary-color);
+  padding-top: 22px;
+  padding-bottom: 38px;
+  // background-color: #264b92;
 }
 
 .zaui-header.sub {
@@ -224,6 +227,12 @@ tbody tr td:not(:first-child) {
 
 .swiper-pagination-bullet-active {
   background-color: #003080b3 !important;
+}
+
+.zaui-sheet-content .zaui-sheet-content-header .zaui-sheet-content-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--heading-color);
 }
 
 /**
@@ -421,11 +430,16 @@ tbody tr td:not(:first-child) {
 **/
 
 .zaui-input {
-  height: 46px;
+  height: 42px;
   font-size: 16px;
   line-height: 1;
   font-weight: 600;
   color: var(--primary-color);
+}
+
+.filter .zaui-input {
+  height: 36px;
+  font-size: 14px;
 }
 
 .zaui-input::placeholder {

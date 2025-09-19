@@ -51,7 +51,11 @@ const Navigation: FC = () => {
   });
 
   return (
-    <BottomNavigation id="footer" activeKey={location.pathname} className="z-10 box-shadow-3">
+    <BottomNavigation id="footer" activeKey={location.pathname} className="z-10"
+      style={{
+        boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px;",
+      }}
+    >
       {visibleTabs.map((path) => (
         <BottomNavigation.Item
           key={path}

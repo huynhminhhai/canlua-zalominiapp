@@ -27,7 +27,7 @@ const InfoItem: React.FC<InfoItemProps> = ({
     icon
 }) => {
     return (
-        <div className="flex items-center justify-between py-3 px-3 hover:bg-gray-100 transition-colors duration-200 group">
+        <div className="flex items-center justify-between py-3 pl-3 pr-4 group">
             <div className="flex items-center gap-3">
                 {icon && (
                     <div className="w-9 h-9 bg-blue-50 rounded-full flex items-center justify-center group-hover:bg-blue-100 transition-colors duration-200">
@@ -37,7 +37,7 @@ const InfoItem: React.FC<InfoItemProps> = ({
                 <div className="flex flex-col">
                     <span className="text-[16px] font-medium text-gray-800">{title}</span>
                     {note && (
-                        <span className="text-[16px] font-bold text-gray-600 mt-0.5">{note}</span>
+                        <span className="text-[16px] font-bold text-heading-color mt-0.5">{note}</span>
                     )}
                 </div>
             </div>
@@ -64,23 +64,21 @@ const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
     }
 
     return (
-        <Box mb={4} className="bg-white shadow-md rounded-2xl overflow-hidden group">
+        <Box mb={4} className="bg-white rounded-2xl overflow-hidden group"
+            style={{
+                boxShadow: 'rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px'
+            }}
+        >
             {/* Header Section */}
-            <div className="bg-gradient-to-r from-primary-color to-primary-color px-2 py-3">
+            <div className="bg-gradient-to-br from-primary-color to-primary-color px-2 py-3">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <FarmerDropdown data={data} />
                         <div className="flex flex-col gap-1">
                             <h3 className="text-xl font-bold text-white">{data?.tenHoDan}</h3>
                             <div className="flex items-center gap-4 text-white">
-                                {/* <div className="flex items-center gap-1.5">
-                                    <Icon icon="mdi:clock-outline" className="w-4 h-4" />
-                                    <span className="text-sm font-semibold">
-                                        {data?.ngayTao && getHourFromDate(data?.ngayTao)}
-                                    </span>
-                                </div> */}
                                 <div className="flex items-center gap-1.5">
-                                    <Icon icon="mdi:calendar-outline" className="w-4 h-4" />
+                                    <Icon icon="solar:calendar-outline" className="w-4 h-4" />
                                     <span className="text-sm font-semibold">
                                         {data?.ngayTao && formatDate(data?.ngayTao)}
                                     </span>
@@ -106,41 +104,41 @@ const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
                     value={`${replaceDotToComma(khoiLuongConLai)} kg`}
                     note={`${data?.soLanCan} lần cân`}
                     icon="mdi:scale"
-                    colorClass="text-gray-600"
+                    colorClass="text-heading-color"
                 />
 
                 <InfoItem
                     title="Đơn giá"
                     value={`${formatCurrencyVN(data?.donGia)} đ/kg`}
                     icon="mdi:cash"
-                    colorClass="text-gray-600"
+                    colorClass="text-heading-color"
                 />
 
                 <InfoItem
                     title="Thành tiền"
                     value={`${formatCurrencyVN(thanhTien)} đ`}
                     icon="mdi:calculator"
-                    colorClass="text-blue-600"
+                    colorClass="text-primary-color"
                 />
 
                 <InfoItem
                     title="Tiền cọc"
                     value={`-${formatCurrencyVN(data?.tienCoc)} đ`}
                     icon="mdi:hand-coin"
-                    colorClass="text-orange-600"
+                    colorClass="text-sky-600"
                 />
 
                 <InfoItem
                     title="Đã trả"
                     value={`-${formatCurrencyVN(data?.tienDaTra)} đ`}
                     icon="mdi:check-circle"
-                    colorClass="text-green-600"
+                    colorClass="text-teal-600"
                 />
 
                 <div
                     className={`border-l-4 ${conLai <= 0
-                            ? 'bg-green-100 to-green-50 from-green-100 !border-l-green-600'
-                            : 'bg-gradient-to-r from-red-100 to-pink-100 !border-l-red-600'
+                            ? 'bg-gradient-to-r to-emerald-100 from-emerald-200 !border-l-emerald-600'
+                            : 'bg-gradient-to-r from-red-200 to-red-100 !border-l-red-600'
                         }`}
                 >
                     <InfoItem

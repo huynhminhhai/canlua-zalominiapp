@@ -4,16 +4,18 @@ import { debounce } from "lodash";
 import React, { useEffect, useState } from "react"
 import { Box, Input, useSearchParams } from "zmp-ui";
 import FarmerItem from "./FarmerItem";
-import { FilterBar } from "components/table";
+import { FilterBox, FilterButton } from "components/table";
 import FarmerCreateForm from "./FarmerCreateForm";
 import { useGetPhienCanList } from "apiRequest/phienCan";
 import { useStoreApp } from "store/store";
+import { Icon } from "@iconify/react";
 
 const FarmerList: React.FC<any> = () => {
 
     const { account, setIsShowModalIsLogin } = useStoreApp();
-    
+
     const [showCreateForm, setShowCreateForm] = useState(false);
+    const [showFilterForm, setShowFilterForm] = useState(false);
     const [filters, setFilters] = useState({
         search: "",
     });
@@ -84,18 +86,29 @@ const FarmerList: React.FC<any> = () => {
 
     return (
         <Box>
-            <FilterBar
-                showAddButton
-                onAddButtonClick={() => handleToggleCreate()}
-            >
+            <Box flex alignItems="center" justifyContent="space-between" px={4} pt={6} pb={6}>
+                <div className="flex items-center gap-2">
+                    <h2 className="text-xl font-bold text-heading-color">Danh sách hộ bán lúa</h2>
+                    <Box flex alignItems="center" justifyContent="center" className="rounded-full bg-gradient-to-br from-heading-color to-primary-color -bg-color cursor-pointer z-20 w-8 h-8"
+                        style={{
+                            boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px'
+                        }}
+                    >
+                        <Icon icon={'basil:plus-outline'} fontSize={42} className="text-white" onClick={() => handleToggleCreate()} />
+                    </Box>
+                </div>
+                <FilterButton onClick={() => setShowFilterForm(!showFilterForm)} showFilter={showFilterForm} />
+            </Box>
+            <FilterBox isOpen={showFilterForm}>
                 <div className="col-span-12">
                     <Input
-                        placeholder="Tìm kiếm hộ bán lúa"
+                        size="small"
+                        placeholder="Tìm kiếm nhanh"
                         value={filters.search}
-                        onChange={(e) => updateFilter('search', e.target.value)}
+                        onChange={(e) => updateFilter("search", e.target.value)}
                     />
                 </div>
-            </FilterBar>
+            </FilterBox>
             {renderContent()}
             <FarmerCreateForm
                 visible={showCreateForm}

@@ -14,10 +14,10 @@ type ButtonProps = {
 const PrimaryButton: React.FC<ButtonProps> = ({label, handleClick, iconLeft, iconRight, size='large', disabled=false, fullWidth=false}) => {
     return (
         <Box mx={4} className="w-[100%]" flex justifyContent="center" alignItems="center">
-            <Button variant="primary" size={size} onClick={handleClick} disabled={disabled} fullWidth={fullWidth}>
+            <Button variant="primary" size={size} onClick={handleClick} disabled={disabled} fullWidth={fullWidth} className="!bg-gradient-to-br from-heading-color to-primary-color">
                 <div className="flex items-center justify-center gap-2 h-[100%]">
                     {iconLeft}
-                    <div className="text-[18px] font-semibold leading-[1]">{label}</div>
+                    <div className="text-[18px] font-medium leading-[1]">{label}</div>
                     {iconRight}
                 </div>
             </Button>

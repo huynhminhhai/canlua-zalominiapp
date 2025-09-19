@@ -576,7 +576,7 @@ const RiceWeightInput: React.FC = () => {
               key={pageNum}
               onClick={() => goToPage(pageNum)}
               className={`shawow-md px-3 py-1 rounded text-sm font-medium transition-colors ${pageNum === currentPage
-                ? 'bg-primary-color text-white'
+                ? 'bg-gradient-to-br from-heading-color to-primary-color text-white'
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
             >
@@ -588,7 +588,7 @@ const RiceWeightInput: React.FC = () => {
         <div className='flex items-center justify-center mb-2 mt-4'>
           <button
             onClick={handleFocusTrick}
-            className="px-6 py-3 bg-primary-color text-[16px] text-white border-primary-color border rounded-full font-semibold mx-auto mb-3 flex items-center gap-2 shadow-md"
+            className="px-6 py-3 bg-gradient-to-br from-heading-color to-primary-color text-[16px] text-white border-primary-color border rounded-full font-semibold mx-auto mb-3 flex items-center gap-2 shadow-md"
           >
             <span>
               {isEditable ? 'Chuyển sang chế độ xem' : 'Bắt đầu nhập số cân'}
@@ -600,7 +600,7 @@ const RiceWeightInput: React.FC = () => {
         <div className="space-y-6 mb-6">
           {(phienCan?.soLuongMoiTrang === 75 ? [1, 2, 3] : [1, 2, 3, 4]).map((tableNum) => (
             <div key={tableNum} className={`bg-white border rounded-lg overflow-hidden transition-all duration-300 shadow-md`}>
-              <div className={`px-4 py-3 text-lg text-center font-semibold text-white bg-gradient-to-r from-primary-color to-primary-color`}>
+              <div className={`px-4 py-3 text-lg text-center font-semibold text-white bg-gradient-to-br from-primary-color to-primary-color`}>
                 Bảng {tableNum} - Trang {currentPage}
               </div>
 
@@ -673,7 +673,7 @@ const RiceWeightInput: React.FC = () => {
 
                 <div className="grid grid-cols-5 gap-1 mt-2">
                   {[0, 1, 2, 3, 4].map((colIndex) => (
-                    <div key={colIndex} className={`text-white text-center py-2 rounded text-lg font-semibold bg-gradient-to-r from-primary-color to-primary-color`}>
+                    <div key={colIndex} className={`text-white text-center py-2 rounded text-lg font-semibold bg-gradient-to-br from-primary-color to-primary-color`}>
                       {replaceDotToComma(getColumnSum(tableNum, colIndex).toFixed(1))}
                     </div>
                   ))}
@@ -699,12 +699,12 @@ const RiceWeightInput: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-green-200 rounded-lg p-4 shadow-md">
+          <div className="bg-emerald-100 rounded-lg p-4 shadow-md">
             <div className="text-center">
-              <div className="text-xl font-bold text-green-700 mb-2">
+              <div className="text-xl font-bold text-emerald-700 mb-2">
                 Tổng tất cả: <span className='text-[22px] font-bold'>{getAllPagesTotal().toFixed(1)} kg</span>
               </div>
-              <div className="text-md font-semibold text-green-800">
+              <div className="text-md font-semibold text-emerald-800">
                 Tổng đã nhập: {getCompletedCellsCount()} ô ({pagesData.length} trang)
               </div>
             </div>
