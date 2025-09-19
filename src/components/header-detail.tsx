@@ -26,8 +26,8 @@ const HeaderDetail: React.FC<HeaderDetailProps> = ({
                 (
                     <div className="flex items-center mt-[6px] gap-2">
                         <Box flex flexDirection='column' alignItems="flex-start" className='gap-[4px]'>
-                            <h4 className="text-[20px] leading-[24px] font-medium">{title}</h4>
-                            <div className='text-[16px] leading-[18px] font-medium'>
+                            <h4 className="text-[20px] leading-[24px] font-semibold">{title}</h4>
+                            <div className='text-[16px] leading-[18px] font-semibold'>
                                 {weight} kg / {count} lần cân (bao)
                             </div>
                         </Box>
