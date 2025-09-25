@@ -1,11 +1,5 @@
-import logo from './skyscraper.png'
 import avatar from './avatar.jpg'
-import shape1 from './shape1.png'
-import shape2 from './shape2.png'
 import shape5 from './shape5.png'
-import shapeWave from './wave-main.png'
-import shapeWave2 from './wave-2.webp'
-import shapeWave3 from './wave-3.png'
 import home from './home.png'
 import news from './newspaper.png'
 import idea from './idea.png'
@@ -17,7 +11,6 @@ import survey from './survey.png'
 import newss from './new.png'
 import pieChart from './pie-chart.png'
 import shape3 from './shape-3.png'
-import shape4 from './shape-4.png'
 import team from './team.png'
 import todo from './to-do-list.png'
 import todo2 from './to-do-list-2.png'
@@ -42,7 +35,6 @@ import bg1 from './bg-1.jpg'
 import bg2 from './bg-2.jpg'
 import resident from './resident.png'
 import chart from './chart.png'
-import logo1 from './logo.png'
 import logopng from './logo-png.png'
 import household from './household.png'
 import marker from './marker.png'
@@ -137,12 +129,8 @@ const images = {
     schedule,
     marker,
     household,
-    logo,
-    logo1,
     logopng,
     avatar,
-    shape1,
-    shape2,
     home,
     news,
     idea,
@@ -169,12 +157,8 @@ const images = {
     statistics,
     map,
     avatarDefault,
-    shape4,
     invoice,
     shortcut,
-    shapeWave,
-    shapeWave2,
-    shapeWave3,
     progress,
     feedback,
     safety,
