@@ -26,7 +26,7 @@ export const HeaderSub: React.FC<HeaderSubProps> = ({ title, onBackClick, onCrea
                 (
                     <div className="flex items-center mt-[6px] gap-2">
                         <Box flex alignItems="center">
-                            <h4 className="text-[20px] leading-[24px] font-semibold text-dark-color">{title}</h4>
+                            <h4 className="text-[20px] leading-[24px] font-semibold text-heading-color">{title}</h4>
                         </Box>
                         {
                             onCreate &&

@@ -4,7 +4,7 @@ import { formatDate, renderDayOfWeek } from "utils/date"
 import { Box, useNavigate } from "zmp-ui"
 import GroupDropdown from "./GroupDropdown"
 import { GroupItemType } from "./type"
-import { replaceDotToComma } from "utils/number"
+import { formatCurrencyVN, replaceDotToComma } from "utils/number"
 
 type GroupItemProps = {
     data: GroupItemType
@@ -45,33 +45,37 @@ const GroupItem: React.FC<GroupItemProps> = ({ data }) => {
 
                         {/* Stats */}
                         <div className="flex-1 grid grid-cols-2 gap-2">
-                            <div className="bg-gradient-to-r from-bg-color to-blue-50/30 rounded-lg px-3 py-1.5 border border-primary-color shadow-sm
+                            <div className="bg-gradient-to-r from-bg-color to-blue-50/30 rounded-lg pl-3 pr-1 py-1.5 border border-primary-color shadow-sm
                             flex flex-col justify-center">
-                                <div className="text-[18px] font-bold text-primary-color">
-                                    0
+                                <div className="text-[17px] font-bold text-primary-color">
+                                    {data.soPhienCan || 0}
                                 </div>
                                 <div className="text-[14px] text-primary-color font-semibold">hộ bán lúa</div>
                             </div>
-                            <div className="bg-gradient-to-r from-bg-color to-blue-50/30 rounded-lg px-3 py-1.5 border border-primary-color shadow-sm
+
+                            <div className="bg-gradient-to-r from-bg-color to-blue-50/30 rounded-lg pl-3 pr-1 py-1.5 border border-primary-color shadow-sm
                             flex flex-col justify-center">
-                                <div className="text-[18px] font-bold text-primary-color">
-                                    0.0
-                                </div>
-                                <div className="text-[14px] text-primary-color font-semibold">tổng thành tiền</div>
-                            </div>
-                            <div className="bg-gradient-to-r from-bg-color to-blue-50/30 rounded-lg px-3 py-1.5 border border-primary-color shadow-sm flex flex-col justify-center">
-                                <div className="text-[18px] font-bold text-primary-color">
-                                    {replaceDotToComma(data.tongTrongLuong?.toFixed(1)) || '0.0'}
-                                </div>
-                                <div className="text-[14px] text-primary-color font-semibold">kg</div>
-                            </div>
-                            <div className="bg-gradient-to-r from-bg-color to-blue-50/30 rounded-lg px-3 py-1.5 border border-primary-color shadow-sm
-                            flex flex-col justify-center">
-                                <div className="text-[18px] font-bold text-primary-color">
+                                <div className="text-[17px] font-bold text-primary-color">
                                     {data.soLanCan || 0}
                                 </div>
                                 <div className="text-[14px] text-primary-color font-semibold">lần cân</div>
                             </div>
+                            
+                            <div className="bg-gradient-to-r from-bg-color to-blue-50/30 rounded-lg pl-3 pr-1 py-1.5 border border-primary-color shadow-sm flex flex-col justify-center">
+                                <div className="text-[17px] font-bold text-primary-color">
+                                    {replaceDotToComma(data.tongTrongLuong?.toFixed(1)) || '0.0'}
+                                </div>
+                                <div className="text-[14px] text-primary-color font-semibold">kg</div>
+                            </div>
+
+                            <div className="bg-gradient-to-r from-bg-color to-blue-50/30 rounded-lg pl-3 pr-1 py-1.5 border border-primary-color shadow-sm
+                            flex flex-col justify-center">
+                                <div className="text-[17px] font-bold text-primary-color">
+                                    {`${formatCurrencyVN(data?.tongTien)}`}
+                                </div>
+                                <div className="text-[14px] text-primary-color font-semibold">vnđ</div>
+                            </div>
+                            
                         </div>
                     </div>
 

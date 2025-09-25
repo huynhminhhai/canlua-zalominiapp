@@ -13,6 +13,8 @@ export type GroupItemType = {
     nguoiCapNhat: string | null;
     soLanCan: number;
     tongTrongLuong: number;
+    soPhienCan: number;
+    tongTien: number;
 }
 
 export type FormDataGroup = {

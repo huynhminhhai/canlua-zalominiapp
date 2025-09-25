@@ -166,7 +166,7 @@ const AccountPage: React.FC = () => {
                             <Box m={4}>
                                 <List className="bg-white rounded-lg shadow-sm">
                                     <ManagementTitle title="Đăng nhập" />
-                                    <Item
+                                    {/* <Item
                                         onClick={() => navigate('/login')}
                                         title="Bằng tài khoản"
                                         prefix={<img src={images.login} width={30} />}
@@ -177,7 +177,7 @@ const AccountPage: React.FC = () => {
                                         title="Đăng xuất"
                                         prefix={<img src={images.logout} width={28} />}
                                         suffix={<Icon fontSize={20} icon="formkit:right" />}
-                                    />
+                                    /> */}
                                     <Item
                                         onClick={() => loginWithZalo()}
                                         title="Liên kết số điện thoại"
@@ -221,7 +221,8 @@ const AccountPage: React.FC = () => {
                     </Box>
 
                     <Box my={4} mx={3}>
-                        <div className="bg-white rounded-lg flex flex-col items-center px-3 py-8">
+                        <div className="bg-white rounded-lg flex flex-col items-center px-3 pt-4 pb-6">
+                            <div className="text-sm font-medium text-gray-400 mb-3">Quét QR Code để truy cập Mini App</div>
                             <img src={images.logopng} alt="Logo Khu pho thong minh" className="w-7 h-auto rounded-md" />
                             <div className="text-xl font-semibold mt-1 mb-3">Sổ Cân Lúa LAN</div>
                             <img src={images.qrcode} alt="qr code" className="w-[65%] h-auto" />
