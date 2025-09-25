@@ -9,8 +9,9 @@ import { createMiniAppShortcut, openUrlInWebview } from "services/zalo";
 import { useStoreApp } from "store/store";
 import { formatDate } from "utils/date";
 import { getFullImageUrl } from "utils/file";
-import { openChat, openShareSheet } from "zmp-sdk/apis";
-import { Avatar, Box, List, Page, useNavigate } from "zmp-ui"
+import { useCustomSnackbar } from "utils/useCustomSnackbar";
+import { openChat, openShareSheet, saveImageToGallery } from "zmp-sdk/apis";
+import { Avatar, Box, Button, List, Page, useNavigate } from "zmp-ui"
 
 export const ManagementTitle = ({ title }: any) => {
     return (
@@ -26,10 +27,29 @@ const AccountPage: React.FC = () => {
 
     const navigate = useNavigate()
     const { loginWithZalo } = useLoginWithZalo();
-    const { account } = useStoreApp();
+    const { account, setIsLoadingFullScreen } = useStoreApp();
     const logout = useLogout();
+    const { showSuccess, showWarning } = useCustomSnackbar();
 
     const { data, isLoading } = useGetGoiDangKyMoiNhat();
+
+    const handleDownloadQrCode = async (fileUrl: string) => {
+
+        setIsLoadingFullScreen(true);
+
+        try {
+            await saveImageToGallery({
+                imageUrl: fileUrl
+            });
+
+            showSuccess('Lưu ảnh QR Code thành công')
+        } catch (error) {
+            console.error(error);
+            showWarning('Lưu mã qr thất bại')
+        } finally {
+            setIsLoadingFullScreen(false);
+        }
+    };
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white pb-[72px]" style={{ backgroundColor: '#f5f6f7' }}>
@@ -177,7 +197,7 @@ const AccountPage: React.FC = () => {
                                 prefix={<img src={images.guide} width={30} />}
                                 suffix={<Icon fontSize={20} icon="formkit:right" />}
                             />
-                            <Item
+                            {/* <Item
                                 onClick={async () => {
                                     await openShareSheet({
                                         type: "link",
@@ -190,7 +210,7 @@ const AccountPage: React.FC = () => {
                                 title="Chia sẻ ứng dụng"
                                 prefix={<img src={images.share} width={30} />}
                                 suffix={<Icon fontSize={20} icon="formkit:right" />}
-                            />
+                            /> */}
                             <Item
                                 onClick={() => createMiniAppShortcut()}
                                 title="Thêm vào màn hình chính"
@@ -199,6 +219,47 @@ const AccountPage: React.FC = () => {
                             />
                         </List>
                     </Box>
+
+                    <Box my={4} mx={3}>
+                        <div className="bg-white rounded-lg flex flex-col items-center px-3 py-8">
+                            <img src={images.logopng} alt="Logo Khu pho thong minh" className="w-7 h-auto rounded-md" />
+                            <div className="text-xl font-semibold mt-1 mb-3">Sổ Cân Lúa LAN</div>
+                            <img src={images.qrcode} alt="qr code" className="w-[65%] h-auto" />
+                            <div className="mt-6 flex items-center gap-8">
+                                <Button
+                                    type="neutral"
+                                    variant="secondary"
+                                    size="medium"
+                                    onClick={() => handleDownloadQrCode(images.qrimg)}
+                                >
+                                    <div className="flex items-center gap-2">
+                                        <Icon icon={'system-uicons:download'} fontSize={22} />
+                                        Tải về
+                                    </div>
+                                </Button>
+                                <Button
+                                    type="neutral"
+                                    variant="secondary"
+                                    size="medium"
+                                    onClick={async () => {
+                                        await openShareSheet({
+                                            type: "link",
+                                            data: {
+                                                link: "https://zalo.me/s/3372047773996817418/",
+                                                chatOnly: false,
+                                            },
+                                        });
+                                    }}
+                                >
+                                    <div className="flex items-center gap-2">
+                                        <Icon icon={'solar:share-linear'} fontSize={22} />
+                                        Chia sẻ
+                                    </div>
+                                </Button>
+                            </div>
+                        </div>
+                    </Box>
+
                     <Box m={4}>
                         <List className="bg-white rounded-lg shadow-sm">
                             <ManagementTitle title="Liên hệ hỗ trợ" />

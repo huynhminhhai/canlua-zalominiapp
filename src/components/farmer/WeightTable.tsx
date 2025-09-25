@@ -688,18 +688,18 @@ const RiceWeightInput: React.FC = () => {
 
         {/* Summary Statistics */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div className="bg-blue-100 rounded-lg p-4 shadow-md">
+          <div className="bg-white rounded-lg p-4 shadow-md">
             <div className="text-center">
-              <div className="text-xl font-bold text-primary-color mb-2">
+              <div className="text-xl font-bold text-sky-700 mb-2">
                 Tổng trang {currentPage}: <span className='text-[22px] font-bold'>{getPageTotalSum().toFixed(1)} kg</span>
               </div>
-              <div className="text-md font-semibold text-primary-color">
+              <div className="text-md font-semibold text-sky-700">
                 Đã nhập: {getCurrentPageCompletedCount()}/75 ô
               </div>
             </div>
           </div>
 
-          <div className="bg-emerald-100 rounded-lg p-4 shadow-md">
+          <div className="bg-white rounded-lg p-4 shadow-md">
             <div className="text-center">
               <div className="text-xl font-bold text-emerald-700 mb-2">
                 Tổng tất cả: <span className='text-[22px] font-bold'>{getAllPagesTotal().toFixed(1)} kg</span>

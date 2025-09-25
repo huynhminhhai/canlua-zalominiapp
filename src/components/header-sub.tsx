@@ -14,24 +14,24 @@ export const HeaderSub: React.FC<HeaderSubProps> = ({ title, onBackClick, onCrea
 
     return (
         <Header
-            className="sub shadow-sm"
-            style={{
-                backgroundImage: `url(${images.bg})`,
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "cover",
-                backgroundPosition: "top",
-            }}
+            className="sub shadow-sm !bg-white"
+            // style={{
+            //     backgroundImage: `url(${images.bg})`,
+            //     backgroundRepeat: "no-repeat",
+            //     backgroundSize: "cover",
+            //     backgroundPosition: "top",
+            // }}
             {...(onBackClick ? { onBackClick } : {})}
             title={
                 (
                     <div className="flex items-center mt-[6px] gap-2">
                         <Box flex alignItems="center">
-                            <h4 className="text-[20px] leading-[24px] font-semibold">{title}</h4>
+                            <h4 className="text-[20px] leading-[24px] font-semibold text-dark-color">{title}</h4>
                         </Box>
                         {
                             onCreate &&
                             <Box onClick={onCreate}>
-                                <Icon icon="solar:add-circle-bold" fontSize={32} />
+                                <Icon icon="solar:add-circle-bold" fontSize={32} className="text-dark-color" />
                             </Box>
                         }
                     </div>

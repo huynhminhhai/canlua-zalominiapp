@@ -87,9 +87,13 @@ import cauhinh3 from './cauhinh3.png'
 import cauhinh4 from './cauhinh4.png'
 import cauhinh5 from './cauhinh5.png'
 import bg from './bg.jpg'
+import qrcode from './qr.jpg'
+import qrimg from './qrimg.jpg'
 
 
 const images = {
+    qrimg,
+    qrcode,
     bg,
     cauhinh1,
     cauhinh2,

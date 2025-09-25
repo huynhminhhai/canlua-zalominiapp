@@ -52,7 +52,7 @@ const InputGuide: React.FC<Props> = ({ phienCan }) => {
     };
 
     return (
-        <div className="text-[16px] text-heading-color font-medium mb-3 bg-gradient-to-r from-blue-100 to-blue-100/50 rounded-lg border-primary-color border p-3">
+        <div className="text-[16px] text-heading-color font-medium mb-3 bg-gradient-to-r from-white to-white rounded-lg border-primary-color border p-3">
             <p>
                 <span className="font-semibold">Lưu ý:</span> Nhập <span className="font-semibold">{quyCachNhap}</span> chữ số
                 {choPhepNhapSoLe && <span> có số dư</span>}

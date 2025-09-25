@@ -276,7 +276,7 @@ const QuyCachNhap: React.FC<QuyCachNhapProps> = ({ cauHinhHeThong }) => {
     ) => {
         return (
             <Box>
-                <div className="py-4 px-4 flex items-center gap-3 bg-blue-100 text-[20px] text-primary-color font-semibold border-l-4 border-blue-500">
+                <div className="py-4 px-4 flex items-center gap-3 bg-gradient-to-r from-blue-100 to-blue-50 text-[20px] text-primary-color font-semibold border-l-4 border-blue-500">
                     <Icon icon={'mdi:scale'} fontSize={20} className="text-primary-color" />
                     {title}
                 </div>

@@ -15,19 +15,19 @@ const HeaderDetail: React.FC<HeaderDetailProps> = ({
 }) => {
     return (
         <Header
-            className="sub shadow-sm"
-            style={{
-                backgroundImage: `url(${images.bg})`,
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "cover",
-                backgroundPosition: "top",
-            }}
+            className="sub shadow-sm !bg-white"
+            // style={{
+            //     backgroundImage: `url(${images.bg})`,
+            //     backgroundRepeat: "no-repeat",
+            //     backgroundSize: "cover",
+            //     backgroundPosition: "top",
+            // }}
             title={
                 (
                     <div className="flex items-center mt-[6px] gap-2">
                         <Box flex flexDirection='column' alignItems="flex-start" className='gap-[4px]'>
-                            <h4 className="text-[20px] leading-[24px] font-semibold">{title}</h4>
-                            <div className='text-[16px] leading-[18px] font-semibold'>
+                            <h4 className="text-[20px] leading-[24px] font-semibold text-dark-color">{title}</h4>
+                            <div className='text-[18px] leading-[20px] font-semibold text-dark-color'>
                                 {weight} kg / {count} lần cân (bao)
                             </div>
                         </Box>

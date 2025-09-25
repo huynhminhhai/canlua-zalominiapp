@@ -137,8 +137,8 @@ const FarmerItem: React.FC<FarmerItemProps> = ({ data }) => {
 
                 <div
                     className={`border-l-4 ${conLai <= 0
-                            ? 'bg-gradient-to-r to-emerald-100 from-emerald-200 !border-l-emerald-600'
-                            : 'bg-gradient-to-r from-red-200 to-red-100 !border-l-red-600'
+                            ? 'bg-gradient-to-r to-emerald-50 from-emerald-100 !border-l-emerald-600'
+                            : 'bg-gradient-to-r from-red-100 to-red-50 !border-l-red-600'
                         }`}
                 >
                     <InfoItem
